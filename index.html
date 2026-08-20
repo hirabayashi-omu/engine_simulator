@@ -298,6 +298,7 @@
     <div class="ctrl-bar">
       <button class="btn" id="btnPlay" onclick="togglePlay()">⏸ 一時停止</button>
       <button class="btn" style="border-color:#78909c; color:#cfd8dc;" onclick="resetEngine()">↺ リセット</button>
+      <button class="btn" id="btnSound" onclick="toggleSound()" style="border-color:#ffa726; color:#ffa726; min-width:48px;">🔊</button>
       <div class="slider-box">
         <span class="slider-lbl">スロットル開度 (RPM)</span>
         <input type="range" id="throttleSlider" min="0" max="100" value="10" oninput="updateThrottle(this.value)">
@@ -377,6 +378,98 @@ let lastSparkAngle = -999;
 let lastGraphUpdate = 0;
 let oilWavePhase = 0;      // オイル液面波打ち位相
 let oilDisturbance = 0;    // 打撃によるオイル液面の乱れ振幅
+
+// ============================================================
+// ★ Web Audio API 爆発音（点火破裂音）合成
+// ============================================================
+let audioCtx = null;
+let soundEnabled = true;
+let lastSoundTime = -999; // 多重発音防止用
+
+function getAudioCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  // suspended状態（ブラウザ自動停止）の場合は再開
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function triggerCombustionSound(rpm) {
+  if (!soundEnabled) return;
+  const ac = getAudioCtx();
+  const now = ac.currentTime;
+
+  // 同一点火で重複しないよう最小間隔を確認
+  if (now - lastSoundTime < 0.03) return;
+  lastSoundTime = now;
+
+  const rpmRatio = Math.max(0, Math.min(1, (rpm - 1000) / 9000));
+
+  // ─── ① ノイズバースト（爆発の「パン」成分） ───
+  const bufLen = Math.floor(ac.sampleRate * 0.18);  // 180ms
+  const buffer = ac.createBuffer(1, bufLen, ac.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufLen; i++) {
+    // 指数減衰ホワイトノイズ
+    data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufLen, 4.0 + rpmRatio * 3);
+  }
+  const noiseSource = ac.createBufferSource();
+  noiseSource.buffer = buffer;
+
+  // バンドパスフィルター（RPMで中心周波数をシフト）
+  const bpf = ac.createBiquadFilter();
+  bpf.type = 'bandpass';
+  bpf.frequency.value = 180 + rpmRatio * 340;  // 180Hz〜520Hz
+  bpf.Q.value = 0.7;
+
+  // ローパスフィルターで低音を柔らかく
+  const lpf = ac.createBiquadFilter();
+  lpf.type = 'lowpass';
+  lpf.frequency.value = 900 + rpmRatio * 800;
+
+  // ゲイン（音量エンベロープ）
+  const noiseGain = ac.createGain();
+  const peakVol = 0.55 + rpmRatio * 0.30;
+  noiseGain.gain.setValueAtTime(peakVol, now);
+  noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12 + (1 - rpmRatio) * 0.08);
+
+  noiseSource.connect(bpf);
+  bpf.connect(lpf);
+  lpf.connect(noiseGain);
+
+  // ─── ② 低周波パルス（「ドン」の胴鳴り成分） ───
+  const oscGain = ac.createGain();
+  const punchFreq = 65 + rpmRatio * 55;  // 65Hz〜120Hz
+  oscGain.gain.setValueAtTime(0.45 + rpmRatio * 0.2, now);
+  oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09 + (1 - rpmRatio) * 0.05);
+
+  const osc = ac.createOscillator();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(punchFreq * 1.8, now);
+  osc.frequency.exponentialRampToValueAtTime(punchFreq * 0.6, now + 0.05);
+  osc.connect(oscGain);
+
+  // ─── マスター出力 ───
+  const master = ac.createGain();
+  master.gain.value = 0.82;
+  noiseGain.connect(master);
+  oscGain.connect(master);
+  master.connect(ac.destination);
+
+  noiseSource.start(now);
+  noiseSource.stop(now + 0.25);
+  osc.start(now);
+  osc.stop(now + 0.15);
+}
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  document.getElementById('btnSound').textContent = soundEnabled ? '🔊' : '🔇';
+  document.getElementById('btnSound').style.opacity = soundEnabled ? '1' : '0.45';
+  // AudioContext を確保（初回クリックでブラウザ制限を解除）
+  if (soundEnabled) getAudioCtx();
+}
 
 let heatSlideFront = CYL_RX;
 let coolSlideFront = CYL_RX;
@@ -733,6 +826,7 @@ function drawEngine(angle) {
     lastSparkAngle = angle;
     sparkFlash = 1.0;
     spawnSpark(CX, CYLINDER_TOP - 5);
+    triggerCombustionSound(currentRPM);  // ★爆発破裂音
   }
   sparkFlash = Math.max(0, sparkFlash - 0.042);
 
