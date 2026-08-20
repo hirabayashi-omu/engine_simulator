@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
@@ -202,16 +202,67 @@
       color: #000;
       box-shadow: 0 0 16px rgba(0, 229, 255, 0.6);
     }
-    .slider-box { flex: 1; display: flex; align-items: center; gap: 14px; }
-    .slider-lbl { font-size: 0.85rem; color: var(--text-sub); white-space: nowrap; }
-    input[type=range] {
+    .slider-box {
       flex: 1;
-      accent-color: var(--accent-cyan);
-      height: 6px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 320px;
     }
-
+    .slider-lbl {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      white-space: nowrap;
+      font-weight: 500;
+    }
+    .slider-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+      min-width: 240px;
+    }
+    input[type=range] {
+      width: 100%;
+      accent-color: var(--accent-cyan);
+      height: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .slider-ticks {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0 4px;
+      box-sizing: border-box;
+      font-family: 'Orbitron', 'Roboto', sans-serif;
+      font-size: 0.68rem;
+      color: rgba(255, 255, 255, 0.55);
+      user-select: none;
+    }
+    .slider-ticks span {
+      position: relative;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-align: center;
+      display: inline-block;
+    }
+    .slider-ticks span::before {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.35);
+    }
+    .slider-ticks span:hover {
+      color: var(--accent-cyan);
+      text-shadow: 0 0 8px var(--accent-cyan);
+    }
     .stats-row { display: flex; justify-content: space-around; margin-top: 10px; }
     .stat-item { text-align: center; }
     .stat-num { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: var(--accent-cyan); }
@@ -282,26 +333,39 @@
 
     <div class="bottom-grid">
       <div class="card stroke-card" id="card-stroke1">
-        <div class="stroke-title">STROKE 1 : 下降行程（仕事・掃気・排気）</div>
+        <div class="stroke-title">STROKE 1 : 下降行程（膨張・掃気・排気）</div>
         <div class="stroke-desc">
-          点火プラグの火花で燃焼ガスが急激に膨張し、ピストンを押し下げます。ピストンが下降すると、まず排気ポートが開き高温ガスが噴出。続いて掃気ポートが開き、クランクケース内で一時圧縮された新鮮な混合気がシリンダー内へ勢いよく吹き込み（掃気）、残存排気を排気口へ押し出します。
+          点火プラグの火花で燃焼ガスが急激に膨張し、ピストンを押し下げます。ピストンが下降すると、まず排気ポートが開き排気ガスが流出。続いて掃気ポートが開き、クランクケース内で一次圧縮された新鮮な混合気がシリンダー内へ勢いよく流入（掃気）し、残った燃焼ガスを排気管へ押し出します。
         </div>
       </div>
       <div class="card stroke-card" id="card-stroke2">
-        <div class="stroke-title">STROKE 2 : 上昇行程（圧縮・クランクケース吸気）</div>
+        <div class="stroke-title">STROKE 2 : 上昇行程（圧縮・クランクケース吸入）</div>
         <div class="stroke-desc">
-          ピストンが上昇を始めると掃気口・排気口が閉じ、シリンダー内の混合気が密閉・圧縮されます（上死点直前で点火）。同時にピストン下部のクランクケース内は負圧（減圧）となり、リードバルブが開いて吸気口から新しい混合気が自動的に吸入されます。
+          ピストンが上昇を始めると掃気・排気ポートが閉じ、シリンダー内の混合気が上部で圧縮されます（上死点直前で点火）。同時にピストン下のクランクケース内は負圧（減圧）となり、リードバルブが開いて吸気管から新鮮な混合気がクランク室へ自動的に吸入されます。
         </div>
       </div>
     </div>
-
     <div class="ctrl-bar">
       <button class="btn" id="btnPlay" onclick="togglePlay()">⏸ 一時停止</button>
-      <button class="btn" style="border-color:#78909c; color:#cfd8dc;" onclick="resetEngine()">↺ リセット</button>
-      <button class="btn" id="btnSound" onclick="toggleSound()" style="border-color:#ffa726; color:#ffa726; min-width:48px;">🔊</button>
+      <button class="btn" style="border-color:#78909c; color:#cfd8dc;" onclick="resetEngine()">🔄 リセット</button>
+      <button class="btn" id="btnSound" onclick="toggleSound()" style="border-color:#ffa726; color:#ffa726; min-width:130px; opacity:0.65;">🔇 OFF (スロー)</button>
       <div class="slider-box">
-        <span class="slider-lbl">スロットル開度 (RPM)</span>
-        <input type="range" id="throttleSlider" min="0" max="100" value="10" oninput="updateThrottle(this.value)">
+        <span class="slider-lbl">スロットル / 回転数</span>
+        <div class="slider-wrapper">
+          <input type="range" id="throttleSlider" min="0" max="100" value="10" oninput="updateThrottle(this.value)">
+          <div class="slider-ticks">
+            <span onclick="setThrottlePercent(0)">1k</span>
+            <span onclick="setThrottlePercent(11.1)">2k</span>
+            <span onclick="setThrottlePercent(22.2)">3k</span>
+            <span onclick="setThrottlePercent(33.3)">4k</span>
+            <span onclick="setThrottlePercent(44.4)">5k</span>
+            <span onclick="setThrottlePercent(55.6)">6k</span>
+            <span onclick="setThrottlePercent(66.7)">7k</span>
+            <span onclick="setThrottlePercent(77.8)">8k</span>
+            <span onclick="setThrottlePercent(88.9)">9k</span>
+            <span onclick="setThrottlePercent(100)">10k</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -380,97 +444,173 @@ let oilWavePhase = 0;      // オイル液面波打ち位相
 let oilDisturbance = 0;    // 打撃によるオイル液面の乱れ振幅
 
 // ============================================================
-// ★ Web Audio API 爆発音（点火破裂音）合成
+// ★ Web Audio API 爆発音（点火破裂音）合成 — 改良版
+//    ・AudioContext + DynamicsCompressor を起動時1回だけ生成
+//    ・全ユーザー操作イベントで resume() → 途切れ防止
+//    ・RPM に応じた最小発音間隔でノード過多を回避
+//    ・事前生成バッファ(プール)を使い GC 負荷を低減
 // ============================================================
-let audioCtx = null;
-let soundEnabled = true;
-let lastSoundTime = -999; // 多重発音防止用
+// ============================================================
+// Web Audio API: 単気筒2ストローク 爆発パルスエンジン (Single Cylinder Beat)
+//    ・単気筒特有の「1発ごとの明瞭な衝撃波パルス」＋「完全な無音の区切り（谷）」
+//    ・複気筒のように音が重なり合わず、常に回転数に応じた明確な区切り「ぼ・ぼ・ぼ・ぼ」を保持
+// ============================================================
+let audioCtx    = null;
+let masterGain  = null;
+let compressor  = null;
+let soundEnabled = false;
+let noiseBuffer = null;
+let nextSparkTime = 0;
 
-function getAudioCtx() {
-  if (!audioCtx) {
+function initAudio() {
+  if (audioCtx) return;
+  try {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    compressor = audioCtx.createDynamicsCompressor();
+    compressor.threshold.value = -12;
+    compressor.knee.value = 6;
+    compressor.ratio.value = 4;
+    compressor.attack.value = 0.001;
+    compressor.release.value = 0.03;
+
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = 1.0;
+
+    masterGain.connect(compressor);
+    compressor.connect(audioCtx.destination);
+
+    // 共有ノイズバッファ
+    const noiseLen = Math.floor(audioCtx.sampleRate * 1.5);
+    noiseBuffer = audioCtx.createBuffer(1, noiseLen, audioCtx.sampleRate);
+    const nd = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < noiseLen; i++) nd[i] = Math.random() * 2 - 1;
+  } catch (e) {
+    console.error("Audio init error:", e);
   }
-  // suspended状態（ブラウザ自動停止）の場合は再開
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  return audioCtx;
 }
 
-function triggerCombustionSound(rpm) {
-  if (!soundEnabled) return;
-  const ac = getAudioCtx();
-  const now = ac.currentTime;
-
-  // 同一点火で重複しないよう最小間隔を確認
-  if (now - lastSoundTime < 0.03) return;
-  lastSoundTime = now;
-
-  const rpmRatio = Math.max(0, Math.min(1, (rpm - 1000) / 9000));
-
-  // ─── ① ノイズバースト（爆発の「パン」成分） ───
-  const bufLen = Math.floor(ac.sampleRate * 0.18);  // 180ms
-  const buffer = ac.createBuffer(1, bufLen, ac.sampleRate);
-  const data = buffer.getChannelData(0);
-  for (let i = 0; i < bufLen; i++) {
-    // 指数減衰ホワイトノイズ
-    data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufLen, 4.0 + rpmRatio * 3);
+function resumeAudio() {
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
   }
-  const noiseSource = ac.createBufferSource();
-  noiseSource.buffer = buffer;
+}
 
-  // バンドパスフィルター（RPMで中心周波数をシフト）
-  const bpf = ac.createBiquadFilter();
-  bpf.type = 'bandpass';
-  bpf.frequency.value = 180 + rpmRatio * 340;  // 180Hz〜520Hz
-  bpf.Q.value = 0.7;
+// 単気筒の1発ごとの爆発パルス（絶対に前の音と重なり合わないよう短くスパッと切る）
+function playCombustionPulse(time, rpmRatio, interval) {
+  if (!audioCtx) return;
 
-  // ローパスフィルターで低音を柔らかく
-  const lpf = ac.createBiquadFilter();
-  lpf.type = 'lowpass';
-  lpf.frequency.value = 900 + rpmRatio * 800;
+  // 単気筒の区切りを維持するため、パルス長は発火周期の 40%〜48% に厳密に制限
+  // （残り 52%〜60% の時間は完全な無音のギャップとなり、「ぼ・ぼ・ぼ・ぼ」の明確な区切りを生む）
+  const pulseDecay = Math.max(0.0025, Math.min(0.024, interval * 0.44));
 
-  // ゲイン（音量エンベロープ）
-  const noiseGain = ac.createGain();
-  const peakVol = 0.55 + rpmRatio * 0.30;
-  noiseGain.gain.setValueAtTime(peakVol, now);
-  noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12 + (1 - rpmRatio) * 0.08);
+  // ① シリンダー爆発・チャンバー胴鳴りパルス（「ボッ！」）
+  const baseFreq = 42 + rpmRatio * 75; // 1000RPM=42Hz, 10000RPM=117Hz
+  const osc = audioCtx.createOscillator();
+  osc.type = 'triangle'; // 豊かな倍音と太いアタック
+  
+  // 瞬間的なピッチドロップ（衝撃波の「ボッ」）
+  osc.frequency.setValueAtTime(baseFreq * 2.8, time);
+  osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.65, time + pulseDecay * 0.45);
 
-  noiseSource.connect(bpf);
-  bpf.connect(lpf);
-  lpf.connect(noiseGain);
+  const oscGain = audioCtx.createGain();
+  oscGain.gain.setValueAtTime(0.0001, time);
+  oscGain.gain.linearRampToValueAtTime(1.20, time + 0.001); // 1ms 強烈アタック
+  oscGain.gain.exponentialRampToValueAtTime(0.0001, time + pulseDecay);
 
-  // ─── ② 低周波パルス（「ドン」の胴鳴り成分） ───
-  const oscGain = ac.createGain();
-  const punchFreq = 65 + rpmRatio * 55;  // 65Hz〜120Hz
-  oscGain.gain.setValueAtTime(0.45 + rpmRatio * 0.2, now);
-  oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09 + (1 - rpmRatio) * 0.05);
-
-  const osc = ac.createOscillator();
-  osc.type = 'sine';
-  osc.frequency.setValueAtTime(punchFreq * 1.8, now);
-  osc.frequency.exponentialRampToValueAtTime(punchFreq * 0.6, now + 0.05);
   osc.connect(oscGain);
+  oscGain.connect(masterGain);
 
-  // ─── マスター出力 ───
-  const master = ac.createGain();
-  master.gain.value = 0.82;
-  noiseGain.connect(master);
-  oscGain.connect(master);
-  master.connect(ac.destination);
+  osc.start(time);
+  osc.stop(time + pulseDecay + 0.002);
 
-  noiseSource.start(now);
-  noiseSource.stop(now + 0.25);
-  osc.start(now);
-  osc.stop(now + 0.15);
+  // ② 低域サブパンチ（低中回転時の単気筒の重み）
+  if (rpmRatio < 0.7) {
+    const subOsc = audioCtx.createOscillator();
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(baseFreq * 0.9, time);
+    subOsc.frequency.exponentialRampToValueAtTime(baseFreq * 0.4, time + pulseDecay * 0.5);
+
+    const subGain = audioCtx.createGain();
+    const subVol = (1.0 - rpmRatio / 0.7) * 0.75;
+    subGain.gain.setValueAtTime(0.0001, time);
+    subGain.gain.linearRampToValueAtTime(subVol, time + 0.001);
+    subGain.gain.exponentialRampToValueAtTime(0.0001, time + pulseDecay * 0.9);
+
+    subOsc.connect(subGain);
+    subGain.connect(masterGain);
+
+    subOsc.start(time);
+    subOsc.stop(time + pulseDecay + 0.002);
+  }
+
+  // ③ 排気ポート開放スナップ（「パンッ」という歯切れ）
+  if (noiseBuffer) {
+    const noiseSource = audioCtx.createBufferSource();
+    noiseSource.buffer = noiseBuffer;
+    const offset = Math.random() * (noiseBuffer.duration - 0.05);
+
+    const bpf = audioCtx.createBiquadFilter();
+    bpf.type = 'bandpass';
+    bpf.frequency.value = 250 + rpmRatio * 450;
+    bpf.Q.value = 1.4;
+
+    const noiseGain = audioCtx.createGain();
+    const noiseDecay = pulseDecay * 0.65; // さらに短くスパッと切る
+    const noiseVol = 0.50 + rpmRatio * 0.35;
+
+    noiseGain.gain.setValueAtTime(0.0001, time);
+    noiseGain.gain.linearRampToValueAtTime(noiseVol, time + 0.0008);
+    noiseGain.gain.exponentialRampToValueAtTime(0.0001, time + noiseDecay);
+
+    noiseSource.connect(bpf);
+    bpf.connect(noiseGain);
+    noiseGain.connect(masterGain);
+
+    noiseSource.start(time, offset);
+    noiseSource.stop(time + noiseDecay + 0.002);
+  }
+}
+
+// 先回りスケジューラー
+function scheduleCombustionPulses(rpm) {
+  if (!soundEnabled || !audioCtx || !isPlaying) return;
+  if (audioCtx.state !== 'running') { resumeAudio(); return; }
+
+  const now = audioCtx.currentTime;
+  if (nextSparkTime < now) {
+    nextSparkTime = now;
+  }
+
+  const fireInterval = 60 / Math.max(400, rpm); // 単気筒2ストローク: 1回転に1回点火
+  const rpmRatio = Math.max(0, Math.min(1, (rpm - 1000) / 9000));
+  const scheduleAhead = 0.05; // 50ms先まで先回り
+
+  while (nextSparkTime < now + scheduleAhead) {
+    playCombustionPulse(nextSparkTime, rpmRatio, fireInterval);
+    nextSparkTime += fireInterval;
+  }
 }
 
 function toggleSound() {
   soundEnabled = !soundEnabled;
-  document.getElementById('btnSound').textContent = soundEnabled ? '🔊' : '🔇';
-  document.getElementById('btnSound').style.opacity = soundEnabled ? '1' : '0.45';
-  // AudioContext を確保（初回クリックでブラウザ制限を解除）
-  if (soundEnabled) getAudioCtx();
+  const btn = document.getElementById('btnSound');
+  if (btn) {
+    btn.textContent = soundEnabled ? '🔊 ON (実速度)' : '🔇 OFF (スロー)';
+    btn.style.opacity = soundEnabled ? '1' : '0.65';
+  }
+  if (soundEnabled) {
+    if (!audioCtx) initAudio();
+    else resumeAudio();
+    if (audioCtx) {
+      nextSparkTime = audioCtx.currentTime;
+      if (masterGain) masterGain.gain.setTargetAtTime(1.0, audioCtx.currentTime, 0.01);
+    }
+  } else {
+    if (audioCtx && masterGain) {
+      masterGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.03);
+    }
+  }
 }
-
 let heatSlideFront = CYL_RX;
 let coolSlideFront = CYL_RX;
 
@@ -826,7 +966,7 @@ function drawEngine(angle) {
     lastSparkAngle = angle;
     sparkFlash = 1.0;
     spawnSpark(CX, CYLINDER_TOP - 5);
-    triggerCombustionSound(currentRPM);  // ★爆発破裂音
+    
   }
   sparkFlash = Math.max(0, sparkFlash - 0.042);
 
@@ -1005,17 +1145,44 @@ function drawEngine(angle) {
     ctx.fill();
   }
 
-  /* STEP 3: [背面] 外郭ボディ */
+  /* STEP 3: [中景] 外郭ボディ（8000RPM以上の熱ダレ領域で赤熱化） */
   ctx.save();
+  const overheatRatio = Math.max(0, Math.min(1, (currentRPM - 8000) / 2000));
+
   const bodyGrad = ctx.createLinearGradient(CX - CC_R - 30, 0, CX + CC_R + 80, 0);
-  bodyGrad.addColorStop(0, '#546e7a');
-  bodyGrad.addColorStop(0.2, '#b0bec5');
-  bodyGrad.addColorStop(0.5, '#ffffff');
-  bodyGrad.addColorStop(0.8, '#90a4ae');
-  bodyGrad.addColorStop(1, '#546e7a');
+  if (overheatRatio > 0.01) {
+    // 8000RPM超: シリンダー外郭全体が灼熱の赤熱グラデーションに変色
+    const r1 = Math.round(84 + 140 * overheatRatio);
+    const g1 = Math.round(110 - 70 * overheatRatio);
+    const b1 = Math.round(122 - 95 * overheatRatio);
+
+    const r2 = Math.round(176 + 70 * overheatRatio);
+    const g2 = Math.round(190 - 120 * overheatRatio);
+    const b2 = Math.round(197 - 145 * overheatRatio);
+
+    const r3 = 255;
+    const g3 = Math.round(255 - 135 * overheatRatio);
+    const b3 = Math.round(255 - 190 * overheatRatio);
+
+    bodyGrad.addColorStop(0,   `rgb(${r1}, ${g1}, ${b1})`);
+    bodyGrad.addColorStop(0.2, `rgb(${r2}, ${g2}, ${b2})`);
+    bodyGrad.addColorStop(0.5, `rgb(${r3}, ${g3}, ${b3})`);
+    bodyGrad.addColorStop(0.8, `rgb(${r2}, ${g2}, ${b2})`);
+    bodyGrad.addColorStop(1,   `rgb(${r1}, ${g1}, ${b1})`);
+
+    // 外殻全体の赤熱グロー発光
+    ctx.shadowColor = `rgba(255, ${Math.round(50 + 40 * (1 - overheatRatio))}, 0, ${0.80 * overheatRatio})`;
+    ctx.shadowBlur = 20 * overheatRatio;
+  } else {
+    bodyGrad.addColorStop(0, '#546e7a');
+    bodyGrad.addColorStop(0.2, '#b0bec5');
+    bodyGrad.addColorStop(0.5, '#ffffff');
+    bodyGrad.addColorStop(0.8, '#90a4ae');
+    bodyGrad.addColorStop(1, '#546e7a');
+  }
 
   ctx.fillStyle = bodyGrad;
-  ctx.strokeStyle = '#263238';
+  ctx.strokeStyle = overheatRatio > 0.1 ? `rgba(${Math.round(40 + 190 * overheatRatio)}, 20, 10, 0.95)` : '#263238';
   ctx.lineWidth = 2.5;
 
   ctx.beginPath();
@@ -1083,7 +1250,7 @@ function drawEngine(angle) {
   ctx.fill('evenodd');
   ctx.stroke();
 
-  ctx.strokeStyle = '#263238';
+  ctx.strokeStyle = overheatRatio > 0.1 ? `rgba(${Math.round(40 + 190 * overheatRatio)}, 20, 10, 0.95)` : '#263238';
   ctx.lineWidth = 2.5;
   ctx.beginPath();
   ctx.moveTo(EXHAUST_RIGHT_X, EXHAUST_PORT_Y - 13 - WALL_W);
@@ -1099,8 +1266,39 @@ function drawEngine(angle) {
   ctx.lineTo(PIPE_RIGHT_X, INTAKE_BTM_IN_Y);
   ctx.stroke();
 
-  ctx.restore();
+  // ─── 冷却フィン & 熱ダレ赤熱エフェクト（8000RPM超過領域） ───
+  if (overheatRatio > 0.01) {
+    ctx.save();
+    // シリンダー上部・燃焼室周辺の赤熱放射グラデーション
+    const heatGlow = ctx.createRadialGradient(CX, 140, 15, CX, 160, 160);
+    heatGlow.addColorStop(0, `rgba(255, 60, 0, ${0.50 * overheatRatio})`);
+    heatGlow.addColorStop(0.5, `rgba(255, 20, 0, ${0.25 * overheatRatio})`);
+    heatGlow.addColorStop(1, 'rgba(255, 0, 0, 0)');
+    ctx.fillStyle = heatGlow;
+    ctx.globalCompositeOperation = 'screen';
+    ctx.fillRect(CX - 150, 70, 300, 240);
 
+    // シリンダー外郭左右の冷却フィンの赤熱発光ライン
+    ctx.strokeStyle = `rgba(255, ${Math.round(110 - 50 * overheatRatio)}, 20, ${0.85 * overheatRatio})`;
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = '#ff3d00';
+    ctx.shadowBlur = 10 * overheatRatio;
+    for (let finY = 135; finY <= 260; finY += 18) {
+      // 左側フィン
+      ctx.beginPath();
+      ctx.moveTo(CYL_OUT_X - 16, finY);
+      ctx.lineTo(CYL_OUT_X, finY);
+      ctx.stroke();
+      // 右側フィン
+      ctx.beginPath();
+      ctx.moveTo(RIGHT_OUT_X, finY);
+      ctx.lineTo(RIGHT_OUT_X + 16, finY);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  ctx.restore();
   /* STEP 3.5: [背面] 独立シリンダー壁 */
   ctx.save();
   const linerGrad = ctx.createLinearGradient(CYL_OUT_X, 0, CYL_LX, 0);
@@ -1705,6 +1903,23 @@ function updateOttoStateCards(angle) {
   if (badgeQ1) badgeQ1.classList.toggle('show', isQ1);
   if (badgeQ2) badgeQ2.classList.toggle('show', isQ2);
 
+  // 8000RPM超過時のキャンバス内赤熱警告インジケータ
+  if (currentRPM >= 8000) {
+    const oRatio = Math.min(1, (currentRPM - 8000) / 2000);
+    ctx.save();
+    ctx.fillStyle = `rgba(255, 30, 0, ${0.15 + 0.12 * Math.sin(Date.now() * 0.008)})`;
+    ctx.strokeStyle = `rgba(255, 60, 0, ${0.6 + 0.3 * oRatio})`;
+    ctx.lineWidth = 1.5;
+    ctx.fillRect(CX - 130, 20, 260, 28);
+    ctx.strokeRect(CX - 130, 20, 260, 28);
+
+    ctx.font = 'bold 12px "Orbitron", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#ff5252';
+    ctx.fillText('🔥 THERMAL DROP ZONE (熱ダレ領域)', CX, 34);
+    ctx.restore();
+  }
 }
 
 document.getElementById('etaDisplay').textContent = PV_ETA.toFixed(1);
@@ -1722,11 +1937,11 @@ function animate(timestamp) {
     currentRPM = Math.max(1000, Math.min(10000, currentRPM + (targetRPM - currentRPM) * Math.min(dt * 2.5, 1)));
     
     const rpmRatio = (currentRPM - 1000) / 9000;
-    const visualHz = 1.25 + 2.95 * rpmRatio;
-    const visualOmega = visualHz * 2 * Math.PI;
+    // 音を鳴らす場合は実回転数 (RPM / 60 Hz: 16.7Hz〜166.7Hz)、消音時は観察用スローモーション (1.25Hz〜4.2Hz)
+    const rotHz = soundEnabled ? (currentRPM / 60) : (1.25 + 2.95 * rpmRatio);
+    const omega = rotHz * 2 * Math.PI;
 
-    crankAngle += visualOmega * dt;
-
+    crankAngle += omega * dt;
     const ptY = pistonTopY(crankAngle);
     const pbY = ptY + PISTON_H;
     const cpx = CRANK_CX + CRANK_R * Math.sin(crankAngle);
@@ -1781,7 +1996,7 @@ function animate(timestamp) {
     }
 
     const pipeLen = EXHAUST_RIGHT_X - CYL_RX;
-    const slideSpeed = pipeLen * 4.5 * dt;
+    const slideSpeed = pipeLen * (soundEnabled ? Math.max(4.5, currentRPM / 600) : 4.5) * dt;
 
     if (exOpen && isDown) {
       if (Math.random() < 0.70 * Math.min(currentRPM/2500, 3.5)) {
@@ -1805,6 +2020,8 @@ function animate(timestamp) {
     particleList.forEach(p => p.update(dt*60));
     particleList = particleList.filter(p => p.life > 0 && p.x > 180 && p.x < W - 20);
   }
+
+  if (isPlaying) scheduleCombustionPulses(currentRPM);
 
   drawEngine(crankAngle);
 
@@ -1841,6 +2058,23 @@ function animate(timestamp) {
       pvChart.update('none');
     }
     updateOttoStateCards(crankAngle);
+    // 熱ダレ領域（8000RPM以上）のUI状態更新
+    const overheatCard = document.getElementById('card-overheat');
+    const overheatBadge = document.getElementById('overheatBadge');
+    if (overheatCard && overheatBadge) {
+      const isOverheated = currentRPM >= 8000;
+      overheatCard.classList.toggle('active', isOverheated);
+      if (currentRPM >= 8500) {
+        overheatBadge.textContent = '🔥 THERMAL OVERHEAT (出力低下中)';
+        overheatBadge.style.color = '#ff1744';
+      } else if (currentRPM >= 8000) {
+        overheatBadge.textContent = '⚠️ PEAK LIMIT (限界領域)';
+        overheatBadge.style.color = '#ff9100';
+      } else {
+        overheatBadge.textContent = 'NORMAL THERMAL';
+        overheatBadge.style.color = '#ffab91';
+      }
+    }
   }
 
   requestAnimationFrame(animate);
@@ -1862,6 +2096,14 @@ function resetEngine() {
 function updateThrottle(val) {
   throttle = Math.max(0, Math.min(100, parseFloat(val)));
   targetRPM = 1000 + (throttle / 100) * 9000;
+  const slider = document.getElementById('throttleSlider');
+  if (slider && parseFloat(slider.value) !== throttle) {
+    slider.value = throttle;
+  }
+}
+
+function setThrottlePercent(pct) {
+  updateThrottle(pct);
 }
 
 updateThrottle(10);
@@ -1869,3 +2111,10 @@ requestAnimationFrame(animate);
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
