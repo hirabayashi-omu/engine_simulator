@@ -970,8 +970,8 @@
       border-radius: 12px;
     }
 
-    /* 画面幅1800px以下は自動でスマホモード（1段目のみの完全縦積みレイアウト）に */
-    @media (max-width: 1800px) {
+    /* タブレット（iPad Pro含む）およびスマホサイズでは自動でスマホモード（1段目縦積み） */
+    @media (max-width: 1400px), (pointer: coarse) and (max-width: 1600px) {
       body {
         padding: 8px;
       }
