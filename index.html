@@ -52,7 +52,7 @@
     }
     header {
       width: 100%;
-      max-width: 1300px;
+      max-width: 1440px;
       margin-bottom: 16px;
       display: flex;
       justify-content: space-between;
@@ -83,13 +83,13 @@
     }
     .rpm-lbl { font-size: 0.68rem; color: var(--text-sub); letter-spacing: 1px; }
 
-    /* メイン2カラムレイアウト (PCフル表示: 最大幅1300px) */
+    /* メイン2カラムレイアウト (PCフル表示: 統一最大幅1440px) */
     .main-grid {
       display: grid;
       grid-template-columns: 720px 1fr;
       gap: 18px;
       width: 100%;
-      max-width: 1300px;
+      max-width: 1440px;
     }
 
     .card {
@@ -360,7 +360,7 @@
        ============================================================ */
     .cluster-panel {
       width: 100%;
-      max-width: 1300px;
+      max-width: 1440px;
       margin-bottom: 20px;
       padding: 16px 20px;
       background: linear-gradient(180deg, rgba(14, 18, 38, 0.92) 0%, rgba(8, 10, 22, 0.95) 100%);
@@ -406,7 +406,7 @@
 
     .cluster-grid {
       display: grid;
-      grid-template-columns: 205px 205px 205px 1.15fr 1.3fr;
+      grid-template-columns: 200px 200px 200px 1fr 1fr;
       gap: 14px;
       align-items: stretch;
     }
@@ -417,9 +417,12 @@
       background: radial-gradient(circle at 50% 50%, rgba(20, 26, 54, 0.8) 0%, rgba(10, 12, 26, 0.95) 100%);
       border: 1px solid rgba(79, 195, 247, 0.2);
       border-radius: 12px;
-      padding: 10px 6px 8px 6px;
+      padding: 10px 8px 8px 8px;
+      height: 250px;
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
       align-items: center;
       position: relative;
       box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
@@ -430,13 +433,15 @@
       font-weight: 700;
       letter-spacing: 1px;
       color: var(--accent-cyan);
-      margin-bottom: 4px;
+      margin-bottom: 2px;
       text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
     }
     .gauge-canvas {
       width: 195px;
-      height: 165px;
+      height: 195px;
+      flex: 1;
       display: block;
+      object-fit: contain;
     }
 
     /* 3D前面展望 常時埋め込みパネル */
@@ -445,6 +450,8 @@
       border: 1px solid rgba(0, 229, 255, 0.35);
       border-radius: 12px;
       padding: 10px 12px;
+      height: 250px;
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -453,6 +460,9 @@
     }
     .perspective-canvas-wrap {
       flex: 1;
+      min-height: 0;
+      height: 100%;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -472,8 +482,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 6px;
-      gap: 8px;
+      margin-top: 5px;
+      gap: 6px;
+      height: 28px;
     }
     .steer-btn {
       flex: 1;
@@ -481,9 +492,9 @@
       border: 1px solid rgba(0, 229, 255, 0.4);
       color: var(--accent-cyan);
       border-radius: 6px;
-      padding: 5px 8px;
+      padding: 4px 6px;
       font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 700;
       cursor: pointer;
       user-select: none;
@@ -491,6 +502,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      height: 100%;
+      box-sizing: border-box;
     }
     .steer-btn:hover {
       background: var(--accent-cyan);
@@ -513,6 +526,8 @@
     }
     .slot-sub {
       width: 100%;
+      flex: 1;
+      min-height: 0;
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -522,6 +537,8 @@
     .trans-view-box {
       width: 100%;
       height: 100%;
+      flex: 1;
+      min-height: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -540,9 +557,8 @@
     .engine-view-box.in-sub #engineCanvas,
     .trans-view-box.in-sub #transCanvas {
       width: 100%;
-      max-width: 100%;
-      height: auto;
-      aspect-ratio: 720 / 680; /* 横幅基準で左右黒帯ゼロで完全拡大 */
+      height: 100%;
+      max-height: 100%;
       object-fit: contain;
       background: #05060d;
       border-radius: 8px;
@@ -551,7 +567,9 @@
     }
     .perspective-view-box {
       width: 100%;
-      height: auto;
+      height: 100%;
+      flex: 1;
+      min-height: 0;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -564,17 +582,17 @@
       height: 630px;
     }
     .perspective-view-box.in-sub {
-      height: auto;
+      height: 100%;
     }
     .perspective-view-box.in-sub .perspective-canvas-wrap {
+      flex: 1;
+      min-height: 0;
       width: 100%;
-      height: auto;
-      aspect-ratio: 720 / 450;
+      height: 100%;
     }
     .perspective-view-box.in-sub #canvas3D {
       width: 100%;
-      height: auto;
-      aspect-ratio: 720 / 450;
+      height: 100%;
       object-fit: cover;
       display: block;
     }
@@ -671,11 +689,13 @@
       background: radial-gradient(circle at 50% 50%, rgba(20, 26, 54, 0.7) 0%, rgba(10, 12, 26, 0.95) 100%);
       border: 1px solid rgba(79, 195, 247, 0.2);
       border-radius: 12px;
-      padding: 12px 16px;
+      padding: 10px 14px;
+      height: 250px;
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 10px;
+      gap: 6px;
     }
     .hud-section-title {
       font-family: 'Orbitron', sans-serif;
@@ -1002,6 +1022,8 @@
       margin: 0 !important;
       border-radius: 10px !important;
       box-sizing: border-box !important;
+      display: flex !important;
+      flex-direction: column !important;
     }
     body.smartphone-mode .slot-sub,
     html.is-mobile .slot-sub {
@@ -1009,6 +1031,8 @@
       height: auto !important;
       min-height: unset !important;
       max-height: none !important;
+      display: flex !important;
+      flex-direction: column !important;
     }
     body.smartphone-mode .perspective-view-box,
     body.smartphone-mode .perspective-view-box.in-sub,
@@ -1029,7 +1053,7 @@
       max-height: none !important;
       display: flex !important;
       flex-direction: column !important;
-      align-items: center !important;
+      align-items: stretch !important;
     }
     body.smartphone-mode .perspective-view-box.in-sub .perspective-canvas-wrap,
     body.smartphone-mode .perspective-canvas-wrap,
@@ -1038,11 +1062,12 @@
       width: 100% !important;
       max-width: 100% !important;
       height: auto !important;
-      aspect-ratio: 720 / 450 !important; /* 3D前面展望のアスペクト比 */
-      min-height: unset !important;
+      aspect-ratio: 720 / 450 !important; /* 720x450の正確な縦横比で完全伸長 */
+      min-height: 240px !important;
       max-height: none !important;
       border-radius: 8px !important;
       background: #000 !important;
+      display: block !important;
     }
     body.smartphone-mode .perspective-canvas,
     body.smartphone-mode #canvas3D,
@@ -1050,9 +1075,10 @@
     html.is-mobile #canvas3D {
       width: 100% !important;
       max-width: 100% !important;
-      height: auto !important;
+      height: 100% !important;
       aspect-ratio: 720 / 450 !important;
-      object-fit: cover !important;
+      min-height: 240px !important;
+      object-fit: contain !important; /* 上下左右の見切れ・縮みを完全に排除 */
       display: block !important;
     }
     /* ★ DCTミッション ＆ 2サイクルエンジン断面: 横幅100%基準で画面いっぱいに超巨大表示 */
@@ -1209,15 +1235,18 @@
         width: 100% !important;
         height: auto !important;
         aspect-ratio: 720 / 450 !important;
-        min-height: unset !important;
+        min-height: 240px !important;
         max-height: none !important;
+        display: block !important;
       }
       .perspective-canvas,
       #canvas3D {
         width: 100% !important;
-        height: auto !important;
+        height: 100% !important;
         aspect-ratio: 720 / 450 !important;
-        object-fit: cover !important;
+        min-height: 240px !important;
+        object-fit: contain !important;
+        display: block !important;
       }
       .engine-view-box.in-sub #engineCanvas,
       .trans-view-box.in-sub #transCanvas,
@@ -1290,6 +1319,174 @@
       color: #000000;
       box-shadow: 0 0 16px rgba(255, 171, 0, 0.8);
     }
+
+    /* ⌨️ 本物のフローティングウィンドウ (ドラッグ移動・背後操作可能・最小化対応) */
+    .floating-window {
+      position: fixed;
+      right: 24px;
+      top: 75px;
+      width: 480px;
+      max-width: calc(100vw - 32px);
+      max-height: 80vh;
+      background: linear-gradient(145deg, rgba(12, 18, 36, 0.92), rgba(6, 9, 20, 0.95));
+      border: 1px solid rgba(0, 229, 255, 0.6);
+      border-radius: 12px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 229, 255, 0.25);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 99999;
+      display: none;
+      flex-direction: column;
+      user-select: none;
+      box-sizing: border-box;
+      transition: box-shadow 0.2s ease, opacity 0.2s ease;
+    }
+    .floating-window.open {
+      display: flex !important;
+    }
+    .floating-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: rgba(0, 229, 255, 0.08);
+      border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+      border-radius: 11px 11px 0 0;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+    .floating-header:active {
+      cursor: grabbing;
+    }
+    .floating-title {
+      font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #00e5ff;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      pointer-events: none;
+    }
+    .floating-ctrl-btns {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .floating-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #cfd8dc;
+      font-size: 0.72rem;
+      font-weight: bold;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+    .floating-btn:hover {
+      background: rgba(0, 229, 255, 0.3);
+      color: #fff;
+      border-color: #00e5ff;
+    }
+    .floating-btn.close:hover {
+      background: #ff1744;
+      color: #fff;
+      border-color: #ff1744;
+      box-shadow: 0 0 10px rgba(255, 23, 68, 0.6);
+    }
+    .floating-body {
+      padding: 12px 14px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: calc(80vh - 45px);
+    }
+    .floating-window.minimized .floating-body {
+      display: none !important;
+    }
+    .floating-window.minimized {
+      height: auto !important;
+    }
+    .shortcut-category {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+    .shortcut-cat-title {
+      font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #ffd740;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid rgba(255, 215, 64, 0.2);
+      padding-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .shortcut-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 5px;
+    }
+    .shortcut-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2px 0;
+      font-size: 0.75rem;
+    }
+    .shortcut-desc {
+      color: #cfd8dc;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .shortcut-keys {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .kbd-badge {
+      background: #0b1120;
+      border: 1px solid rgba(0, 229, 255, 0.5);
+      color: #00e5ff;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
+      white-space: nowrap;
+    }
+
+    .btn-shortcuts-toggle {
+      background: rgba(0, 229, 255, 0.12);
+      border: 1px solid rgba(0, 229, 255, 0.5);
+      color: #00e5ff;
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+    .btn-shortcuts-toggle:hover {
+      background: rgba(0, 229, 255, 0.25);
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.6);
+    }
   </style>
 </head>
 <body>
@@ -1317,12 +1514,13 @@
       <h1>TWO-STROKE ENGINE SIMULATOR</h1>
       <div class="subtitle">クランクケースプレ圧送・リードバルブ方式 2サイクルエンジン ＆ Yamaha 6速トランスミッション</div>
     </div>
-    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end;">
-      <button class="btn-sound-toggle" id="btnToggleSound" onclick="toggleEngineSound()" title="2ストローク排気音/チャンバーサウンド切替">🔊 音: OFF</button>
-      <button class="btn-smartphone-mode" id="btnToggleSmartphoneMode" onclick="toggleSmartphoneMode()" title="スマホ簡易モード / PCフル機能表示切替">📱 簡易モード</button>
+    <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap; justify-content:flex-end;">
+      <button class="btn-shortcuts-toggle" id="btnOpenShortcuts" onclick="openShortcutsModal()" title="操作一覧 [?] / [K]">⌨️ 操作一覧</button>
+      <button class="btn-sound-toggle" id="btnToggleSound" onclick="toggleEngineSound()" title="2st排気音 [M]">🔊 音</button>
+      <button class="btn-smartphone-mode" id="btnToggleSmartphoneMode" onclick="toggleSmartphoneMode()" title="スマホ簡易 / PCフル切替 [P]">📱 簡易</button>
       <div class="rpm-badge" id="oilTempBadge" style="border-color:#ff9800; box-shadow:0 0 16px rgba(255,152,0,0.25);">
         <div class="rpm-val" id="oilTempDisplay" style="color:#ffb74d;">65.0<span style="font-size:16px; margin-left:2px;">℃</span></div>
-        <div class="rpm-lbl" id="oilTempLabel" style="color:#ffe082;">OIL TEMP (適正)</div>
+        <div class="rpm-lbl" id="oilTempLabel" style="color:#ffe082;">OIL TEMP</div>
       </div>
       <div class="rpm-badge">
         <div class="rpm-val" id="rpmDisplay">1,000</div>
@@ -1335,9 +1533,8 @@
   <div class="card cluster-panel">
     <div class="cluster-header">
       <div class="card-title">YAMAHA 250cc (6-SPEED) INSTRUMENT CLUSTER & TRANSMISSION</div>
-      <div class="keyboard-hints">
-        <span class="key-badge"><span>SPACE</span> アクセル (ばね式)</span>
-        <span class="key-badge"><span>↑ / ↓</span> シフトアップ / ダウン</span>
+      <div style="display:flex; gap:6px; align-items:center;">
+        <button class="btn-shortcuts-toggle" onclick="toggleShortcutsModal()" title="操作一覧フロートウィンドウ [?] / [K]" style="padding:4px 10px; font-size:0.72rem; cursor:pointer;">⌨️ 操作一覧</button>
       </div>
     </div>
     
@@ -1366,12 +1563,12 @@
       <!-- ★ 上段: 3D前面展望パネル (スマホモード時は最上部に100%ワイド配置) -->
       <div class="perspective-box" id="subBoxCard">
         <div class="gauge-title" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-          <span id="subBoxTitle" style="font-size:0.70rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">🛣️ 3D PERSPECTIVE (コックピット前面展望)</span>
+          <span id="subBoxTitle" style="font-size:0.70rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">🛣️ 3D PERSPECTIVE</span>
           <div style="display:flex; gap:4px; align-items:center; flex-shrink:0;">
             <div class="view-tabs" id="subViewTabs">
-              <button class="view-tab-btn mini" onclick="selectSubView('3d')" id="subTab3d" title="3D前面展望">🛣️3D</button>
-              <button class="view-tab-btn mini" onclick="selectSubView('trans')" id="subTabTrans" title="6速クロスミッション">⚙️DCT</button>
-              <button class="view-tab-btn mini" onclick="selectSubView('engine')" id="subTabEngine" title="エンジン断面">🔥2st</button>
+              <button class="view-tab-btn mini" onclick="selectSubView('3d')" id="subTab3d" title="3D前面展望">3D</button>
+              <button class="view-tab-btn mini" onclick="selectSubView('trans')" id="subTabTrans" title="6速クロスミッション">DCT</button>
+              <button class="view-tab-btn mini" onclick="selectSubView('engine')" id="subTabEngine" title="エンジン断面">2st</button>
             </div>
             <button class="btn-swap" onclick="swapMainSubLayout()" title="メイン画面と表示を入替" style="padding:2px 6px; font-size:0.62rem;">⇄</button>
           </div>
@@ -1384,8 +1581,8 @@
             </div>
             <div class="perspective-ctrls" style="display:flex; gap:6px; width:100%; margin-top:6px;">
               <button class="steer-btn" id="btnSteerLeft" onpointerdown="isSteerLeft=true" onpointerup="isSteerLeft=false" onpointerleave="isSteerLeft=false" style="flex:1; white-space:nowrap;">◀ 左</button>
-              <button class="btn-gyro-steer active" id="btnGyroSteer3D" onclick="toggleGyroSteer()" title="スマホ傾きハンドル操作" style="flex:1.2; white-space:nowrap; justify-content:center;">📱 傾き操作 [ON]</button>
-              <button class="btn-auto-steer" id="btnAutoSteer" onclick="toggleAutoSteer()" title="オートハンドル（自動ライントレース）切替" style="flex:1.2; white-space:nowrap; justify-content:center;">🤖 AUTO</button>
+              <button class="btn-gyro-steer active" id="btnGyroSteer3D" onclick="toggleGyroSteer()" title="スマホ傾きハンドル操作" style="flex:1.2; white-space:nowrap; justify-content:center;">📱 傾き</button>
+              <button class="btn-auto-steer" id="btnAutoSteer" onclick="toggleAutoSteer()" title="オートハンドル切替" style="flex:1.2; white-space:nowrap; justify-content:center;">🤖 AUTO</button>
               <button class="steer-btn" id="btnSteerRight" onpointerdown="isSteerRight=true" onpointerup="isSteerRight=false" onpointerleave="isSteerRight=false" style="flex:1; white-space:nowrap;">右 ▶</button>
             </div>
           </div>
@@ -1397,9 +1594,9 @@
         <div class="hud-section-title" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
           <span>⚙️ YAMAHA 6-SPEED TRANSMISSION</span>
           <div style="display:flex; gap:6px; align-items:center;">
-            <button class="btn-sound-toggle" id="btnToggleSoundHud" onclick="toggleEngineSound()" title="2ストローク排気音サウンド切替">🔊 音: OFF</button>
-            <button class="btn-gyro-steer active" id="btnGyroSteer" onclick="toggleGyroSteer()" title="スマホを傾けてハンドル操作 (加速度/ジャイロセンサー連動)">📱 傾き連動: ON</button>
-            <button id="btnToggleAT" onclick="toggleATMode()" style="background:rgba(105,240,174,0.18); border:1px solid #69f0ae; color:#69f0ae; border-radius:6px; padding:2px 10px; font-family:'Orbitron',sans-serif; font-size:11px; font-weight:bold; cursor:pointer; letter-spacing:1px;">MODE: AT (自動)</button>
+            <button class="btn-sound-toggle" id="btnToggleSoundHud" onclick="toggleEngineSound()" title="2ストローク排気音サウンド切替">🔊 音</button>
+            <button class="btn-gyro-steer active" id="btnGyroSteer" onclick="toggleGyroSteer()" title="スマホ傾き操作">📱 傾き</button>
+            <button id="btnToggleAT" onclick="toggleATMode()" style="background:rgba(105,240,174,0.18); border:1px solid #69f0ae; color:#69f0ae; border-radius:6px; padding:2px 10px; font-family:'Orbitron',sans-serif; font-size:11px; font-weight:bold; cursor:pointer; letter-spacing:1px;">AT</button>
           </div>
         </div>
         
@@ -1562,12 +1759,12 @@
 
     <!-- 操作パネル (コントロールバー) -->
     <div class="ctrl-bar">
-      <button class="btn" id="btnPlay" onclick="togglePlay()">⏸ 一時停止</button>
+      <button class="btn" id="btnPlay" onclick="togglePlay()">⏸ 停止</button>
       <button class="btn" style="border-color:#78909c; color:#cfd8dc;" onclick="resetEngine()">🔄 リセット</button>
-      <button class="btn" id="btnToggleATBar" onclick="toggleATMode()" style="border-color:#69f0ae; color:#69f0ae; background:rgba(105,240,174,0.18);">⚙️ MODE: AT (自動)</button>
-      <button class="btn" id="btnSound" onclick="toggleSound()" style="border-color:#ffa726; color:#ffa726; min-width:130px; opacity:0.65;">🔇 OFF (スロー)</button>
-      <button class="btn" id="btnAutoSteerBar" onclick="toggleAutoSteer()" style="border-color:#76ff03; color:#76ff03;">🤖 オートハンドル: ON</button>
-      <button class="btn" onclick="swapMainSubLayout()" style="border-color:#00e5ff; color:#00e5ff; min-width:140px;">⇄ 大小画面入替</button>
+      <button class="btn" id="btnToggleATBar" onclick="toggleATMode()" style="border-color:#69f0ae; color:#69f0ae; background:rgba(105,240,174,0.18);">⚙️ AT</button>
+      <button class="btn" id="btnSound" onclick="toggleSound()" style="border-color:#ffa726; color:#ffa726; opacity:0.65;">🔊 音</button>
+      <button class="btn" id="btnAutoSteerBar" onclick="toggleAutoSteer()" style="border-color:#76ff03; color:#76ff03;">🤖 AUTO</button>
+      <button class="btn" onclick="swapMainSubLayout()" style="border-color:#00e5ff; color:#00e5ff;">⇄ 入替</button>
     </div>
   </div>
 
@@ -1664,27 +1861,31 @@ let noiseBuffer = null;
 let nextSparkTime = 0;
 
 function initAudio() {
-  if (audioCtx) return;
   try {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    compressor = audioCtx.createDynamicsCompressor();
-    compressor.threshold.value = -12;
-    compressor.knee.value = 6;
-    compressor.ratio.value = 4;
-    compressor.attack.value = 0.001;
-    compressor.release.value = 0.03;
-
-    masterGain = audioCtx.createGain();
-    masterGain.gain.value = 1.0;
-
-    masterGain.connect(compressor);
-    compressor.connect(audioCtx.destination);
-
-    // 共有ノイズバッファ
-    const noiseLen = Math.floor(audioCtx.sampleRate * 1.5);
-    noiseBuffer = audioCtx.createBuffer(1, noiseLen, audioCtx.sampleRate);
-    const nd = noiseBuffer.getChannelData(0);
-    for (let i = 0; i < noiseLen; i++) nd[i] = Math.random() * 2 - 1;
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (!compressor && audioCtx) {
+      compressor = audioCtx.createDynamicsCompressor();
+      compressor.threshold.value = -12;
+      compressor.knee.value = 6;
+      compressor.ratio.value = 4;
+      compressor.attack.value = 0.001;
+      compressor.release.value = 0.03;
+      compressor.connect(audioCtx.destination);
+    }
+    if (!masterGain && audioCtx) {
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = 1.0;
+      if (compressor) masterGain.connect(compressor);
+      else masterGain.connect(audioCtx.destination);
+    }
+    if (!noiseBuffer && audioCtx) {
+      const noiseLen = Math.floor(audioCtx.sampleRate * 1.5);
+      noiseBuffer = audioCtx.createBuffer(1, noiseLen, audioCtx.sampleRate);
+      const nd = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < noiseLen; i++) nd[i] = Math.random() * 2 - 1;
+    }
   } catch (e) {
     console.error("Audio init error:", e);
   }
@@ -1699,83 +1900,97 @@ function resumeAudio() {
 // 単気筒の1発ごとの爆発パルス（絶対に前の音と重なり合わないよう短くスパッと切る）
 function playCombustionPulse(time, rpmRatio, interval) {
   if (!audioCtx) return;
+  if (!masterGain) initAudio();
+  const destNode = masterGain || (compressor || audioCtx.destination);
+  if (!destNode) return;
 
-  // 単気筒の区切りを維持するため、パルス長は発火周期の 40%〜48% に厳密に制限
-  // （残り 52%〜60% の時間は完全な無音のギャップとなり、「ぼ・ぼ・ぼ・ぼ」の明確な区切りを生む）
-  const pulseDecay = Math.max(0.0025, Math.min(0.024, interval * 0.44));
+  try {
+    // 単気筒の区切りを維持するため、パルス長は発火周期の 40%〜48% に厳密に制限
+    // （残り 52%〜60% の時間は完全な無音のギャップとなり、「ぼ・ぼ・ぼ・ぼ」の明確な区切りを生む）
+    const pulseDecay = Math.max(0.0025, Math.min(0.024, interval * 0.44));
 
-  // ① シリンダー爆発・チャンバー胴鳴りパルス（「ボッ！」）
-  const baseFreq = 42 + rpmRatio * 75; // 1000RPM=42Hz, 10000RPM=117Hz
-  const osc = audioCtx.createOscillator();
-  osc.type = 'triangle'; // 豊かな倍音と太いアタック
-  
-  // 瞬間的なピッチドロップ（衝撃波の「ボッ」）
-  osc.frequency.setValueAtTime(baseFreq * 2.8, time);
-  osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.65, time + pulseDecay * 0.45);
+    // ① シリンダー爆発・チャンバー胴鳴りパルス（「ボッ！」）
+    const baseFreq = 42 + rpmRatio * 75; // 1000RPM=42Hz, 10000RPM=117Hz
+    const osc = audioCtx.createOscillator();
+    osc.type = 'triangle'; // 豊かな倍音と太いアタック
+    
+    // 瞬間的なピッチドロップ（衝撃波の「ボッ」）
+    osc.frequency.setValueAtTime(baseFreq * 2.8, time);
+    osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.65, time + pulseDecay * 0.45);
 
-  const oscGain = audioCtx.createGain();
-  oscGain.gain.setValueAtTime(0.0001, time);
-  oscGain.gain.linearRampToValueAtTime(1.20, time + 0.001); // 1ms 強烈アタック
-  oscGain.gain.exponentialRampToValueAtTime(0.0001, time + pulseDecay);
+    const oscGain = audioCtx.createGain();
+    oscGain.gain.setValueAtTime(0.0001, time);
+    oscGain.gain.linearRampToValueAtTime(1.20, time + 0.001); // 1ms 強烈アタック
+    oscGain.gain.exponentialRampToValueAtTime(0.0001, time + pulseDecay);
 
-  osc.connect(oscGain);
-  oscGain.connect(masterGain);
+    osc.connect(oscGain);
+    oscGain.connect(destNode);
 
-  osc.start(time);
-  osc.stop(time + pulseDecay + 0.002);
+    osc.start(time);
+    osc.stop(time + pulseDecay + 0.002);
 
-  // ② 低域サブパンチ（低中回転時の単気筒の重み）
-  if (rpmRatio < 0.7) {
-    const subOsc = audioCtx.createOscillator();
-    subOsc.type = 'sine';
-    subOsc.frequency.setValueAtTime(baseFreq * 0.9, time);
-    subOsc.frequency.exponentialRampToValueAtTime(baseFreq * 0.4, time + pulseDecay * 0.5);
+    // ② 低域サブパンチ（低中回転時の単気筒の重み）
+    if (rpmRatio < 0.7) {
+      const subOsc = audioCtx.createOscillator();
+      subOsc.type = 'sine';
+      subOsc.frequency.setValueAtTime(baseFreq * 0.9, time);
+      subOsc.frequency.exponentialRampToValueAtTime(baseFreq * 0.4, time + pulseDecay * 0.5);
 
-    const subGain = audioCtx.createGain();
-    const subVol = (1.0 - rpmRatio / 0.7) * 0.75;
-    subGain.gain.setValueAtTime(0.0001, time);
-    subGain.gain.linearRampToValueAtTime(subVol, time + 0.001);
-    subGain.gain.exponentialRampToValueAtTime(0.0001, time + pulseDecay * 0.9);
+      const subGain = audioCtx.createGain();
+      const subVol = (1.0 - rpmRatio / 0.7) * 0.75;
+      subGain.gain.setValueAtTime(0.0001, time);
+      subGain.gain.linearRampToValueAtTime(subVol, time + 0.001);
+      subGain.gain.exponentialRampToValueAtTime(0.0001, time + pulseDecay * 0.9);
 
-    subOsc.connect(subGain);
-    subGain.connect(masterGain);
+      subOsc.connect(subGain);
+      subGain.connect(destNode);
 
-    subOsc.start(time);
-    subOsc.stop(time + pulseDecay + 0.002);
-  }
+      subOsc.start(time);
+      subOsc.stop(time + pulseDecay + 0.002);
+    }
 
-  // ③ 排気ポート開放スナップ（「パンッ」という歯切れ）
-  if (noiseBuffer) {
-    const noiseSource = audioCtx.createBufferSource();
-    noiseSource.buffer = noiseBuffer;
-    const offset = Math.random() * (noiseBuffer.duration - 0.05);
+    // ③ 排気ポート開放スナップ（「パンッ」という歯切れ）
+    if (noiseBuffer) {
+      const noiseSource = audioCtx.createBufferSource();
+      noiseSource.buffer = noiseBuffer;
+      const offset = Math.random() * (noiseBuffer.duration - 0.05);
 
-    const bpf = audioCtx.createBiquadFilter();
-    bpf.type = 'bandpass';
-    bpf.frequency.value = 250 + rpmRatio * 450;
-    bpf.Q.value = 1.4;
+      const bpf = audioCtx.createBiquadFilter();
+      bpf.type = 'bandpass';
+      bpf.frequency.value = 250 + rpmRatio * 450;
+      bpf.Q.value = 1.4;
 
-    const noiseGain = audioCtx.createGain();
-    const noiseDecay = pulseDecay * 0.65; // さらに短くスパッと切る
-    const noiseVol = 0.50 + rpmRatio * 0.35;
+      const noiseGain = audioCtx.createGain();
+      const noiseDecay = pulseDecay * 0.65; // さらに短くスパッと切る
+      const noiseVol = 0.50 + rpmRatio * 0.35;
 
-    noiseGain.gain.setValueAtTime(0.0001, time);
-    noiseGain.gain.linearRampToValueAtTime(noiseVol, time + 0.0008);
-    noiseGain.gain.exponentialRampToValueAtTime(0.0001, time + noiseDecay);
+      noiseGain.gain.setValueAtTime(0.0001, time);
+      noiseGain.gain.linearRampToValueAtTime(noiseVol, time + 0.0008);
+      noiseGain.gain.exponentialRampToValueAtTime(0.0001, time + noiseDecay);
 
-    noiseSource.connect(bpf);
-    bpf.connect(noiseGain);
-    noiseGain.connect(masterGain);
+      noiseSource.connect(bpf);
+      bpf.connect(noiseGain);
+      noiseGain.connect(destNode);
 
-    noiseSource.start(time, offset);
-    noiseSource.stop(time + noiseDecay + 0.002);
+      noiseSource.start(time, offset);
+      noiseSource.stop(time + noiseDecay + 0.002);
+    }
+  } catch (err) {
+    // 安全処理
   }
 }
 
 // 先回りスケジューラー
 function scheduleCombustionPulses(rpm) {
-  if (!soundEnabled || !audioCtx || !isPlaying) return;
-  if (audioCtx.state !== 'running') { resumeAudio(); return; }
+  if (!soundEnabled || !isPlaying) return;
+  if (!audioCtx || !masterGain) {
+    initAudio();
+    return;
+  }
+  if (audioCtx.state !== 'running') {
+    resumeAudio();
+    return;
+  }
 
   const now = audioCtx.currentTime;
   if (nextSparkTime < now) {
@@ -1794,11 +2009,8 @@ function scheduleCombustionPulses(rpm) {
 
 function toggleSound() {
   soundEnabled = !soundEnabled;
-  const btn = document.getElementById('btnSound');
-  if (btn) {
-    btn.textContent = soundEnabled ? '🔊 ON (実速度)' : '🔇 OFF (スロー)';
-    btn.style.opacity = soundEnabled ? '1' : '0.65';
-  }
+  window.soundEnabled = soundEnabled;
+  updateSoundButtonsUI();
   if (soundEnabled) {
     if (!audioCtx) initAudio();
     else resumeAudio();
@@ -1812,6 +2024,25 @@ function toggleSound() {
     }
   }
 }
+window.toggleSound = toggleSound;
+window.toggleEngineSound = toggleSound;
+
+function updateSoundButtonsUI() {
+  const isSnd = soundEnabled;
+  const btn = document.getElementById('btnSound');
+  if (btn) {
+    btn.textContent = isSnd ? '🔊 ON (実速度)' : '🔇 OFF (スロー)';
+    btn.style.opacity = isSnd ? '1' : '0.65';
+  }
+  ['btnToggleSound', 'btnToggleSoundHud'].forEach(id => {
+    const b = document.getElementById(id);
+    if (b) {
+      b.classList.toggle('active', isSnd);
+      b.textContent = isSnd ? '🔊 ON' : '🔇 OFF';
+    }
+  });
+}
+window.updateEngineSoundUI = updateSoundButtonsUI;
 let heatSlideFront = CYL_RX;
 let coolSlideFront = CYL_RX;
 
@@ -6972,10 +7203,16 @@ window.applySmartphoneLayout = function(isMobile) {
     if (subBoxCard) {
       subBoxCard.style.setProperty('width', '100%', 'important');
       subBoxCard.style.setProperty('max-width', '100%', 'important');
+      subBoxCard.style.setProperty('height', 'auto', 'important');
+      subBoxCard.style.setProperty('min-height', 'unset', 'important');
+      subBoxCard.style.setProperty('max-height', 'none', 'important');
     }
     if (transHud) {
       transHud.style.setProperty('width', '100%', 'important');
       transHud.style.setProperty('max-width', '100%', 'important');
+      transHud.style.setProperty('height', 'auto', 'important');
+      transHud.style.setProperty('min-height', 'unset', 'important');
+      transHud.style.setProperty('max-height', 'none', 'important');
     }
   } else {
     if (mainGrid) mainGrid.style.removeProperty('display');
@@ -6993,17 +7230,23 @@ window.applySmartphoneLayout = function(isMobile) {
     if (subBoxCard) {
       subBoxCard.style.removeProperty('width');
       subBoxCard.style.removeProperty('max-width');
+      subBoxCard.style.removeProperty('height');
+      subBoxCard.style.removeProperty('min-height');
+      subBoxCard.style.removeProperty('max-height');
     }
     if (transHud) {
       transHud.style.removeProperty('width');
       transHud.style.removeProperty('max-width');
+      transHud.style.removeProperty('height');
+      transHud.style.removeProperty('min-height');
+      transHud.style.removeProperty('max-height');
     }
   }
 
   const btn = document.getElementById('btnToggleSmartphoneMode');
   if (btn) {
     btn.classList.toggle('active', isMobile);
-    btn.textContent = isMobile ? '📱 簡易モード [ON]' : '🖥️ フル表示モード';
+    btn.textContent = isMobile ? '📱 簡易 [ON]' : '🖥️ PC表示';
   }
 };
 
@@ -7153,14 +7396,13 @@ function handleDeviceMotion(event) {
 function updateGyroUI() {
   const b1 = document.getElementById('btnGyroSteer');
   const b2 = document.getElementById('btnGyroSteer3D');
-  const txt1 = window.isGyroActive ? '📱 傾き連動: ON' : '📱 傾き連動: OFF';
-  const txt2 = window.isGyroActive ? '📱 傾き: ON' : '📱 傾き操作';
+  const txt = window.isGyroActive ? '📱 傾き: ON' : '📱 傾き: OFF';
   if (b1) {
-    b1.textContent = txt1;
+    b1.textContent = txt;
     b1.classList.toggle('active', window.isGyroActive);
   }
   if (b2) {
-    b2.textContent = txt2;
+    b2.textContent = txt;
     b2.classList.toggle('active', window.isGyroActive);
   }
 }
@@ -7181,8 +7423,8 @@ window.toggleAutoSteer = function() {
 function updateAutoSteerUI() {
   const btn1 = document.getElementById('btnAutoSteer');
   const btn2 = document.getElementById('btnAutoSteerBar');
-  const txt1 = window.isAutoSteer ? '🤖 AUTO [ON]' : '✋ MANUAL';
-  const txt2 = window.isAutoSteer ? '🤖 オートハンドル: ON' : '✋ オートハンドル: OFF';
+  const txt1 = window.isAutoSteer ? '🤖 AUTO' : '✋ 手動';
+  const txt2 = window.isAutoSteer ? '🤖 AUTO: ON' : '✋ 手動: OFF';
 
   if (btn1) {
     btn1.textContent = txt1;
@@ -7304,170 +7546,289 @@ window.swapMainSubLayout = function() {
 };
 
 // ============================================================
-// ★ 🔊 リアルタイム 2サイクルエンジン排気音・チャンバーサウンドシンセサイザー (Web Audio API)
+// ★ ⌨️ ビュー切替 ＆ 各種操作キーボードショートカット
 // ============================================================
-(function() {
-  window.isEngineSoundActive = false;
-  let sndCtx = null;
-  let oscMain = null;
-  let oscSub = null;
-  let noiseNode = null;
-  let filterChamber = null;
-  let gainMaster = null;
-  let gainNoise = null;
+const VIEW_CYCLE_ORDER = ['3d', 'trans', 'engine'];
 
-  window.toggleEngineSound = function() {
-    window.isEngineSoundActive = !window.isEngineSoundActive;
-    if (window.isEngineSoundActive) {
-      startEngineAudio();
+window.cycleSubView = function() {
+  const curIdx = VIEW_CYCLE_ORDER.indexOf(currentSubView);
+  const nextIdx = (curIdx + 1) % VIEW_CYCLE_ORDER.length;
+  window.selectSubView(VIEW_CYCLE_ORDER[nextIdx]);
+};
+
+window.cycleMainView = function() {
+  const curIdx = VIEW_CYCLE_ORDER.indexOf(currentMainView);
+  const nextIdx = (curIdx + 1) % VIEW_CYCLE_ORDER.length;
+  window.selectMainView(VIEW_CYCLE_ORDER[nextIdx]);
+};
+
+window.addEventListener('keydown', function handleViewShortcuts(e) {
+  // 入力フォーム等での誤爆防止
+  if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) return;
+
+  const key = e.key.toLowerCase();
+
+  // 1. 数字キー [1] [2] [3] によるダイレクトView切替
+  if (e.key === '1') {
+    if (e.shiftKey) window.selectMainView('3d');
+    else window.selectSubView('3d');
+    e.preventDefault();
+  } else if (e.key === '2') {
+    if (e.shiftKey) window.selectMainView('trans');
+    else window.selectSubView('trans');
+    e.preventDefault();
+  } else if (e.key === '3') {
+    if (e.shiftKey) window.selectMainView('engine');
+    else window.selectSubView('engine');
+    e.preventDefault();
+  }
+  // 2. [V] キーによるビュー順次ローテーション切替 (3D ➡ DCT ➡ 2st)
+  else if (key === 'v') {
+    if (e.shiftKey) window.cycleMainView();
+    else window.cycleSubView();
+    e.preventDefault();
+  }
+  // 3. [X] または [Tab] キーによる大小画面の相互入替
+  else if (key === 'x' || e.key === 'Tab') {
+    window.swapMainSubLayout();
+    e.preventDefault();
+  }
+  // 4. [M] キーによるサウンド (2st排気音) ON / OFF
+  else if (key === 'm') {
+    if (typeof toggleEngineSound === 'function') toggleEngineSound();
+    e.preventDefault();
+  }
+  // 5. [A] キーによる AT / MT 変速モード切替
+  else if (key === 'a') {
+    if (typeof toggleATMode === 'function') toggleATMode();
+    e.preventDefault();
+  }
+  // 6. [G] キーによる 傾きセンサー (ジャイロ) 切替
+  else if (key === 'g') {
+    if (typeof toggleGyroSteer === 'function') toggleGyroSteer();
+    e.preventDefault();
+  }
+  // 7. [R] キーによる オートハンドル (AUTO) 切替
+  else if (key === 'r') {
+    if (typeof toggleAutoSteer === 'function') toggleAutoSteer();
+    e.preventDefault();
+  }
+  // 8. [P] キーによる スマホ簡易モード / PCフル機能切替
+  else if (key === 'p') {
+    if (typeof toggleSmartphoneMode === 'function') toggleSmartphoneMode();
+    e.preventDefault();
+  }
+  // 9. [?] または [K] または [F1] キーによる ショートカット一覧フロートウィンドウ開閉
+  else if (key === 'k' || e.key === '?' || e.key === 'F1') {
+    window.toggleShortcutsModal();
+    e.preventDefault();
+  }
+  // 10. [Escape] キーによる モーダル閉じる
+  else if (e.key === 'Escape') {
+    window.closeShortcutsModal();
+  }
+});
+
+// ============================================================
+// ★ ⌨️ 本物のフローティングウィンドウ (ドラッグ移動・最小化・背後操作可能) ロジック
+// ============================================================
+window.openShortcutsModal = function() {
+  const win = document.getElementById('floatingShortcutsWindow');
+  if (win) {
+    win.style.display = 'flex';
+    win.classList.add('open');
+  }
+};
+
+window.closeShortcutsModal = function() {
+  const win = document.getElementById('floatingShortcutsWindow');
+  if (win) {
+    win.style.display = 'none';
+    win.classList.remove('open');
+  }
+};
+
+window.toggleShortcutsModal = function() {
+  const win = document.getElementById('floatingShortcutsWindow');
+  if (win) {
+    if (win.style.display === 'flex' || win.classList.contains('open')) {
+      window.closeShortcutsModal();
     } else {
-      stopEngineAudio();
-    }
-    updateEngineSoundUI();
-  };
-
-  function updateEngineSoundUI() {
-    const isSnd = window.isEngineSoundActive;
-    ['btnToggleSound', 'btnToggleSoundHud'].forEach(id => {
-      const btn = document.getElementById(id);
-      if (btn) {
-        btn.classList.toggle('active', isSnd);
-        btn.textContent = isSnd ? '🔊 音: ON' : '🔇 音: OFF';
-      }
-    });
-  }
-
-  function startEngineAudio() {
-    try {
-      if (!sndCtx) {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        sndCtx = new AudioContextClass();
-      }
-      if (sndCtx.state === 'suspended') {
-        sndCtx.resume();
-      }
-
-      if (oscMain) return; // 既に開始済み
-
-      const curR = (typeof gaugeRPM !== 'undefined' && gaugeRPM) ? gaugeRPM : 1000;
-
-      // 1. マスターゲイン
-      gainMaster = sndCtx.createGain();
-      gainMaster.gain.setValueAtTime(0.18, sndCtx.currentTime);
-      gainMaster.connect(sndCtx.destination);
-
-      // 2. チャンバー共鳴バンドパスフィルター
-      filterChamber = sndCtx.createBiquadFilter();
-      filterChamber.type = 'bandpass';
-      filterChamber.frequency.setValueAtTime(450, sndCtx.currentTime);
-      filterChamber.Q.setValueAtTime(3.2, sndCtx.currentTime);
-      filterChamber.connect(gainMaster);
-
-      // 3. メイン燃焼パルス (Sawtooth)
-      oscMain = sndCtx.createOscillator();
-      oscMain.type = 'sawtooth';
-      oscMain.frequency.setValueAtTime(curR / 60, sndCtx.currentTime);
-      oscMain.connect(filterChamber);
-      oscMain.start();
-
-      // 4. サブ倍音 (Triangle)
-      oscSub = sndCtx.createOscillator();
-      oscSub.type = 'triangle';
-      oscSub.frequency.setValueAtTime((curR / 60) * 2, sndCtx.currentTime);
-      const gainSub = sndCtx.createGain();
-      gainSub.gain.setValueAtTime(0.35, sndCtx.currentTime);
-      oscSub.connect(gainSub);
-      gainSub.connect(gainMaster);
-      oscSub.start();
-
-      // 5. 排気噴流ノイズ
-      const bufferSize = sndCtx.sampleRate * 2;
-      const noiseBuffer = sndCtx.createBuffer(1, bufferSize, sndCtx.sampleRate);
-      const output = noiseBuffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        output[i] = Math.random() * 2 - 1;
-      }
-      noiseNode = sndCtx.createBufferSource();
-      noiseNode.buffer = noiseBuffer;
-      noiseNode.loop = true;
-
-      const noiseFilter = sndCtx.createBiquadFilter();
-      noiseFilter.type = 'bandpass';
-      noiseFilter.frequency.setValueAtTime(1200, sndCtx.currentTime);
-      noiseFilter.Q.setValueAtTime(1.8, sndCtx.currentTime);
-
-      gainNoise = sndCtx.createGain();
-      gainNoise.gain.setValueAtTime(0.04, sndCtx.currentTime);
-
-      noiseNode.connect(noiseFilter);
-      noiseFilter.connect(gainNoise);
-      gainNoise.connect(gainMaster);
-      noiseNode.start();
-    } catch (err) {
-      console.warn('Audio init error:', err);
+      window.openShortcutsModal();
     }
   }
+};
 
-  function stopEngineAudio() {
-    if (gainMaster && sndCtx) {
-      gainMaster.gain.setTargetAtTime(0, sndCtx.currentTime, 0.05);
-    }
-    setTimeout(() => {
-      if (oscMain) {
-        try { oscMain.stop(); oscMain.disconnect(); } catch(e) {}
-        oscMain = null;
-      }
-      if (oscSub) {
-        try { oscSub.stop(); oscSub.disconnect(); } catch(e) {}
-        oscSub = null;
-      }
-      if (noiseNode) {
-        try { noiseNode.stop(); noiseNode.disconnect(); } catch(e) {}
-        noiseNode = null;
-      }
-    }, 100);
+window.toggleMinimizeShortcuts = function() {
+  const win = document.getElementById('floatingShortcutsWindow');
+  const btn = document.getElementById('btnMinShortcuts');
+  if (win) {
+    win.classList.toggle('minimized');
+    if (btn) btn.textContent = win.classList.contains('minimized') ? '➕' : '➖';
   }
+};
 
-  // エンジン回転数・スロットル開度に応じたリアルタイム音程・音質変調
-  function updateEngineAudioRealtime(rpm, throttle) {
-    if (!window.isEngineSoundActive || !sndCtx || !oscMain) return;
-    const now = sndCtx.currentTime;
-    const fundamental = Math.max(14, (rpm || 1000) / 60); // 2ストローク点火周波数 (Hz)
-    const th = typeof throttle !== 'undefined' ? throttle : 0;
+// ドラッグ＆ドロップ移動ロジック
+(function() {
+  const win = document.getElementById('floatingShortcutsWindow');
+  const header = document.getElementById('floatingShortcutsHeader');
+  if (!win || !header) return;
 
-    oscMain.frequency.setTargetAtTime(fundamental, now, 0.02);
-    if (oscSub) oscSub.frequency.setTargetAtTime(fundamental * 2, now, 0.02);
+  let isDragging = false;
+  let startX = 0, startY = 0;
+  let initLeft = 0, initTop = 0;
 
-    // チャンバー共鳴周波数の変調 (高回転ほどチャンバー共鳴が甲高い2stサウンドに)
-    const chamberFreq = 380 + (rpm / 16000) * 1450 + (th * 320);
-    if (filterChamber) filterChamber.frequency.setTargetAtTime(chamberFreq, now, 0.03);
+  header.addEventListener('pointerdown', function(e) {
+    if (e.target.tagName === 'BUTTON') return; // ボタン操作は除外
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
 
-    // スロットル開度に応じた排気・吸気音量
-    if (gainNoise) {
-      const noiseVol = 0.02 + (th * 0.07) + (rpm / 16000) * 0.05;
-      gainNoise.gain.setTargetAtTime(noiseVol, now, 0.02);
-    }
-    if (gainMaster) {
-      const masterVol = 0.14 + (th * 0.12) + Math.min(0.15, (rpm / 14000) * 0.10);
-      gainMaster.gain.setTargetAtTime(masterVol, now, 0.02);
-    }
-  }
+    const rect = win.getBoundingClientRect();
+    initLeft = rect.left;
+    initTop = rect.top;
 
-  // リアルタイム変調ループ
-  setInterval(() => {
-    if (window.isEngineSoundActive) {
-      const curR = (typeof gaugeRPM !== 'undefined' && gaugeRPM) ? gaugeRPM : 1000;
-      const curT = (typeof throttle !== 'undefined') ? throttle : 0;
-      updateEngineAudioRealtime(curR, curT);
-    }
-  }, 30);
+    // style.right を解除して left/top 直接指定に切り替え
+    win.style.right = 'auto';
+    win.style.bottom = 'auto';
+    win.style.left = `${initLeft}px`;
+    win.style.top = `${initTop}px`;
+
+    header.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+
+  header.addEventListener('pointermove', function(e) {
+    if (!isDragging) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+
+    const maxX = window.innerWidth - win.offsetWidth - 10;
+    const maxY = window.innerHeight - 40;
+
+    const newLeft = Math.max(10, Math.min(maxX, initLeft + dx));
+    const newTop = Math.max(10, Math.min(maxY, initTop + dy));
+
+    win.style.left = `${newLeft}px`;
+    win.style.top = `${newTop}px`;
+  });
+
+  header.addEventListener('pointerup', function(e) {
+    isDragging = false;
+    try { header.releasePointerCapture(e.pointerId); } catch(err) {}
+  });
+
+  header.addEventListener('pointercancel', function(e) {
+    isDragging = false;
+  });
 })();
 
-// 初期レイアウト & オートハンドル初期化適用
+// 初期レイアウト & オートハンドル・サウンド初期化適用
 updateViewLayout();
 updateAutoSteerUI();
-updateEngineSoundUI();
+updateSoundButtonsUI();
 </script>
+
+  <!-- ⌨️ 本物のフローティングウィンドウ (ドラッグ移動・背後操作可能・最小化対応) -->
+  <div class="floating-window open" id="floatingShortcutsWindow" style="position:fixed !important; right:24px !important; top:75px !important; width:450px !important; max-width:calc(100vw - 32px) !important; max-height:80vh !important; background:linear-gradient(145deg, rgba(12, 18, 36, 0.96), rgba(6, 9, 20, 0.98)) !important; border:1px solid rgba(0, 229, 255, 0.6) !important; border-radius:12px !important; box-shadow:0 12px 40px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 229, 255, 0.35) !important; backdrop-filter:blur(14px) !important; -webkit-backdrop-filter:blur(14px) !important; z-index:999999 !important; display:flex !important; flex-direction:column !important; user-select:none !important; box-sizing:border-box !important;">
+    <div class="floating-header" id="floatingShortcutsHeader" style="display:flex !important; justify-content:space-between !important; align-items:center !important; padding:10px 14px !important; background:rgba(0, 229, 255, 0.12) !important; border-bottom:1px solid rgba(0, 229, 255, 0.35) !important; border-radius:11px 11px 0 0 !important; cursor:grab !important; user-select:none !important; touch-action:none !important;">
+      <div class="floating-title" style="font-family:'Orbitron','Noto Sans JP',sans-serif !important; font-size:0.82rem !important; font-weight:800 !important; color:#00e5ff !important; letter-spacing:1px !important; display:flex !important; align-items:center !important; gap:6px !important; pointer-events:none !important;">⌨️ SHORTCUTS (操作一覧)</div>
+      <div class="floating-ctrl-btns" style="display:flex !important; gap:6px !important; align-items:center !important;">
+        <button class="floating-btn" id="btnMinShortcuts" onclick="toggleMinimizeShortcuts()" title="最小化 / 展開" style="background:rgba(255, 255, 255, 0.08) !important; border:1px solid rgba(255, 255, 255, 0.2) !important; color:#cfd8dc !important; font-size:0.72rem !important; font-weight:bold !important; width:24px !important; height:24px !important; border-radius:6px !important; cursor:pointer !important; display:flex !important; align-items:center !important; justify-content:center !important;">➖</button>
+        <button class="floating-btn close" onclick="closeShortcutsModal()" title="閉じる (Esc)" style="background:rgba(255, 255, 255, 0.08) !important; border:1px solid rgba(255, 255, 255, 0.2) !important; color:#cfd8dc !important; font-size:0.72rem !important; font-weight:bold !important; width:24px !important; height:24px !important; border-radius:6px !important; cursor:pointer !important; display:flex !important; align-items:center !important; justify-content:center !important;">✕</button>
+      </div>
+    </div>
+    <div class="floating-body" style="padding:12px 14px !important; overflow-y:auto !important; display:flex !important; flex-direction:column !important; gap:10px !important; max-height:calc(80vh - 45px) !important;">
+      <!-- カテゴリ1: ビュー・画面切替 -->
+      <div class="shortcut-category" style="background:rgba(255, 255, 255, 0.04) !important; border:1px solid rgba(255, 255, 255, 0.08) !important; border-radius:8px !important; padding:8px 10px !important;">
+        <div class="shortcut-cat-title" style="font-family:'Orbitron','Noto Sans JP',sans-serif !important; font-size:0.72rem !important; font-weight:700 !important; color:#ffd740 !important; letter-spacing:0.5px !important; margin-bottom:6px !important; border-bottom:1px solid rgba(255, 215, 64, 0.25) !important; padding-bottom:3px !important; display:flex !important; align-items:center !important; gap:5px !important;">🖥️ 視点 ＆ ビュー切替</div>
+        <div class="shortcut-grid" style="display:grid !important; grid-template-columns:1fr !important; gap:5px !important;">
+          <div class="shortcut-row" style="display:flex !important; align-items:center !important; justify-content:space-between !important; padding:2px 0 !important; font-size:0.75rem !important;">
+            <span class="shortcut-desc" style="color:#cfd8dc !important; font-family:'Noto Sans JP',sans-serif !important;">🛣️ 3D前面展望ビュー</span>
+            <div class="shortcut-keys" style="display:flex !important; gap:4px !important; align-items:center !important;"><span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">1</span></div>
+          </div>
+          <div class="shortcut-row" style="display:flex !important; align-items:center !important; justify-content:space-between !important; padding:2px 0 !important; font-size:0.75rem !important;">
+            <span class="shortcut-desc" style="color:#cfd8dc !important; font-family:'Noto Sans JP',sans-serif !important;">⚙️ 6速DCTミッション</span>
+            <div class="shortcut-keys" style="display:flex !important; gap:4px !important; align-items:center !important;"><span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">2</span></div>
+          </div>
+          <div class="shortcut-row" style="display:flex !important; align-items:center !important; justify-content:space-between !important; padding:2px 0 !important; font-size:0.75rem !important;">
+            <span class="shortcut-desc" style="color:#cfd8dc !important; font-family:'Noto Sans JP',sans-serif !important;">🔥 2stエンジン断面</span>
+            <div class="shortcut-keys" style="display:flex !important; gap:4px !important; align-items:center !important;"><span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">3</span></div>
+          </div>
+          <div class="shortcut-row" style="display:flex !important; align-items:center !important; justify-content:space-between !important; padding:2px 0 !important; font-size:0.75rem !important;">
+            <span class="shortcut-desc" style="color:#cfd8dc !important; font-family:'Noto Sans JP',sans-serif !important;">ビュー順次ローテーション</span>
+            <div class="shortcut-keys" style="display:flex !important; gap:4px !important; align-items:center !important;"><span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">V</span></div>
+          </div>
+          <div class="shortcut-row" style="display:flex !important; align-items:center !important; justify-content:space-between !important; padding:2px 0 !important; font-size:0.75rem !important;">
+            <span class="shortcut-desc" style="color:#cfd8dc !important; font-family:'Noto Sans JP',sans-serif !important;">大画面 / 小画面の入替</span>
+            <div class="shortcut-keys" style="display:flex !important; gap:4px !important; align-items:center !important;"><span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">X</span> <span style="color:#78909c">/</span> <span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">TAB</span></div>
+          </div>
+          <div class="shortcut-row" style="display:flex !important; align-items:center !important; justify-content:space-between !important; padding:2px 0 !important; font-size:0.75rem !important;">
+            <span class="shortcut-desc" style="color:#cfd8dc !important; font-family:'Noto Sans JP',sans-serif !important;">大画面ビュー直接指定</span>
+            <div class="shortcut-keys" style="display:flex !important; gap:4px !important; align-items:center !important;"><span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">Shift + 1/2/3</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- カテゴリ2: 車両運転・エンジン操作 -->
+      <div class="shortcut-category" style="background:rgba(255, 255, 255, 0.04) !important; border:1px solid rgba(255, 255, 255, 0.08) !important; border-radius:8px !important; padding:8px 10px !important;">
+        <div class="shortcut-cat-title" style="font-family:'Orbitron','Noto Sans JP',sans-serif !important; font-size:0.72rem !important; font-weight:700 !important; color:#ffd740 !important; letter-spacing:0.5px !important; margin-bottom:6px !important; border-bottom:1px solid rgba(255, 215, 64, 0.25) !important; padding-bottom:3px !important; display:flex !important; align-items:center !important; gap:5px !important;">🏎️ 車両走行 ＆ シフト操作</div>
+        <div class="shortcut-grid" style="display:grid !important; grid-template-columns:1fr !important; gap:5px !important;">
+          <div class="shortcut-row" style="display:flex !important; align-items:center !important; justify-content:space-between !important; padding:2px 0 !important; font-size:0.75rem !important;">
+            <span class="shortcut-desc" style="color:#cfd8dc !important; font-family:'Noto Sans JP',sans-serif !important;">⚡ アクセル (ばね式スロットル)</span>
+            <div class="shortcut-keys" style="display:flex !important; gap:4px !important; align-items:center !important;"><span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">SPACE</span></div>
+          </div>
+          <div class="shortcut-row" style="display:flex !important; align-items:center !important; justify-content:space-between !important; padding:2px 0 !important; font-size:0.75rem !important;">
+            <span class="shortcut-desc" style="color:#cfd8dc !important; font-family:'Noto Sans JP',sans-serif !important;">🛑 レーシングブレーキ</span>
+            <div class="shortcut-keys" style="display:flex !important; gap:4px !important; align-items:center !important;"><span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">B</span> <span style="color:#78909c">/</span> <span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">S</span> <span style="color:#78909c">/</span> <span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">Shift</span></div>
+          </div>
+          <div class="shortcut-row" style="display:flex !important; align-items:center !important; justify-content:space-between !important; padding:2px 0 !important; font-size:0.75rem !important;">
+            <span class="shortcut-desc" style="color:#cfd8dc !important; font-family:'Noto Sans JP',sans-serif !important;">▲ シフトアップ (1st〜6th)</span>
+            <div class="shortcut-keys" style="display:flex !important; gap:4px !important; align-items:center !important;"><span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">↑</span></div>
+          </div>
+          <div class="shortcut-row" style="display:flex !important; align-items:center !important; justify-content:space-between !important; padding:2px 0 !important; font-size:0.75rem !important;">
+            <span class="shortcut-desc" style="color:#cfd8dc !important; font-family:'Noto Sans JP',sans-serif !important;">▼ シフトダウン (6th〜N)</span>
+            <div class="shortcut-keys" style="display:flex !important; gap:4px !important; align-items:center !important;"><span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">↓</span></div>
+          </div>
+          <div class="shortcut-row" style="display:flex !important; align-items:center !important; justify-content:space-between !important; padding:2px 0 !important; font-size:0.75rem !important;">
+            <span class="shortcut-desc" style="color:#cfd8dc !important; font-family:'Noto Sans JP',sans-serif !important;">◀ / ▶ 左右ステアリング</span>
+            <div class="shortcut-keys" style="display:flex !important; gap:4px !important; align-items:center !important;"><span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">←</span> <span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">→</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- カテゴリ3: 機能設定・サウンド・アシスト -->
+      <div class="shortcut-category" style="background:rgba(255, 255, 255, 0.04) !important; border:1px solid rgba(255, 255, 255, 0.08) !important; border-radius:8px !important; padding:8px 10px !important;">
+        <div class="shortcut-cat-title" style="font-family:'Orbitron','Noto Sans JP',sans-serif !important; font-size:0.72rem !important; font-weight:700 !important; color:#ffd740 !important; letter-spacing:0.5px !important; margin-bottom:6px !important; border-bottom:1px solid rgba(255, 215, 64, 0.25) !important; padding-bottom:3px !important; display:flex !important; align-items:center !important; gap:5px !important;">⚙️ システム ＆ アシスト機能</div>
+        <div class="shortcut-grid" style="display:grid !important; grid-template-columns:1fr !important; gap:5px !important;">
+          <div class="shortcut-row" style="display:flex !important; align-items:center !important; justify-content:space-between !important; padding:2px 0 !important; font-size:0.75rem !important;">
+            <span class="shortcut-desc" style="color:#cfd8dc !important; font-family:'Noto Sans JP',sans-serif !important;">🔊 2st排気音サウンド切替</span>
+            <div class="shortcut-keys" style="display:flex !important; gap:4px !important; align-items:center !important;"><span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">M</span></div>
+          </div>
+          <div class="shortcut-row" style="display:flex !important; align-items:center !important; justify-content:space-between !important; padding:2px 0 !important; font-size:0.75rem !important;">
+            <span class="shortcut-desc" style="color:#cfd8dc !important; font-family:'Noto Sans JP',sans-serif !important;">🤖 AT (自動) / MT (手動) 切替</span>
+            <div class="shortcut-keys" style="display:flex !important; gap:4px !important; align-items:center !important;"><span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">A</span></div>
+          </div>
+          <div class="shortcut-row" style="display:flex !important; align-items:center !important; justify-content:space-between !important; padding:2px 0 !important; font-size:0.75rem !important;">
+            <span class="shortcut-desc" style="color:#cfd8dc !important; font-family:'Noto Sans JP',sans-serif !important;">🤖 オートハンドル (AUTO追従)</span>
+            <div class="shortcut-keys" style="display:flex !important; gap:4px !important; align-items:center !important;"><span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">R</span></div>
+          </div>
+          <div class="shortcut-row" style="display:flex !important; align-items:center !important; justify-content:space-between !important; padding:2px 0 !important; font-size:0.75rem !important;">
+            <span class="shortcut-desc" style="color:#cfd8dc !important; font-family:'Noto Sans JP',sans-serif !important;">📱 スマホ傾きセンサー (ジャイロ)</span>
+            <div class="shortcut-keys" style="display:flex !important; gap:4px !important; align-items:center !important;"><span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">G</span></div>
+          </div>
+          <div class="shortcut-row" style="display:flex !important; align-items:center !important; justify-content:space-between !important; padding:2px 0 !important; font-size:0.75rem !important;">
+            <span class="shortcut-desc" style="color:#cfd8dc !important; font-family:'Noto Sans JP',sans-serif !important;">📱 スマホ簡易 / PCフル切替</span>
+            <div class="shortcut-keys" style="display:flex !important; gap:4px !important; align-items:center !important;"><span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">P</span></div>
+          </div>
+          <div class="shortcut-row" style="display:flex !important; align-items:center !important; justify-content:space-between !important; padding:2px 0 !important; font-size:0.75rem !important;">
+            <span class="shortcut-desc" style="color:#cfd8dc !important; font-family:'Noto Sans JP',sans-serif !important;">⌨️ このウィンドウを開閉</span>
+            <div class="shortcut-keys" style="display:flex !important; gap:4px !important; align-items:center !important;"><span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">?</span> <span style="color:#78909c">/</span> <span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">K</span> <span style="color:#78909c">/</span> <span class="kbd-badge" style="background:#0b1120 !important; border:1px solid rgba(0,229,255,0.6) !important; color:#00e5ff !important; font-family:'Orbitron',monospace !important; font-size:0.68rem !important; font-weight:700 !important; padding:1px 6px !important; border-radius:4px !important;">ESC</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
 
