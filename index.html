@@ -889,102 +889,113 @@
       box-shadow: 0 0 20px rgba(118, 255, 3, 0.6);
     }
 
-    /* スマホモード時のレイアウト切り替え */
-    body.smartphone-mode {
-      padding: 10px;
+    /* ============================================================
+       📱 スマホ・タブレット簡易モード (3D前面展望 ＆ シフト部のみ)
+       ============================================================ */
+    body.smartphone-mode,
+    html.is-mobile body {
+      padding: 6px;
     }
-    body.smartphone-mode header {
+    body.smartphone-mode header,
+    html.is-mobile body header {
       max-width: 1300px;
-      margin-bottom: 10px;
-      padding-bottom: 8px;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
     }
-    body.smartphone-mode header h1 {
-      font-size: 1.25rem;
+    body.smartphone-mode header h1,
+    html.is-mobile body header h1 {
+      font-size: 1.15rem;
     }
-    body.smartphone-mode header .subtitle {
-      font-size: 0.72rem;
+    body.smartphone-mode header .subtitle,
+    html.is-mobile body header .subtitle {
+      font-size: 0.68rem;
     }
+    /* 2段目・メーター類・キーボードヒントを完全に非表示 */
     body.smartphone-mode .main-grid,
     body.smartphone-mode .ctrl-bar,
-    body.smartphone-mode .keyboard-hints {
+    body.smartphone-mode .keyboard-hints,
+    body.smartphone-mode .phone-meters-row,
+    html.is-mobile .main-grid,
+    html.is-mobile .ctrl-bar,
+    html.is-mobile .keyboard-hints,
+    html.is-mobile .phone-meters-row {
       display: none !important;
     }
-    body.smartphone-mode .cluster-panel {
+    body.smartphone-mode .cluster-panel,
+    html.is-mobile .cluster-panel {
       max-width: 1300px;
-      padding: 12px;
-      margin-bottom: 10px;
+      padding: 10px;
+      margin-bottom: 8px;
     }
-    body.smartphone-mode .cluster-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    body.smartphone-mode .cluster-grid,
+    html.is-mobile .cluster-grid {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 10px !important;
     }
-    body.smartphone-mode .perspective-box {
-      order: 1; /* 最上段: 3D前面展望 */
-      width: 100%;
+    body.smartphone-mode .perspective-box,
+    html.is-mobile .perspective-box {
+      order: 1 !important; /* 最上段: 3D前面展望 */
+      width: 100% !important;
       min-height: 380px;
       padding: 8px;
     }
-    body.smartphone-mode .perspective-view-box.in-sub .perspective-canvas-wrap {
-      height: 360px;
+    body.smartphone-mode .perspective-view-box.in-sub .perspective-canvas-wrap,
+    html.is-mobile .perspective-view-box.in-sub .perspective-canvas-wrap {
+      height: 380px;
     }
-    body.smartphone-mode .phone-meters-row {
-      display: none !important; /* スマホモードでは外側メーターを非表示 (3D画面内メーターと重複排除) */
+    body.smartphone-mode .transmission-hud,
+    html.is-mobile .transmission-hud {
+      order: 2 !important; /* 3D展望の直下にシフトインジケーター＆操作UI */
+      width: 100% !important;
+      padding: 12px;
     }
-    body.smartphone-mode .transmission-hud {
-      order: 2; /* 3D前面展望の直下にシフトインジケーター＆操作UIを配置 */
-      width: 100%;
-      padding: 16px;
+    body.smartphone-mode .ctrl-hud-row,
+    html.is-mobile .ctrl-hud-row {
+      gap: 10px;
+      margin: 10px 0;
     }
-    body.smartphone-mode .ctrl-hud-row {
-      gap: 12px;
-      margin: 12px 0;
-    }
-    body.smartphone-mode .gear-shift-btns {
+    body.smartphone-mode .gear-shift-btns,
+    html.is-mobile .gear-shift-btns {
       width: 120px;
       gap: 8px;
     }
-    body.smartphone-mode .shift-btn {
+    body.smartphone-mode .shift-btn,
+    html.is-mobile .shift-btn {
       height: 48px;
       font-size: 0.82rem;
       border-radius: 8px;
     }
     body.smartphone-mode .accel-pedal-btn,
-    body.smartphone-mode .brake-pedal-btn {
+    body.smartphone-mode .brake-pedal-btn,
+    html.is-mobile .accel-pedal-btn,
+    html.is-mobile .brake-pedal-btn {
       height: 104px;
       font-size: 1.15rem;
       border-radius: 12px;
     }
 
-    /* タブレット・スマホサイズ: コックピット前面展望 ＆ シフトインジケーター部のみのスマート表示 */
-    @media (max-width: 1400px), (pointer: coarse) and (max-width: 1600px) {
-      body {
-        padding: 6px;
-      }
-      .main-grid, .ctrl-bar, .keyboard-hints {
+    /* メディアクエリによるレスポンシブ適用 */
+    @media (max-width: 1400px), (pointer: coarse) {
+      .main-grid, .ctrl-bar, .keyboard-hints, .phone-meters-row {
         display: none !important;
       }
       .cluster-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
       }
       .perspective-box {
-        order: 1; /* 1. コックピット前面展望 (実車メーター付き) */
-        width: 100%;
+        order: 1 !important;
+        width: 100% !important;
         min-height: 380px;
-        padding: 8px;
       }
       .perspective-view-box.in-sub .perspective-canvas-wrap {
         height: 380px;
       }
-      .phone-meters-row {
-        display: none !important; /* メーターは非表示 */
-      }
       .transmission-hud {
-        order: 2; /* 2. シフトインジケーター ＆ タッチ操作UI */
-        width: 100%;
-        padding: 14px;
+        order: 2 !important;
+        width: 100% !important;
       }
     }
 
@@ -1016,13 +1027,26 @@
   </style>
 </head>
 <body>
+  <script>
+    // 即時モバイル判定: スマホ・タブレット・タッチ端末・画面幅<=1400pxは確実に簡易モードを即時適用
+    (function() {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|Tablet/i.test(navigator.userAgent) || 
+                       (navigator.maxTouchPoints && navigator.maxTouchPoints > 1) || 
+                       (window.innerWidth <= 1400);
+      if (isMobile) {
+        document.documentElement.classList.add('is-mobile');
+        document.body.classList.add('smartphone-mode');
+      }
+    })();
+  </script>
 
   <header>
     <div>
       <h1>TWO-STROKE ENGINE SIMULATOR</h1>
       <div class="subtitle">クランクケースプレ圧送・リードバルブ方式 2サイクルエンジン ＆ Yamaha 6速トランスミッション</div>
     </div>
-    <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap; justify-content:flex-end;">
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end;">
+      <button class="btn-smartphone-mode" id="btnToggleSmartphoneMode" onclick="toggleSmartphoneMode()" title="スマホ簡易モード / PCフル機能表示切替">📱 簡易モード</button>
       <div class="rpm-badge" id="oilTempBadge" style="border-color:#ff9800; box-shadow:0 0 16px rgba(255,152,0,0.25);">
         <div class="rpm-val" id="oilTempDisplay" style="color:#ffb74d;">65.0<span style="font-size:16px; margin-left:2px;">℃</span></div>
         <div class="rpm-lbl" id="oilTempLabel" style="color:#ffe082;">OIL TEMP (適正)</div>
@@ -6639,6 +6663,29 @@ window.touchSteerRatio = 0;
   c3d.addEventListener('pointerup', onDragEnd);
   c3d.addEventListener('pointercancel', onDragEnd);
 })();
+
+// ============================================================
+// ★ 📱 縦長スマホ簡易モード 切替関数
+// ============================================================
+window.isSmartphoneMode = document.body.classList.contains('smartphone-mode');
+
+window.toggleSmartphoneMode = function() {
+  const willBeMobile = !document.body.classList.contains('smartphone-mode');
+  window.isSmartphoneMode = willBeMobile;
+  document.body.classList.toggle('smartphone-mode', willBeMobile);
+  document.documentElement.classList.toggle('is-mobile', willBeMobile);
+  updateSmartphoneModeUI();
+};
+
+function updateSmartphoneModeUI() {
+  const btn = document.getElementById('btnToggleSmartphoneMode');
+  const isSm = document.body.classList.contains('smartphone-mode') || document.documentElement.classList.contains('is-mobile');
+  if (btn) {
+    btn.classList.toggle('active', isSm);
+    btn.textContent = isSm ? '📱 簡易モード: ON' : '🖥️ フル表示: ON';
+  }
+}
+setTimeout(updateSmartphoneModeUI, 50);
 
 // ============================================================
 // ★ 📱 スマホ傾きセンサー (加速度/ジャイロ DeviceOrientation & Motion)
