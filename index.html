@@ -5,13 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>2サイクルエンジン 原理説明シミュレータ</title>
   <script>
-    // ★ 最速モバイル判定: スマホ・タブレット・タッチ端末では即座にスマホモードをデフォルト適用
+    // ★ 最速・高解像度スマホ＆タブレット判定 (4K/WQHD/Retina/iPad含む全モバイル網羅)
     (function() {
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|Tablet/i.test(navigator.userAgent) || 
-                       (window.matchMedia && window.matchMedia('(max-width: 1400px)').matches) ||
-                       (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ||
-                       (navigator.maxTouchPoints && navigator.maxTouchPoints > 0 && window.innerWidth <= 1400) ||
-                       (window.innerWidth <= 1400);
+      const ua = navigator.userAgent || '';
+      const isTouch = (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) || ('ontouchstart' in window);
+      const isCoarse = window.matchMedia && (window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches);
+      const isMobileUA = /Android|iPhone|iPad|iPod|Mobile|Tablet|Silk|Kindle|webOS|BlackBerry|IEMobile|Opera Mini/i.test(ua) ||
+                         (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      const isPortrait = window.innerHeight > window.innerWidth;
+      const isScreenSmall = (window.innerWidth <= 1800) || ((window.screen && window.screen.width <= 1800));
+
+      const isMobile = isMobileUA || (isTouch && (isCoarse || isPortrait || isScreenSmall)) || isScreenSmall;
       if (isMobile) {
         document.documentElement.classList.add('is-mobile');
         window.isMobileDeviceDetected = true;
@@ -536,15 +540,18 @@
     .engine-view-box.in-sub #engineCanvas,
     .trans-view-box.in-sub #transCanvas {
       width: 100%;
-      height: 195px;
+      max-width: 100%;
+      height: auto;
+      aspect-ratio: 720 / 680; /* 横幅基準で左右黒帯ゼロで完全拡大 */
       object-fit: contain;
       background: #05060d;
       border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.05);
+      display: block;
     }
     .perspective-view-box {
       width: 100%;
-      height: 100%;
+      height: auto;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -557,10 +564,19 @@
       height: 630px;
     }
     .perspective-view-box.in-sub {
-      height: 100%;
+      height: auto;
     }
     .perspective-view-box.in-sub .perspective-canvas-wrap {
-      height: 195px;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 720 / 450;
+    }
+    .perspective-view-box.in-sub #canvas3D {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 720 / 450;
+      object-fit: cover;
+      display: block;
     }
     .view-tabs {
       display: flex;
@@ -972,17 +988,27 @@
       gap: 8px !important;
     }
 
-    /* ★ 1. 上段: 前面展望 / DCTミッション / エンジン断面スクリーン (画面横幅いっぱいにフルワイド表示) */
+    /* ★ 1. 上段: 前面展望 / DCTミッション / エンジン断面スクリーン (画面横幅100%基準で完全自動拡大) */
     body.smartphone-mode #subBoxCard,
     body.smartphone-mode .perspective-box,
     html.is-mobile #subBoxCard,
     html.is-mobile .perspective-box {
       width: 100% !important;
       max-width: 100% !important;
+      height: auto !important;
+      min-height: unset !important;
+      max-height: none !important;
       padding: 6px !important;
       margin: 0 !important;
       border-radius: 10px !important;
       box-sizing: border-box !important;
+    }
+    body.smartphone-mode .slot-sub,
+    html.is-mobile .slot-sub {
+      width: 100% !important;
+      height: auto !important;
+      min-height: unset !important;
+      max-height: none !important;
     }
     body.smartphone-mode .perspective-view-box,
     body.smartphone-mode .perspective-view-box.in-sub,
@@ -997,7 +1023,10 @@
     html.is-mobile .trans-view-box,
     html.is-mobile .trans-view-box.in-sub {
       width: 100% !important;
+      max-width: 100% !important;
       height: auto !important;
+      min-height: unset !important;
+      max-height: none !important;
       display: flex !important;
       flex-direction: column !important;
       align-items: center !important;
@@ -1007,22 +1036,26 @@
     html.is-mobile .perspective-view-box.in-sub .perspective-canvas-wrap,
     html.is-mobile .perspective-canvas-wrap {
       width: 100% !important;
+      max-width: 100% !important;
       height: auto !important;
-      aspect-ratio: 16 / 10 !important; /* スマホ縦持ちで最も迫力が出る比率 */
-      min-height: 240px !important;
-      max-height: 380px !important;
+      aspect-ratio: 720 / 450 !important; /* 3D前面展望のアスペクト比 */
+      min-height: unset !important;
+      max-height: none !important;
       border-radius: 8px !important;
       background: #000 !important;
     }
     body.smartphone-mode .perspective-canvas,
-    html.is-mobile .perspective-canvas {
+    body.smartphone-mode #canvas3D,
+    html.is-mobile .perspective-canvas,
+    html.is-mobile #canvas3D {
       width: 100% !important;
-      height: 100% !important;
-      aspect-ratio: 16 / 10 !important;
-      object-fit: cover !important; /* 横幅いっぱいに隙間なくワイド表示 */
+      max-width: 100% !important;
+      height: auto !important;
+      aspect-ratio: 720 / 450 !important;
+      object-fit: cover !important;
       display: block !important;
     }
-    /* ★ DCTミッション ＆ 2サイクルエンジン断面を横幅基準で画面いっぱいに超特大表示 */
+    /* ★ DCTミッション ＆ 2サイクルエンジン断面: 横幅100%基準で画面いっぱいに超巨大表示 */
     body.smartphone-mode .engine-view-box.in-sub #engineCanvas,
     body.smartphone-mode .trans-view-box.in-sub #transCanvas,
     body.smartphone-mode #engineCanvas,
@@ -1034,8 +1067,9 @@
       width: 100% !important;
       max-width: 100% !important;
       height: auto !important;
-      aspect-ratio: 720 / 680 !important; /* 元の正方形比率に合わせて左右余白ゼロで横幅最大化 */
-      max-height: unset !important;
+      aspect-ratio: 720 / 680 !important; /* 720x680の比率で横幅100%に合わせて縦も完全拡大 */
+      min-height: unset !important;
+      max-height: none !important;
       object-fit: contain !important;
       background: #05060d !important;
       border-radius: 8px !important;
@@ -1138,8 +1172,8 @@
       justify-content: center !important;
     }
 
-    /* メディアクエリによるレスポンシブ適用 */
-    @media (max-width: 1400px), (pointer: coarse) {
+    /* メディアクエリによるレスポンシブ適用 (4K/WQHD/Retina高解像度スマホ＆タブレット完全対応) */
+    @media (max-width: 1800px), (pointer: coarse), (hover: none), (orientation: portrait) and (max-width: 2400px) {
       body {
         padding: 4px !important;
         width: 100% !important;
@@ -1162,22 +1196,27 @@
         width: 100% !important;
         gap: 8px !important;
       }
-      #subBoxCard, .perspective-box {
+      #subBoxCard, .perspective-box, .slot-sub {
         width: 100% !important;
         max-width: 100% !important;
+        height: auto !important;
+        min-height: unset !important;
+        max-height: none !important;
         padding: 6px !important;
       }
       .perspective-view-box.in-sub .perspective-canvas-wrap,
       .perspective-canvas-wrap {
         width: 100% !important;
         height: auto !important;
-        aspect-ratio: 16 / 10 !important;
-        min-height: 240px !important;
+        aspect-ratio: 720 / 450 !important;
+        min-height: unset !important;
+        max-height: none !important;
       }
-      .perspective-canvas {
+      .perspective-canvas,
+      #canvas3D {
         width: 100% !important;
-        height: 100% !important;
-        aspect-ratio: 16 / 10 !important;
+        height: auto !important;
+        aspect-ratio: 720 / 450 !important;
         object-fit: cover !important;
       }
       .engine-view-box.in-sub #engineCanvas,
@@ -1188,7 +1227,8 @@
         max-width: 100% !important;
         height: auto !important;
         aspect-ratio: 720 / 680 !important;
-        max-height: unset !important;
+        min-height: unset !important;
+        max-height: none !important;
         object-fit: contain !important;
         background: #05060d !important;
         border-radius: 8px !important;
@@ -1223,6 +1263,8 @@
     .btn-gyro-steer.active {
       background: #76ff03;
       color: #000000;
+      box-shadow: 0 0 16px rgba(118, 255, 3, 0.8);
+    }
     /* サウンド (Web Audio API) 切替ボタン */
     .btn-sound-toggle {
       background: rgba(255, 171, 0, 0.15);
@@ -1252,11 +1294,17 @@
 </head>
 <body>
   <script>
-    // 即時モバイル判定: スマホ・タブレット・タッチ端末・画面幅<=1400pxは確実に簡易モードを即時適用
+    // ★ 即時モバイル判定: 4K/WQHD/Retina高解像度スマホ＆タブレットを確実に判定
     (function() {
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|Tablet/i.test(navigator.userAgent) || 
-                       (navigator.maxTouchPoints && navigator.maxTouchPoints > 1) || 
-                       (window.innerWidth <= 1400);
+      const ua = navigator.userAgent || '';
+      const isTouch = (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) || ('ontouchstart' in window);
+      const isCoarse = window.matchMedia && (window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches);
+      const isMobileUA = /Android|iPhone|iPad|iPod|Mobile|Tablet|Silk|Kindle|webOS|BlackBerry|IEMobile|Opera Mini/i.test(ua) ||
+                         (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      const isPortrait = window.innerHeight > window.innerWidth;
+      const isScreenSmall = (window.innerWidth <= 1800) || ((window.screen && window.screen.width <= 1800));
+
+      const isMobile = isMobileUA || (isTouch && (isCoarse || isPortrait || isScreenSmall)) || isScreenSmall;
       if (isMobile) {
         document.documentElement.classList.add('is-mobile');
         document.body.classList.add('smartphone-mode');
@@ -6964,11 +7012,17 @@ window.toggleSmartphoneMode = function() {
   window.applySmartphoneLayout(nextState);
 };
 
-// 起動時自動判定 (スマホモード時は傾きセンサーをデフォルトON)
+// 起動時自動判定 (高解像度スマホ＆タブレット全網羅・傾きセンサーデフォルトON)
 (function() {
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|Tablet/i.test(navigator.userAgent) || 
-                   (navigator.maxTouchPoints && navigator.maxTouchPoints > 1) || 
-                   (window.innerWidth <= 1400);
+  const ua = navigator.userAgent || '';
+  const isTouch = (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) || ('ontouchstart' in window);
+  const isCoarse = window.matchMedia && (window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches);
+  const isMobileUA = /Android|iPhone|iPad|iPod|Mobile|Tablet|Silk|Kindle|webOS|BlackBerry|IEMobile|Opera Mini/i.test(ua) ||
+                     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isPortrait = window.innerHeight > window.innerWidth;
+  const isScreenSmall = (window.innerWidth <= 1800) || ((window.screen && window.screen.width <= 1800));
+
+  const isMobile = isMobileUA || (isTouch && (isCoarse || isPortrait || isScreenSmall)) || isScreenSmall;
   window.applySmartphoneLayout(isMobile);
   if (isMobile) {
     // スマホモードは傾き操作をデフォルトON
@@ -6977,7 +7031,8 @@ window.toggleSmartphoneMode = function() {
     }, 100);
   }
   window.addEventListener('resize', () => {
-    if (window.innerWidth <= 1100 && !window.isSmartphoneMode) {
+    const isNowMobile = isMobileUA || (isTouch && (window.innerWidth <= 1800 || isCoarse)) || (window.innerWidth <= 1400);
+    if (isNowMobile && !window.isSmartphoneMode) {
       window.applySmartphoneLayout(true);
       startGyro();
     }
@@ -7251,160 +7306,162 @@ window.swapMainSubLayout = function() {
 // ============================================================
 // ★ 🔊 リアルタイム 2サイクルエンジン排気音・チャンバーサウンドシンセサイザー (Web Audio API)
 // ============================================================
-window.isEngineSoundActive = false;
-let audioCtx = null;
-let oscMain = null;
-let oscSub = null;
-let noiseNode = null;
-let filterChamber = null;
-let gainMaster = null;
-let gainNoise = null;
+(function() {
+  window.isEngineSoundActive = false;
+  let sndCtx = null;
+  let oscMain = null;
+  let oscSub = null;
+  let noiseNode = null;
+  let filterChamber = null;
+  let gainMaster = null;
+  let gainNoise = null;
 
-window.toggleEngineSound = function() {
-  window.isEngineSoundActive = !window.isEngineSoundActive;
-  if (window.isEngineSoundActive) {
-    startEngineAudio();
-  } else {
-    stopEngineAudio();
+  window.toggleEngineSound = function() {
+    window.isEngineSoundActive = !window.isEngineSoundActive;
+    if (window.isEngineSoundActive) {
+      startEngineAudio();
+    } else {
+      stopEngineAudio();
+    }
+    updateEngineSoundUI();
+  };
+
+  function updateEngineSoundUI() {
+    const isSnd = window.isEngineSoundActive;
+    ['btnToggleSound', 'btnToggleSoundHud'].forEach(id => {
+      const btn = document.getElementById(id);
+      if (btn) {
+        btn.classList.toggle('active', isSnd);
+        btn.textContent = isSnd ? '🔊 音: ON' : '🔇 音: OFF';
+      }
+    });
   }
-  updateEngineSoundUI();
-};
 
-function updateEngineSoundUI() {
-  const isSnd = window.isEngineSoundActive;
-  ['btnToggleSound', 'btnToggleSoundHud'].forEach(id => {
-    const btn = document.getElementById(id);
-    if (btn) {
-      btn.classList.toggle('active', isSnd);
-      btn.textContent = isSnd ? '🔊 音: ON' : '🔇 音: OFF';
+  function startEngineAudio() {
+    try {
+      if (!sndCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        sndCtx = new AudioContextClass();
+      }
+      if (sndCtx.state === 'suspended') {
+        sndCtx.resume();
+      }
+
+      if (oscMain) return; // 既に開始済み
+
+      const curR = (typeof gaugeRPM !== 'undefined' && gaugeRPM) ? gaugeRPM : 1000;
+
+      // 1. マスターゲイン
+      gainMaster = sndCtx.createGain();
+      gainMaster.gain.setValueAtTime(0.18, sndCtx.currentTime);
+      gainMaster.connect(sndCtx.destination);
+
+      // 2. チャンバー共鳴バンドパスフィルター
+      filterChamber = sndCtx.createBiquadFilter();
+      filterChamber.type = 'bandpass';
+      filterChamber.frequency.setValueAtTime(450, sndCtx.currentTime);
+      filterChamber.Q.setValueAtTime(3.2, sndCtx.currentTime);
+      filterChamber.connect(gainMaster);
+
+      // 3. メイン燃焼パルス (Sawtooth)
+      oscMain = sndCtx.createOscillator();
+      oscMain.type = 'sawtooth';
+      oscMain.frequency.setValueAtTime(curR / 60, sndCtx.currentTime);
+      oscMain.connect(filterChamber);
+      oscMain.start();
+
+      // 4. サブ倍音 (Triangle)
+      oscSub = sndCtx.createOscillator();
+      oscSub.type = 'triangle';
+      oscSub.frequency.setValueAtTime((curR / 60) * 2, sndCtx.currentTime);
+      const gainSub = sndCtx.createGain();
+      gainSub.gain.setValueAtTime(0.35, sndCtx.currentTime);
+      oscSub.connect(gainSub);
+      gainSub.connect(gainMaster);
+      oscSub.start();
+
+      // 5. 排気噴流ノイズ
+      const bufferSize = sndCtx.sampleRate * 2;
+      const noiseBuffer = sndCtx.createBuffer(1, bufferSize, sndCtx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
+      noiseNode = sndCtx.createBufferSource();
+      noiseNode.buffer = noiseBuffer;
+      noiseNode.loop = true;
+
+      const noiseFilter = sndCtx.createBiquadFilter();
+      noiseFilter.type = 'bandpass';
+      noiseFilter.frequency.setValueAtTime(1200, sndCtx.currentTime);
+      noiseFilter.Q.setValueAtTime(1.8, sndCtx.currentTime);
+
+      gainNoise = sndCtx.createGain();
+      gainNoise.gain.setValueAtTime(0.04, sndCtx.currentTime);
+
+      noiseNode.connect(noiseFilter);
+      noiseFilter.connect(gainNoise);
+      gainNoise.connect(gainMaster);
+      noiseNode.start();
+    } catch (err) {
+      console.warn('Audio init error:', err);
     }
-  });
-}
-
-function startEngineAudio() {
-  try {
-    if (!audioCtx) {
-      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-      audioCtx = new AudioContextClass();
-    }
-    if (audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
-
-    if (oscMain) return; // 既に開始済み
-
-    const curR = (typeof gaugeRPM !== 'undefined' && gaugeRPM) ? gaugeRPM : 1000;
-
-    // 1. マスターゲイン
-    gainMaster = audioCtx.createGain();
-    gainMaster.gain.setValueAtTime(0.18, audioCtx.currentTime);
-    gainMaster.connect(audioCtx.destination);
-
-    // 2. チャンバー共鳴バンドパスフィルター
-    filterChamber = audioCtx.createBiquadFilter();
-    filterChamber.type = 'bandpass';
-    filterChamber.frequency.setValueAtTime(450, audioCtx.currentTime);
-    filterChamber.Q.setValueAtTime(3.2, audioCtx.currentTime);
-    filterChamber.connect(gainMaster);
-
-    // 3. メイン燃焼パルス (Sawtooth)
-    oscMain = audioCtx.createOscillator();
-    oscMain.type = 'sawtooth';
-    oscMain.frequency.setValueAtTime(curR / 60, audioCtx.currentTime);
-    oscMain.connect(filterChamber);
-    oscMain.start();
-
-    // 4. サブ倍音 (Triangle)
-    oscSub = audioCtx.createOscillator();
-    oscSub.type = 'triangle';
-    oscSub.frequency.setValueAtTime((curR / 60) * 2, audioCtx.currentTime);
-    const gainSub = audioCtx.createGain();
-    gainSub.gain.setValueAtTime(0.35, audioCtx.currentTime);
-    oscSub.connect(gainSub);
-    gainSub.connect(gainMaster);
-    oscSub.start();
-
-    // 5. 排気噴流ノイズ
-    const bufferSize = audioCtx.sampleRate * 2;
-    const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    const output = noiseBuffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      output[i] = Math.random() * 2 - 1;
-    }
-    noiseNode = audioCtx.createBufferSource();
-    noiseNode.buffer = noiseBuffer;
-    noiseNode.loop = true;
-
-    const noiseFilter = audioCtx.createBiquadFilter();
-    noiseFilter.type = 'bandpass';
-    noiseFilter.frequency.setValueAtTime(1200, audioCtx.currentTime);
-    noiseFilter.Q.setValueAtTime(1.8, audioCtx.currentTime);
-
-    gainNoise = audioCtx.createGain();
-    gainNoise.gain.setValueAtTime(0.04, audioCtx.currentTime);
-
-    noiseNode.connect(noiseFilter);
-    noiseFilter.connect(gainNoise);
-    gainNoise.connect(gainMaster);
-    noiseNode.start();
-  } catch (err) {
-    console.warn('Audio init error:', err);
   }
-}
 
-function stopEngineAudio() {
-  if (gainMaster && audioCtx) {
-    gainMaster.gain.setTargetAtTime(0, audioCtx.currentTime, 0.05);
-  }
-  setTimeout(() => {
-    if (oscMain) {
-      try { oscMain.stop(); oscMain.disconnect(); } catch(e) {}
-      oscMain = null;
+  function stopEngineAudio() {
+    if (gainMaster && sndCtx) {
+      gainMaster.gain.setTargetAtTime(0, sndCtx.currentTime, 0.05);
     }
-    if (oscSub) {
-      try { oscSub.stop(); oscSub.disconnect(); } catch(e) {}
-      oscSub = null;
+    setTimeout(() => {
+      if (oscMain) {
+        try { oscMain.stop(); oscMain.disconnect(); } catch(e) {}
+        oscMain = null;
+      }
+      if (oscSub) {
+        try { oscSub.stop(); oscSub.disconnect(); } catch(e) {}
+        oscSub = null;
+      }
+      if (noiseNode) {
+        try { noiseNode.stop(); noiseNode.disconnect(); } catch(e) {}
+        noiseNode = null;
+      }
+    }, 100);
+  }
+
+  // エンジン回転数・スロットル開度に応じたリアルタイム音程・音質変調
+  function updateEngineAudioRealtime(rpm, throttle) {
+    if (!window.isEngineSoundActive || !sndCtx || !oscMain) return;
+    const now = sndCtx.currentTime;
+    const fundamental = Math.max(14, (rpm || 1000) / 60); // 2ストローク点火周波数 (Hz)
+    const th = typeof throttle !== 'undefined' ? throttle : 0;
+
+    oscMain.frequency.setTargetAtTime(fundamental, now, 0.02);
+    if (oscSub) oscSub.frequency.setTargetAtTime(fundamental * 2, now, 0.02);
+
+    // チャンバー共鳴周波数の変調 (高回転ほどチャンバー共鳴が甲高い2stサウンドに)
+    const chamberFreq = 380 + (rpm / 16000) * 1450 + (th * 320);
+    if (filterChamber) filterChamber.frequency.setTargetAtTime(chamberFreq, now, 0.03);
+
+    // スロットル開度に応じた排気・吸気音量
+    if (gainNoise) {
+      const noiseVol = 0.02 + (th * 0.07) + (rpm / 16000) * 0.05;
+      gainNoise.gain.setTargetAtTime(noiseVol, now, 0.02);
     }
-    if (noiseNode) {
-      try { noiseNode.stop(); noiseNode.disconnect(); } catch(e) {}
-      noiseNode = null;
+    if (gainMaster) {
+      const masterVol = 0.14 + (th * 0.12) + Math.min(0.15, (rpm / 14000) * 0.10);
+      gainMaster.gain.setTargetAtTime(masterVol, now, 0.02);
     }
-  }, 100);
-}
-
-// エンジン回転数・スロットル開度に応じたリアルタイム音程・音質変調
-function updateEngineAudioRealtime(rpm, throttle) {
-  if (!window.isEngineSoundActive || !audioCtx || !oscMain) return;
-  const now = audioCtx.currentTime;
-  const fundamental = Math.max(14, (rpm || 1000) / 60); // 2ストローク点火周波数 (Hz)
-  const th = typeof throttle !== 'undefined' ? throttle : 0;
-
-  oscMain.frequency.setTargetAtTime(fundamental, now, 0.02);
-  if (oscSub) oscSub.frequency.setTargetAtTime(fundamental * 2, now, 0.02);
-
-  // チャンバー共鳴周波数の変調 (高回転ほどチャンバー共鳴が甲高い2stサウンドに)
-  const chamberFreq = 380 + (rpm / 16000) * 1450 + (th * 320);
-  if (filterChamber) filterChamber.frequency.setTargetAtTime(chamberFreq, now, 0.03);
-
-  // スロットル開度に応じた排気・吸気音量
-  if (gainNoise) {
-    const noiseVol = 0.02 + (th * 0.07) + (rpm / 16000) * 0.05;
-    gainNoise.gain.setTargetAtTime(noiseVol, now, 0.02);
   }
-  if (gainMaster) {
-    const masterVol = 0.14 + (th * 0.12) + Math.min(0.15, (rpm / 14000) * 0.10);
-    gainMaster.gain.setTargetAtTime(masterVol, now, 0.02);
-  }
-}
 
-// リアルタイム変調ループ
-setInterval(() => {
-  if (window.isEngineSoundActive) {
-    const curR = (typeof gaugeRPM !== 'undefined' && gaugeRPM) ? gaugeRPM : 1000;
-    const curT = (typeof throttle !== 'undefined') ? throttle : 0;
-    updateEngineAudioRealtime(curR, curT);
-  }
-}, 30);
+  // リアルタイム変調ループ
+  setInterval(() => {
+    if (window.isEngineSoundActive) {
+      const curR = (typeof gaugeRPM !== 'undefined' && gaugeRPM) ? gaugeRPM : 1000;
+      const curT = (typeof throttle !== 'undefined') ? throttle : 0;
+      updateEngineAudioRealtime(curR, curT);
+    }
+  }, 30);
+})();
 
 // 初期レイアウト & オートハンドル初期化適用
 updateViewLayout();
