@@ -2,8 +2,22 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>2サイクルエンジン 原理説明シミュレータ</title>
+  <script>
+    // ★ 最速モバイル判定: スマホ・タブレット・タッチ端末では即座にスマホモードをデフォルト適用
+    (function() {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|Tablet/i.test(navigator.userAgent) || 
+                       (window.matchMedia && window.matchMedia('(max-width: 1400px)').matches) ||
+                       (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ||
+                       (navigator.maxTouchPoints && navigator.maxTouchPoints > 0 && window.innerWidth <= 1400) ||
+                       (window.innerWidth <= 1400);
+      if (isMobile) {
+        document.documentElement.classList.add('is-mobile');
+        window.isMobileDeviceDetected = true;
+      }
+    })();
+  </script>
   <!-- Google Fonts & Chart.js -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -958,7 +972,7 @@
       gap: 8px !important;
     }
 
-    /* ★ 1. 上段: 前面展望スクリーン (画面横幅いっぱいにフルワイド表示) */
+    /* ★ 1. 上段: 前面展望 / DCTミッション / エンジン断面スクリーン (画面横幅いっぱいにフルワイド表示) */
     body.smartphone-mode #subBoxCard,
     body.smartphone-mode .perspective-box,
     html.is-mobile #subBoxCard,
@@ -972,12 +986,21 @@
     }
     body.smartphone-mode .perspective-view-box,
     body.smartphone-mode .perspective-view-box.in-sub,
+    body.smartphone-mode .engine-view-box,
+    body.smartphone-mode .engine-view-box.in-sub,
+    body.smartphone-mode .trans-view-box,
+    body.smartphone-mode .trans-view-box.in-sub,
     html.is-mobile .perspective-view-box,
-    html.is-mobile .perspective-view-box.in-sub {
+    html.is-mobile .perspective-view-box.in-sub,
+    html.is-mobile .engine-view-box,
+    html.is-mobile .engine-view-box.in-sub,
+    html.is-mobile .trans-view-box,
+    html.is-mobile .trans-view-box.in-sub {
       width: 100% !important;
       height: auto !important;
       display: flex !important;
       flex-direction: column !important;
+      align-items: center !important;
     }
     body.smartphone-mode .perspective-view-box.in-sub .perspective-canvas-wrap,
     body.smartphone-mode .perspective-canvas-wrap,
@@ -997,6 +1020,21 @@
       height: 100% !important;
       aspect-ratio: 16 / 10 !important;
       object-fit: cover !important; /* 横幅いっぱいに隙間なくワイド表示 */
+      display: block !important;
+    }
+    /* DCTミッション ＆ 2サイクルエンジン断面の全幅拡大 */
+    body.smartphone-mode .engine-view-box.in-sub #engineCanvas,
+    body.smartphone-mode .trans-view-box.in-sub #transCanvas,
+    html.is-mobile .engine-view-box.in-sub #engineCanvas,
+    html.is-mobile .trans-view-box.in-sub #transCanvas {
+      width: 100% !important;
+      height: auto !important;
+      aspect-ratio: 16 / 10 !important;
+      min-height: 240px !important;
+      max-height: 380px !important;
+      object-fit: contain !important;
+      background: #05060d !important;
+      border-radius: 8px !important;
       display: block !important;
     }
     body.smartphone-mode .perspective-ctrls,
@@ -1256,8 +1294,8 @@
             </div>
             <div class="perspective-ctrls" style="display:flex; gap:6px; width:100%; margin-top:6px;">
               <button class="steer-btn" id="btnSteerLeft" onpointerdown="isSteerLeft=true" onpointerup="isSteerLeft=false" onpointerleave="isSteerLeft=false" style="flex:1; white-space:nowrap;">◀ 左</button>
-              <button class="btn-gyro-steer" id="btnGyroSteer3D" onclick="toggleGyroSteer()" title="スマホ傾きハンドル操作" style="flex:1.2; white-space:nowrap; justify-content:center;">📱 傾き操作</button>
-              <button class="btn-auto-steer active" id="btnAutoSteer" onclick="toggleAutoSteer()" title="オートハンドル（自動ライントレース）切替" style="flex:1.2; white-space:nowrap; justify-content:center;">🤖 AUTO [ON]</button>
+              <button class="btn-gyro-steer active" id="btnGyroSteer3D" onclick="toggleGyroSteer()" title="スマホ傾きハンドル操作" style="flex:1.2; white-space:nowrap; justify-content:center;">📱 傾き操作 [ON]</button>
+              <button class="btn-auto-steer" id="btnAutoSteer" onclick="toggleAutoSteer()" title="オートハンドル（自動ライントレース）切替" style="flex:1.2; white-space:nowrap; justify-content:center;">🤖 AUTO</button>
               <button class="steer-btn" id="btnSteerRight" onpointerdown="isSteerRight=true" onpointerup="isSteerRight=false" onpointerleave="isSteerRight=false" style="flex:1; white-space:nowrap;">右 ▶</button>
             </div>
           </div>
@@ -1269,7 +1307,7 @@
         <div class="hud-section-title" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
           <span>⚙️ YAMAHA 6-SPEED TRANSMISSION</span>
           <div style="display:flex; gap:6px; align-items:center;">
-            <button class="btn-gyro-steer" id="btnGyroSteer" onclick="toggleGyroSteer()" title="スマホを傾けてハンドル操作 (加速度/ジャイロセンサー連動)">📱 傾き連動: OFF</button>
+            <button class="btn-gyro-steer active" id="btnGyroSteer" onclick="toggleGyroSteer()" title="スマホを傾けてハンドル操作 (加速度/ジャイロセンサー連動)">📱 傾き連動: ON</button>
             <button id="btnToggleAT" onclick="toggleATMode()" style="background:rgba(105,240,174,0.18); border:1px solid #69f0ae; color:#69f0ae; border-radius:6px; padding:2px 10px; font-family:'Orbitron',sans-serif; font-size:11px; font-weight:bold; cursor:pointer; letter-spacing:1px;">MODE: AT (自動)</button>
           </div>
         </div>
@@ -6883,15 +6921,22 @@ window.toggleSmartphoneMode = function() {
   window.applySmartphoneLayout(nextState);
 };
 
-// 起動時自動判定
+// 起動時自動判定 (スマホモード時は傾きセンサーをデフォルトON)
 (function() {
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|Tablet/i.test(navigator.userAgent) || 
                    (navigator.maxTouchPoints && navigator.maxTouchPoints > 1) || 
                    (window.innerWidth <= 1400);
   window.applySmartphoneLayout(isMobile);
+  if (isMobile) {
+    // スマホモードは傾き操作をデフォルトON
+    setTimeout(() => {
+      startGyro();
+    }, 100);
+  }
   window.addEventListener('resize', () => {
     if (window.innerWidth <= 1100 && !window.isSmartphoneMode) {
       window.applySmartphoneLayout(true);
+      startGyro();
     }
   });
 })();
@@ -6899,9 +6944,17 @@ window.toggleSmartphoneMode = function() {
 // ============================================================
 // ★ 📱 スマホ傾きセンサー (加速度/ジャイロ DeviceOrientation & Motion)
 // ============================================================
-window.isGyroActive = false;
+window.isGyroActive = true; // デフォルトON
 window.gyroGamma = 0;
 window.gyroEventCount = 0;
+
+// スマホ画面タップ時（初回インタラクション）に確実にセンサーを開始
+document.addEventListener('pointerdown', function initGyroOnFirstTouch() {
+  if (window.isSmartphoneMode && !window.gyroEventCount) {
+    requestAndStartSensor();
+  }
+  document.removeEventListener('pointerdown', initGyroOnFirstTouch);
+}, { once: true, passive: true });
 
 window.toggleGyroSteer = function() {
   if (!window.isGyroActive) {
@@ -6922,7 +6975,6 @@ function requestAndStartSensor() {
           }
           startGyro();
         } else {
-          alert('モーションセンサーの許可が得られませんでした。');
           startGyro(); // フォールバック試行
         }
       })
