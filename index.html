@@ -890,112 +890,257 @@
     }
 
     /* ============================================================
-       📱 スマホ・タブレット簡易モード (3D前面展望 ＆ シフト部のみ)
+       📱 スマホ縦長画面 完全専用レイアウト (前面展望を横幅いっぱいに拡大)
        ============================================================ */
     body.smartphone-mode,
     html.is-mobile body {
-      padding: 6px;
+      padding: 4px !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
     }
     body.smartphone-mode header,
     html.is-mobile body header {
-      max-width: 1300px;
-      margin-bottom: 8px;
-      padding-bottom: 6px;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-bottom: 6px !important;
+      padding: 0 4px 6px 4px !important;
     }
     body.smartphone-mode header h1,
     html.is-mobile body header h1 {
-      font-size: 1.15rem;
+      font-size: 1.00rem !important;
+      letter-spacing: 1px !important;
     }
     body.smartphone-mode header .subtitle,
     html.is-mobile body header .subtitle {
-      font-size: 0.68rem;
+      font-size: 0.60rem !important;
     }
-    /* 2段目・メーター類・キーボードヒントを完全に非表示 */
+
+    /* 2段目・外側メーター類・キーボードヒントを完全に非表示 */
     body.smartphone-mode .main-grid,
+    body.smartphone-mode #mainPanelCard,
+    body.smartphone-mode #sidePanelCard,
     body.smartphone-mode .ctrl-bar,
     body.smartphone-mode .keyboard-hints,
     body.smartphone-mode .phone-meters-row,
+    body.smartphone-mode .gauge-box,
     html.is-mobile .main-grid,
+    html.is-mobile #mainPanelCard,
+    html.is-mobile #sidePanelCard,
     html.is-mobile .ctrl-bar,
     html.is-mobile .keyboard-hints,
-    html.is-mobile .phone-meters-row {
+    html.is-mobile .phone-meters-row,
+    html.is-mobile .gauge-box {
       display: none !important;
     }
+
+    /* クラスターパネル: 画面幅100%フル幅の縦スタックコンテナ */
     body.smartphone-mode .cluster-panel,
     html.is-mobile .cluster-panel {
-      max-width: 1300px;
-      padding: 10px;
-      margin-bottom: 8px;
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    body.smartphone-mode .cluster-header,
+    html.is-mobile .cluster-header {
+      display: none !important; /* スマホではヘッダー不要 */
     }
     body.smartphone-mode .cluster-grid,
     html.is-mobile .cluster-grid {
       display: flex !important;
       flex-direction: column !important;
-      gap: 10px !important;
-    }
-    body.smartphone-mode .perspective-box,
-    html.is-mobile .perspective-box {
-      order: 1 !important; /* 最上段: 3D前面展望 */
       width: 100% !important;
-      min-height: 380px;
-      padding: 8px;
+      gap: 8px !important;
+    }
+
+    /* ★ 1. 上段: 前面展望スクリーン (画面横幅いっぱいにフルワイド表示) */
+    body.smartphone-mode #subBoxCard,
+    body.smartphone-mode .perspective-box,
+    html.is-mobile #subBoxCard,
+    html.is-mobile .perspective-box {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 6px !important;
+      margin: 0 !important;
+      border-radius: 10px !important;
+      box-sizing: border-box !important;
+    }
+    body.smartphone-mode .perspective-view-box,
+    body.smartphone-mode .perspective-view-box.in-sub,
+    html.is-mobile .perspective-view-box,
+    html.is-mobile .perspective-view-box.in-sub {
+      width: 100% !important;
+      height: auto !important;
+      display: flex !important;
+      flex-direction: column !important;
     }
     body.smartphone-mode .perspective-view-box.in-sub .perspective-canvas-wrap,
-    html.is-mobile .perspective-view-box.in-sub .perspective-canvas-wrap {
-      height: 380px;
+    body.smartphone-mode .perspective-canvas-wrap,
+    html.is-mobile .perspective-view-box.in-sub .perspective-canvas-wrap,
+    html.is-mobile .perspective-canvas-wrap {
+      width: 100% !important;
+      height: auto !important;
+      aspect-ratio: 16 / 10 !important; /* スマホ縦持ちで最も迫力が出る比率 */
+      min-height: 240px !important;
+      max-height: 380px !important;
+      border-radius: 8px !important;
+      background: #000 !important;
     }
+    body.smartphone-mode .perspective-canvas,
+    html.is-mobile .perspective-canvas {
+      width: 100% !important;
+      height: 100% !important;
+      aspect-ratio: 16 / 10 !important;
+      object-fit: cover !important; /* 横幅いっぱいに隙間なくワイド表示 */
+      display: block !important;
+    }
+    body.smartphone-mode .perspective-ctrls,
+    html.is-mobile .perspective-ctrls {
+      display: flex !important;
+      flex-direction: row !important;
+      width: 100% !important;
+      gap: 4px !important;
+      margin-top: 6px !important;
+    }
+    body.smartphone-mode .steer-btn,
+    body.smartphone-mode .btn-gyro-steer,
+    body.smartphone-mode .btn-auto-steer,
+    html.is-mobile .steer-btn,
+    html.is-mobile .btn-gyro-steer,
+    html.is-mobile .btn-auto-steer {
+      flex: 1 !important;
+      white-space: nowrap !important;
+      font-size: 0.68rem !important;
+      padding: 7px 2px !important;
+      height: 36px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      border-radius: 6px !important;
+    }
+
+    /* ★ 2. 下段: 6速トランスミッション ＆ 専用大型操作パネル (横幅100%) */
     body.smartphone-mode .transmission-hud,
     html.is-mobile .transmission-hud {
-      order: 2 !important; /* 3D展望の直下にシフトインジケーター＆操作UI */
       width: 100% !important;
-      padding: 12px;
+      max-width: 100% !important;
+      padding: 10px 8px !important;
+      margin: 0 !important;
+      border-radius: 10px !important;
+      box-sizing: border-box !important;
     }
+    body.smartphone-mode .gear-ratios-list,
+    html.is-mobile .gear-ratios-list {
+      display: flex !important;
+      justify-content: space-between !important;
+      gap: 3px !important;
+      margin-bottom: 8px !important;
+      width: 100% !important;
+    }
+    body.smartphone-mode .gear-pill,
+    html.is-mobile .gear-pill {
+      flex: 1 !important;
+      min-width: 0 !important;
+      padding: 4px 1px !important;
+      border-radius: 6px !important;
+      text-align: center !important;
+    }
+    body.smartphone-mode .gear-pill .gp-name,
+    html.is-mobile .gear-pill .gp-name {
+      font-size: 0.74rem !important;
+    }
+    body.smartphone-mode .gear-pill .gp-val,
+    html.is-mobile .gear-pill .gp-val {
+      font-size: 0.52rem !important;
+    }
+
     body.smartphone-mode .ctrl-hud-row,
     html.is-mobile .ctrl-hud-row {
-      gap: 10px;
-      margin: 10px 0;
+      display: flex !important;
+      gap: 8px !important;
+      margin: 8px 0 !important;
+      width: 100% !important;
+      align-items: stretch !important;
     }
     body.smartphone-mode .gear-shift-btns,
     html.is-mobile .gear-shift-btns {
-      width: 120px;
-      gap: 8px;
+      width: 75px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 6px !important;
     }
     body.smartphone-mode .shift-btn,
     html.is-mobile .shift-btn {
-      height: 48px;
-      font-size: 0.82rem;
-      border-radius: 8px;
+      flex: 1 !important;
+      height: 44px !important;
+      font-size: 0.76rem !important;
+      border-radius: 8px !important;
+      padding: 0 !important;
     }
     body.smartphone-mode .accel-pedal-btn,
     body.smartphone-mode .brake-pedal-btn,
     html.is-mobile .accel-pedal-btn,
     html.is-mobile .brake-pedal-btn {
-      height: 104px;
-      font-size: 1.15rem;
-      border-radius: 12px;
+      flex: 1 !important;
+      height: 94px !important;
+      font-size: 1.05rem !important;
+      border-radius: 10px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
     }
 
     /* メディアクエリによるレスポンシブ適用 */
     @media (max-width: 1400px), (pointer: coarse) {
-      .main-grid, .ctrl-bar, .keyboard-hints, .phone-meters-row {
+      body {
+        padding: 4px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+      .main-grid, #mainPanelCard, #sidePanelCard, .ctrl-bar, .keyboard-hints, .phone-meters-row, .gauge-box, .cluster-header {
         display: none !important;
+      }
+      .cluster-panel {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
       }
       .cluster-grid {
         display: flex !important;
         flex-direction: column !important;
-        gap: 10px !important;
-      }
-      .perspective-box {
-        order: 1 !important;
         width: 100% !important;
-        min-height: 380px;
+        gap: 8px !important;
       }
-      .perspective-view-box.in-sub .perspective-canvas-wrap {
-        height: 380px;
+      #subBoxCard, .perspective-box {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 6px !important;
+      }
+      .perspective-view-box.in-sub .perspective-canvas-wrap,
+      .perspective-canvas-wrap {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 16 / 10 !important;
+        min-height: 240px !important;
+      }
+      .perspective-canvas {
+        width: 100% !important;
+        height: 100% !important;
+        aspect-ratio: 16 / 10 !important;
+        object-fit: cover !important;
       }
       .transmission-hud {
-        order: 2 !important;
         width: 100% !important;
+        max-width: 100% !important;
       }
     }
 
@@ -1069,7 +1214,7 @@
     </div>
     
     <div class="cluster-grid">
-      <!-- 3連メーターグループ (通常時はdisplay:contents、スマホモード時は中段横並び) -->
+      <!-- 3連メーターグループ (PCフル表示時は左側に配置、スマホモード時は非表示) -->
       <div class="phone-meters-row">
         <!-- 1. スピードメーター -->
         <div class="gauge-box">
@@ -1090,7 +1235,36 @@
         </div>
       </div>
 
-      <!-- 4. トランスミッションHUD -->
+      <!-- ★ 上段: 3D前面展望パネル (スマホモード時は最上部に100%ワイド配置) -->
+      <div class="perspective-box" id="subBoxCard">
+        <div class="gauge-title" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+          <span id="subBoxTitle" style="font-size:0.70rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">🛣️ 3D PERSPECTIVE (コックピット前面展望)</span>
+          <div style="display:flex; gap:4px; align-items:center; flex-shrink:0;">
+            <div class="view-tabs" id="subViewTabs">
+              <button class="view-tab-btn mini" onclick="selectSubView('3d')" id="subTab3d" title="3D前面展望">🛣️3D</button>
+              <button class="view-tab-btn mini" onclick="selectSubView('trans')" id="subTabTrans" title="6速クロスミッション">⚙️DCT</button>
+              <button class="view-tab-btn mini" onclick="selectSubView('engine')" id="subTabEngine" title="エンジン断面">🔥2st</button>
+            </div>
+            <button class="btn-swap" onclick="swapMainSubLayout()" title="メイン画面と表示を入替" style="padding:2px 6px; font-size:0.62rem;">⇄</button>
+          </div>
+        </div>
+        <div id="slotSub" class="slot-sub">
+          <!-- 初期状態: 3D前面展望ビュー -->
+          <div id="perspectiveViewBox" class="perspective-view-box in-sub">
+            <div class="perspective-canvas-wrap">
+              <canvas id="canvas3D" class="perspective-canvas" width="720" height="450"></canvas>
+            </div>
+            <div class="perspective-ctrls" style="display:flex; gap:6px; width:100%; margin-top:6px;">
+              <button class="steer-btn" id="btnSteerLeft" onpointerdown="isSteerLeft=true" onpointerup="isSteerLeft=false" onpointerleave="isSteerLeft=false" style="flex:1; white-space:nowrap;">◀ 左</button>
+              <button class="btn-gyro-steer" id="btnGyroSteer3D" onclick="toggleGyroSteer()" title="スマホ傾きハンドル操作" style="flex:1.2; white-space:nowrap; justify-content:center;">📱 傾き操作</button>
+              <button class="btn-auto-steer active" id="btnAutoSteer" onclick="toggleAutoSteer()" title="オートハンドル（自動ライントレース）切替" style="flex:1.2; white-space:nowrap; justify-content:center;">🤖 AUTO [ON]</button>
+              <button class="steer-btn" id="btnSteerRight" onpointerdown="isSteerRight=true" onpointerup="isSteerRight=false" onpointerleave="isSteerRight=false" style="flex:1; white-space:nowrap;">右 ▶</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ★ 下段: 6速トランスミッション ＆ 操作パネル (スマホモード時は3D展望の真下に配置) -->
       <div class="transmission-hud">
         <div class="hud-section-title" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
           <span>⚙️ YAMAHA 6-SPEED TRANSMISSION</span>
@@ -1163,35 +1337,6 @@
           </div>
           <div class="throttle-bar-track" id="throttleBarTrack" style="cursor:pointer;" title="クリック/ドラッグで任意の開度を設定">
             <div class="throttle-bar-fill" id="throttleBarFill"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 5. サブパネル (3D前面展望 / エンジン断面 / 6速トランスミッション) -->
-      <div class="perspective-box" id="subBoxCard">
-        <div class="gauge-title" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-          <span id="subBoxTitle" style="font-size:0.70rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">🛣️ 3D PERSPECTIVE</span>
-          <div style="display:flex; gap:4px; align-items:center; flex-shrink:0;">
-            <div class="view-tabs" id="subViewTabs">
-              <button class="view-tab-btn mini" onclick="selectSubView('3d')" id="subTab3d" title="3D前面展望">🛣️3D</button>
-              <button class="view-tab-btn mini" onclick="selectSubView('trans')" id="subTabTrans" title="6速クロスミッション">⚙️DCT</button>
-              <button class="view-tab-btn mini" onclick="selectSubView('engine')" id="subTabEngine" title="エンジン断面">🔥2st</button>
-            </div>
-            <button class="btn-swap" onclick="swapMainSubLayout()" title="メイン画面と表示を入替" style="padding:2px 6px; font-size:0.62rem;">⇄</button>
-          </div>
-        </div>
-        <div id="slotSub" class="slot-sub">
-          <!-- 初期状態: 3D前面展望ビュー -->
-          <div id="perspectiveViewBox" class="perspective-view-box in-sub">
-            <div class="perspective-canvas-wrap">
-              <canvas id="canvas3D" class="perspective-canvas" width="720" height="450"></canvas>
-            </div>
-            <div class="perspective-ctrls">
-              <button class="steer-btn" id="btnSteerLeft" onpointerdown="isSteerLeft=true" onpointerup="isSteerLeft=false" onpointerleave="isSteerLeft=false">◀ 左</button>
-              <button class="btn-gyro-steer" id="btnGyroSteer3D" onclick="toggleGyroSteer()" title="スマホ傾きハンドル操作">📱 傾き操作</button>
-              <button class="btn-auto-steer active" id="btnAutoSteer" onclick="toggleAutoSteer()" title="オートハンドル（自動ライントレース）切替">🤖 AUTO [ON]</button>
-              <button class="steer-btn" id="btnSteerRight" onpointerdown="isSteerRight=true" onpointerup="isSteerRight=false" onpointerleave="isSteerRight=false">右 ▶</button>
-            </div>
           </div>
         </div>
       </div>
@@ -6665,27 +6810,91 @@ window.touchSteerRatio = 0;
 })();
 
 // ============================================================
-// ★ 📱 縦長スマホ簡易モード 切替関数
+// ★ 📱 縦長スマホ簡易モード 強力適用関数 (CSS + DOM直接操作)
 // ============================================================
-window.isSmartphoneMode = document.body.classList.contains('smartphone-mode');
+window.applySmartphoneLayout = function(isMobile) {
+  window.isSmartphoneMode = isMobile;
+  document.body.classList.toggle('smartphone-mode', isMobile);
+  document.documentElement.classList.toggle('is-mobile', isMobile);
 
-window.toggleSmartphoneMode = function() {
-  const willBeMobile = !document.body.classList.contains('smartphone-mode');
-  window.isSmartphoneMode = willBeMobile;
-  document.body.classList.toggle('smartphone-mode', willBeMobile);
-  document.documentElement.classList.toggle('is-mobile', willBeMobile);
-  updateSmartphoneModeUI();
+  const mainGrid = document.querySelector('.main-grid');
+  const ctrlBar = document.querySelector('.ctrl-bar');
+  const hints = document.querySelector('.keyboard-hints');
+  const phoneMeters = document.querySelector('.phone-meters-row');
+  const gaugeBoxes = document.querySelectorAll('.gauge-box');
+
+  const clusterGrid = document.querySelector('.cluster-grid');
+  const subBoxCard = document.getElementById('subBoxCard');
+  const transHud = document.querySelector('.transmission-hud');
+
+  if (isMobile) {
+    if (mainGrid) mainGrid.style.setProperty('display', 'none', 'important');
+    if (ctrlBar) ctrlBar.style.setProperty('display', 'none', 'important');
+    if (hints) hints.style.setProperty('display', 'none', 'important');
+    if (phoneMeters) phoneMeters.style.setProperty('display', 'none', 'important');
+    gaugeBoxes.forEach(gb => gb.style.setProperty('display', 'none', 'important'));
+
+    if (clusterGrid) {
+      clusterGrid.style.setProperty('display', 'flex', 'important');
+      clusterGrid.style.setProperty('flex-direction', 'column', 'important');
+      clusterGrid.style.setProperty('width', '100%', 'important');
+      clusterGrid.style.setProperty('grid-template-columns', 'none', 'important');
+    }
+    if (subBoxCard) {
+      subBoxCard.style.setProperty('width', '100%', 'important');
+      subBoxCard.style.setProperty('max-width', '100%', 'important');
+    }
+    if (transHud) {
+      transHud.style.setProperty('width', '100%', 'important');
+      transHud.style.setProperty('max-width', '100%', 'important');
+    }
+  } else {
+    if (mainGrid) mainGrid.style.removeProperty('display');
+    if (ctrlBar) ctrlBar.style.removeProperty('display');
+    if (hints) hints.style.removeProperty('display');
+    if (phoneMeters) phoneMeters.style.removeProperty('display');
+    gaugeBoxes.forEach(gb => gb.style.removeProperty('display'));
+
+    if (clusterGrid) {
+      clusterGrid.style.removeProperty('display');
+      clusterGrid.style.removeProperty('flex-direction');
+      clusterGrid.style.removeProperty('width');
+      clusterGrid.style.removeProperty('grid-template-columns');
+    }
+    if (subBoxCard) {
+      subBoxCard.style.removeProperty('width');
+      subBoxCard.style.removeProperty('max-width');
+    }
+    if (transHud) {
+      transHud.style.removeProperty('width');
+      transHud.style.removeProperty('max-width');
+    }
+  }
+
+  const btn = document.getElementById('btnToggleSmartphoneMode');
+  if (btn) {
+    btn.classList.toggle('active', isMobile);
+    btn.textContent = isMobile ? '📱 簡易モード [ON]' : '🖥️ フル表示モード';
+  }
 };
 
-function updateSmartphoneModeUI() {
-  const btn = document.getElementById('btnToggleSmartphoneMode');
-  const isSm = document.body.classList.contains('smartphone-mode') || document.documentElement.classList.contains('is-mobile');
-  if (btn) {
-    btn.classList.toggle('active', isSm);
-    btn.textContent = isSm ? '📱 簡易モード: ON' : '🖥️ フル表示: ON';
-  }
-}
-setTimeout(updateSmartphoneModeUI, 50);
+window.toggleSmartphoneMode = function() {
+  const nextState = !window.isSmartphoneMode;
+  window.applySmartphoneLayout(nextState);
+};
+
+// 起動時自動判定
+(function() {
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|Tablet/i.test(navigator.userAgent) || 
+                   (navigator.maxTouchPoints && navigator.maxTouchPoints > 1) || 
+                   (window.innerWidth <= 1400);
+  window.applySmartphoneLayout(isMobile);
+  window.addEventListener('resize', () => {
+    if (window.innerWidth <= 1100 && !window.isSmartphoneMode) {
+      window.applySmartphoneLayout(true);
+    }
+  });
+})();
 
 // ============================================================
 // ★ 📱 スマホ傾きセンサー (加速度/ジャイロ DeviceOrientation & Motion)
