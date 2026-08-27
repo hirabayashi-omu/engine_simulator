@@ -65,9 +65,13 @@
     }
     .rpm-lbl { font-size: 0.68rem; color: var(--text-sub); letter-spacing: 1px; }
 
-    /* メイン2段目は簡易化のため非表示 (1段目メーター＆走行クラスターに特化) */
-    .main-grid, .ctrl-bar {
-      display: none !important;
+    /* メイン2カラムレイアウト (PCフル表示: 最大幅1300px) */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 720px 1fr;
+      gap: 18px;
+      width: 100%;
+      max-width: 1300px;
     }
 
     .card {
@@ -925,30 +929,30 @@
       height: 360px;
     }
     body.smartphone-mode .phone-meters-row {
-      order: 2; /* 中段: 3連メーター */
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
+      order: 2; /* 3連メーターも1つずつ縦積みに */
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
       width: 100%;
     }
     body.smartphone-mode .gauge-box {
       width: 100%;
-      padding: 8px 4px;
+      padding: 12px 8px;
     }
     body.smartphone-mode .gauge-canvas {
       width: 100%;
-      max-width: 380px;
+      max-width: 480px;
       height: auto;
       aspect-ratio: 520 / 440;
     }
     body.smartphone-mode .transmission-hud {
-      order: 3; /* 下段: トランスミッション ＆ タッチUI */
+      order: 3; /* 最下段: トランスミッション ＆ タッチ操作UI */
       width: 100%;
-      padding: 12px;
+      padding: 16px;
     }
     body.smartphone-mode .ctrl-hud-row {
       gap: 12px;
-      margin: 10px 0;
+      margin: 12px 0;
     }
     body.smartphone-mode .gear-shift-btns {
       width: 120px;
@@ -966,18 +970,21 @@
       border-radius: 12px;
     }
 
-    /* 画面幅1100px以下のスマホ・タブレットは自動で縦長レイアウト */
+    /* 画面幅1100px以下のスマホ・タブレットは自動で1段目をすべて完全縦積みに */
     @media (max-width: 1100px) {
       body {
         padding: 8px;
       }
+      .main-grid, .ctrl-bar, .keyboard-hints {
+        display: none !important;
+      }
       .cluster-grid {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 14px;
       }
       .perspective-box {
-        order: 1;
+        order: 1; /* 1. 3D前面展望 */
         width: 100%;
         min-height: 320px;
       }
@@ -985,20 +992,26 @@
         height: 320px;
       }
       .phone-meters-row {
-        order: 2;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 8px;
+        order: 2; /* 2. 3連メーターを1つずつ縦積みに */
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
         width: 100%;
+      }
+      .gauge-box {
+        width: 100%;
+        padding: 12px 8px;
       }
       .gauge-canvas {
         width: 100%;
+        max-width: 480px;
         height: auto;
         aspect-ratio: 520 / 440;
       }
       .transmission-hud {
-        order: 3;
+        order: 3; /* 3. トランスミッション ＆ タッチ操作UI */
         width: 100%;
+        padding: 14px;
       }
     }
 
