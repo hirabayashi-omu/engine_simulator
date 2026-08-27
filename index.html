@@ -929,24 +929,10 @@
       height: 360px;
     }
     body.smartphone-mode .phone-meters-row {
-      order: 2; /* 3連メーターも1つずつ縦積みに */
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      width: 100%;
-    }
-    body.smartphone-mode .gauge-box {
-      width: 100%;
-      padding: 12px 8px;
-    }
-    body.smartphone-mode .gauge-canvas {
-      width: 100%;
-      max-width: 480px;
-      height: auto;
-      aspect-ratio: 520 / 440;
+      display: none !important; /* スマホモードでは外側メーターを非表示 (3D画面内メーターと重複排除) */
     }
     body.smartphone-mode .transmission-hud {
-      order: 3; /* 最下段: トランスミッション ＆ タッチ操作UI */
+      order: 2; /* 3D前面展望の直下にシフトインジケーター＆操作UIを配置 */
       width: 100%;
       padding: 16px;
     }
@@ -970,10 +956,10 @@
       border-radius: 12px;
     }
 
-    /* タブレット（iPad Pro含む）およびスマホサイズでは自動でスマホモード（1段目縦積み） */
+    /* タブレット・スマホサイズ: コックピット前面展望 ＆ シフトインジケーター部のみのスマート表示 */
     @media (max-width: 1400px), (pointer: coarse) and (max-width: 1600px) {
       body {
-        padding: 8px;
+        padding: 6px;
       }
       .main-grid, .ctrl-bar, .keyboard-hints {
         display: none !important;
@@ -981,35 +967,22 @@
       .cluster-grid {
         display: flex;
         flex-direction: column;
-        gap: 14px;
+        gap: 12px;
       }
       .perspective-box {
-        order: 1; /* 1. 3D前面展望 */
+        order: 1; /* 1. コックピット前面展望 (実車メーター付き) */
         width: 100%;
-        min-height: 320px;
+        min-height: 380px;
+        padding: 8px;
       }
       .perspective-view-box.in-sub .perspective-canvas-wrap {
-        height: 320px;
+        height: 380px;
       }
       .phone-meters-row {
-        order: 2; /* 2. 3連メーターを1つずつ縦積みに */
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        width: 100%;
-      }
-      .gauge-box {
-        width: 100%;
-        padding: 12px 8px;
-      }
-      .gauge-canvas {
-        width: 100%;
-        max-width: 480px;
-        height: auto;
-        aspect-ratio: 520 / 440;
+        display: none !important; /* メーターは非表示 */
       }
       .transmission-hud {
-        order: 3; /* 3. トランスミッション ＆ タッチ操作UI */
+        order: 2; /* 2. シフトインジケーター ＆ タッチ操作UI */
         width: 100%;
         padding: 14px;
       }
