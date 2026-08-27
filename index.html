@@ -65,13 +65,9 @@
     }
     .rpm-lbl { font-size: 0.68rem; color: var(--text-sub); letter-spacing: 1px; }
 
-    /* メイン2カラムレイアウト (最大幅1300px) */
-    .main-grid {
-      display: grid;
-      grid-template-columns: 720px 1fr;
-      gap: 18px;
-      width: 100%;
-      max-width: 1300px;
+    /* メイン2段目は簡易化のため非表示 (1段目メーター＆走行クラスターに特化) */
+    .main-grid, .ctrl-bar {
+      display: none !important;
     }
 
     .card {
@@ -970,6 +966,42 @@
       border-radius: 12px;
     }
 
+    /* 画面幅1100px以下のスマホ・タブレットは自動で縦長レイアウト */
+    @media (max-width: 1100px) {
+      body {
+        padding: 8px;
+      }
+      .cluster-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .perspective-box {
+        order: 1;
+        width: 100%;
+        min-height: 320px;
+      }
+      .perspective-view-box.in-sub .perspective-canvas-wrap {
+        height: 320px;
+      }
+      .phone-meters-row {
+        order: 2;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        width: 100%;
+      }
+      .gauge-canvas {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 520 / 440;
+      }
+      .transmission-hud {
+        order: 3;
+        width: 100%;
+      }
+    }
+
     /* 傾きセンサー (DeviceOrientation) ボタン & HUD */
     .btn-gyro-steer {
       background: rgba(118, 255, 3, 0.12);
@@ -1005,7 +1037,6 @@
       <div class="subtitle">クランクケースプレ圧送・リードバルブ方式 2サイクルエンジン ＆ Yamaha 6速トランスミッション</div>
     </div>
     <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap; justify-content:flex-end;">
-      <button class="btn-smartphone-mode" id="btnToggleSmartphoneMode" onclick="toggleSmartphoneMode()" title="1段目のメーター＆展望画面のみの縦長スマホレイアウトに切替">📱 縦長スマホモード</button>
       <div class="rpm-badge" id="oilTempBadge" style="border-color:#ff9800; box-shadow:0 0 16px rgba(255,152,0,0.25);">
         <div class="rpm-val" id="oilTempDisplay" style="color:#ffb74d;">65.0<span style="font-size:16px; margin-left:2px;">℃</span></div>
         <div class="rpm-lbl" id="oilTempLabel" style="color:#ffe082;">OIL TEMP (適正)</div>
@@ -6445,19 +6476,31 @@ requestAnimationFrame(animate);
     ctx3.font = 'bold 8.5px "Orbitron", sans-serif'; ctx3.textAlign = 'left';
     ctx3.fillText('← →:STEER | SPACE:ACCEL | B:BRAKE', 20, 29);
 
-    // ★ 10-B. スマホ傾きセンサー作動中インジケーター (中央上部)
+    // ★ 10-B. スマホ傾きセンサー ＆ タッチスワイプ作動中インジケーター (中央上部)
     if (window.isGyroActive) {
       const gDeg = window.gyroGamma || 0;
       const gDir = gDeg > 1 ? '▶' : (gDeg < -1 ? '◀' : '●');
       ctx3.fillStyle = 'rgba(0, 0, 0, 0.82)';
-      ctx3.fillRect(W3/2 - 68, 14, 136, 24);
+      ctx3.fillRect(W3/2 - 75, 14, 150, 24);
       ctx3.strokeStyle = '#76ff03';
       ctx3.lineWidth = 1.2;
-      ctx3.strokeRect(W3/2 - 68, 14, 136, 24);
+      ctx3.strokeRect(W3/2 - 75, 14, 150, 24);
       ctx3.fillStyle = '#76ff03';
       ctx3.font = 'bold 8.5px "Orbitron", sans-serif';
       ctx3.textAlign = 'center';
       ctx3.fillText(`📱 傾き ${gDir} ${Math.abs(gDeg).toFixed(1)}°`, W3/2, 29);
+    } else if (typeof window.touchSteerRatio !== 'undefined' && Math.abs(window.touchSteerRatio) > 0.05) {
+      const tRatio = window.touchSteerRatio;
+      const tDir = tRatio > 0 ? '▶' : '◀';
+      ctx3.fillStyle = 'rgba(0, 0, 0, 0.82)';
+      ctx3.fillRect(W3/2 - 75, 14, 150, 24);
+      ctx3.strokeStyle = '#00e5ff';
+      ctx3.lineWidth = 1.2;
+      ctx3.strokeRect(W3/2 - 75, 14, 150, 24);
+      ctx3.fillStyle = '#00e5ff';
+      ctx3.font = 'bold 8.5px "Orbitron", sans-serif';
+      ctx3.textAlign = 'center';
+      ctx3.fillText(`👆 スワイプ ${tDir} ${(Math.abs(tRatio)*100).toFixed(0)}%`, W3/2, 29);
     }
 
     // ★ 11. 3D画面内 距離計HUD (右上: 見切れ防止・画面端から余裕をもたせる)
@@ -6515,7 +6558,7 @@ requestAnimationFrame(animate);
     const currentCurve = getTrackCurve(playerDistance);
     const centrifugal = currentCurve * Math.min(0.8, speedKmH / 140) * 0.25;
 
-    // 🏁 ステアリング入力処理 (手動ボタン / スマホ傾きセンサー / オートハンドル)
+    // 🏁 ステアリング入力処理 (手動ボタン / 画面スワイプ / スマホ傾きセンサー / オートハンドル)
     const steerSpeed = Math.max(0.65, Math.min(0.92, 0.60 + (speedKmH / 180)));
     const isManualSteering = (typeof isSteerLeft !== 'undefined' && isSteerLeft) ||
                              (typeof isSteerRight !== 'undefined' && isSteerRight);
@@ -6525,28 +6568,30 @@ requestAnimationFrame(animate);
       if (isSteerLeft) playerXVel = -steerSpeed;
       else if (isSteerRight) playerXVel = steerSpeed;
       playerX -= centrifugal * dt;
-    } else if (window.isGyroActive && Math.abs(window.gyroGamma || 0) > 1.0) {
-      // 2. スマホ傾きセンサー（加速度・ジャイロ）連動
-      // 傾き角度 (-35度 〜 +35度) をステアリング速度に変換
-      const tiltNorm = Math.max(-1.0, Math.min(1.0, (window.gyroGamma || 0) / 26.0));
-      const targetGyroVel = tiltNorm * steerSpeed * 1.35;
-      playerXVel += (targetGyroVel - playerXVel) * Math.min(1.0, dt * 10.0);
+    } else if (typeof window.touchSteerRatio !== 'undefined' && Math.abs(window.touchSteerRatio) > 0.05) {
+      // 2. 画面ドラッグ/スワイプ直接ハンドル操作
+      const targetTouchVel = window.touchSteerRatio * steerSpeed * 1.5;
+      playerXVel += (targetTouchVel - playerXVel) * Math.min(1.0, dt * 14.0);
+      playerX -= centrifugal * dt;
+    } else if (window.isGyroActive && Math.abs(window.gyroGamma || 0) > 0.8) {
+      // 3. スマホ傾きセンサー（加速度・ジャイロ）連動
+      const tiltNorm = Math.max(-1.0, Math.min(1.0, (window.gyroGamma || 0) / 22.0));
+      const targetGyroVel = tiltNorm * steerSpeed * 1.45;
+      playerXVel += (targetGyroVel - playerXVel) * Math.min(1.0, dt * 12.0);
       playerX -= centrifugal * dt;
     } else if (window.isAutoSteer && speedKmH > 0.5) {
-      // 3. オートハンドル: カーブ先読みによる遠心力相殺 + 滑らかな車線中央（playerX = 0）維持
+      // 4. オートハンドル: カーブ先読みによる遠心力相殺 + 滑らかな車線中央（playerX = 0）維持
       const lookAheadDist = playerDistance + Math.max(14, speedKmH * 0.35);
       const futureCurve = getTrackCurve(lookAheadDist);
-      const centerError = 0.0 - playerX; // 車線中央との偏差
+      const centerError = 0.0 - playerX;
 
-      // 遠心力キャンセル成分 (カーブ先行予測) + 穏やかなレーンキープ復元
       const feedForward = (futureCurve * 0.75 + currentCurve * 0.25) * Math.min(0.8, speedKmH / 140) * 0.25;
       const targetAutoVel = Math.max(-steerSpeed * 0.9, Math.min(steerSpeed * 0.9, feedForward + centerError * 1.5));
 
-      // 臨界減衰フィルタで過敏なふらつき・オーバーシュートを解消
       playerXVel += (targetAutoVel - playerXVel) * Math.min(1.0, dt * 4.5);
       playerX -= centrifugal * dt;
     } else {
-      // 4. 手動ニュートラル・手放し時
+      // 5. 手動ニュートラル
       playerXVel *= Math.pow(0.005, dt);
       playerX -= centrifugal * dt;
     }
@@ -6571,80 +6616,146 @@ requestAnimationFrame(animate);
 })();
 
 // ============================================================
-// ★ 📱 縦長スマホモード (1段目メーター＆前面展望特化 / 1300px)
+// ★ 📱 3D画面ドラッグ/スワイプによる直感ハンドルステアリング
 // ============================================================
-window.isSmartphoneMode = false;
+window.touchSteerRatio = 0;
+(function() {
+  const c3d = document.getElementById('canvas3D');
+  if (!c3d) return;
 
-window.toggleSmartphoneMode = function() {
-  window.isSmartphoneMode = !window.isSmartphoneMode;
-  document.body.classList.toggle('smartphone-mode', window.isSmartphoneMode);
-  const btn = document.getElementById('btnToggleSmartphoneMode');
-  if (btn) {
-    btn.classList.toggle('active', window.isSmartphoneMode);
-    btn.textContent = window.isSmartphoneMode ? '📱 縦長スマホモード: ON' : '📱 縦長スマホモード';
+  let isTouchDragging = false;
+  let dragStartX = 0;
+
+  function onDragStart(e) {
+    isTouchDragging = true;
+    dragStartX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+    window.isAutoSteer = false;
+    updateAutoSteerUI();
   }
-};
+
+  function onDragMove(e) {
+    if (!isTouchDragging) return;
+    const curX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+    const diffX = curX - dragStartX;
+    window.touchSteerRatio = Math.max(-1.0, Math.min(1.0, diffX / 80.0));
+  }
+
+  function onDragEnd() {
+    isTouchDragging = false;
+    window.touchSteerRatio = 0;
+  }
+
+  c3d.addEventListener('pointerdown', (e) => {
+    c3d.setPointerCapture(e.pointerId);
+    onDragStart(e);
+  });
+  c3d.addEventListener('pointermove', onDragMove);
+  c3d.addEventListener('pointerup', onDragEnd);
+  c3d.addEventListener('pointercancel', onDragEnd);
+})();
 
 // ============================================================
-// ★ 📱 スマホ傾きセンサー (加速度/ジャイロ DeviceOrientation) 連動
+// ★ 📱 スマホ傾きセンサー (加速度/ジャイロ DeviceOrientation & Motion)
 // ============================================================
 window.isGyroActive = false;
-window.gyroGamma = 0; // 左右傾き角度 (-45〜+45度)
+window.gyroGamma = 0;
+window.gyroEventCount = 0;
 
-window.toggleGyroSteer = async function() {
+window.toggleGyroSteer = function() {
   if (!window.isGyroActive) {
-    // センサー開始要求 (iOS Safari の requestPermission 対応)
-    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-      try {
-        const permission = await DeviceOrientationEvent.requestPermission();
-        if (permission === 'granted') {
-          startGyro();
-        } else {
-          alert('モーションセンサーのアクセスが拒否されました。ブラウザ設定から許可してください。');
-        }
-      } catch (err) {
-        console.warn('DeviceOrientation permission error:', err);
-        startGyro();
-      }
-    } else {
-      startGyro();
-    }
+    requestAndStartSensor();
   } else {
     stopGyro();
   }
 };
 
+function requestAndStartSensor() {
+  // iOS 13+ DeviceOrientation 許可
+  if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+    DeviceOrientationEvent.requestPermission()
+      .then(res => {
+        if (res === 'granted') {
+          if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+            DeviceMotionEvent.requestPermission().catch(() => {});
+          }
+          startGyro();
+        } else {
+          alert('モーションセンサーの許可が得られませんでした。');
+          startGyro(); // フォールバック試行
+        }
+      })
+      .catch(() => startGyro());
+  } 
+  // Android / PC / その他
+  else {
+    startGyro();
+  }
+}
+
 function startGyro() {
   window.isGyroActive = true;
-  window.isAutoSteer = false; // 傾き操作時はオートハンドルOFF
+  window.isAutoSteer = false;
+  window.gyroEventCount = 0;
   updateAutoSteerUI();
+
   window.addEventListener('deviceorientation', handleDeviceOrientation, true);
+  window.addEventListener('deviceorientationabsolute', handleDeviceOrientation, true);
+  window.addEventListener('devicemotion', handleDeviceMotion, true);
+
   updateGyroUI();
 }
 
 function stopGyro() {
   window.isGyroActive = false;
   window.gyroGamma = 0;
+  window.gyroEventCount = 0;
   window.removeEventListener('deviceorientation', handleDeviceOrientation, true);
+  window.removeEventListener('deviceorientationabsolute', handleDeviceOrientation, true);
+  window.removeEventListener('devicemotion', handleDeviceMotion, true);
   updateGyroUI();
 }
 
 function handleDeviceOrientation(event) {
   if (!window.isGyroActive) return;
-  // 画面の向き (0: 縦, 90: 横左, -90: 横右)
+  window.gyroEventCount++;
+
   const orientation = window.orientation || (screen.orientation ? screen.orientation.angle : 0) || 0;
-  let gamma = event.gamma || 0; // 左右傾き (-90 〜 +90)
-  let beta  = event.beta  || 0; // 前後傾き (-180 〜 +180)
+  const gamma = event.gamma;
+  const beta  = event.beta;
+
+  if (gamma === null && beta === null) return;
 
   let targetTilt = 0;
   if (Math.abs(orientation) === 90) {
-    // 横画面時: 前後の傾き(beta)が左右ハンドルに相当
-    targetTilt = orientation === 90 ? beta : -beta;
+    targetTilt = orientation === 90 ? (beta || 0) : -(beta || 0);
   } else {
-    // 縦長スマホ時: 左右の傾き(gamma)が左右ハンドルに相当
-    targetTilt = gamma;
+    targetTilt = (gamma || 0);
   }
   window.gyroGamma = Math.max(-45, Math.min(45, targetTilt));
+}
+
+function handleDeviceMotion(event) {
+  if (!window.isGyroActive) return;
+  window.gyroEventCount++;
+
+  const acc = event.accelerationIncludingGravity || event.acceleration;
+  if (!acc) return;
+
+  const orientation = window.orientation || (screen.orientation ? screen.orientation.angle : 0) || 0;
+  const ax = acc.x || 0;
+  const ay = acc.y || 0;
+
+  let rawTiltDeg = 0;
+  if (Math.abs(orientation) === 90) {
+    rawTiltDeg = (orientation === 90 ? -ay : ay) * 5.7;
+  } else {
+    rawTiltDeg = ax * 5.7;
+  }
+
+  // orientationから値が届かない場合の加速度フォールバック
+  if (window.gyroGamma === 0 || Math.abs(window.gyroGamma) < 0.1) {
+    window.gyroGamma = Math.max(-45, Math.min(45, rawTiltDeg));
+  }
 }
 
 function updateGyroUI() {
