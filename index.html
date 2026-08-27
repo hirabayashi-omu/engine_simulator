@@ -34,8 +34,8 @@
     }
     header {
       width: 100%;
-      max-width: 1440px;
-      margin-bottom: 20px;
+      max-width: 1300px;
+      margin-bottom: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -44,34 +44,34 @@
     }
     h1 {
       font-family: 'Orbitron', sans-serif;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       letter-spacing: 2px;
       color: var(--accent-cyan);
       text-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
     }
-    .subtitle { font-size: 0.85rem; color: var(--text-sub); margin-top: 4px; }
+    .subtitle { font-size: 0.82rem; color: var(--text-sub); margin-top: 4px; }
     .rpm-badge {
       background: rgba(0, 229, 255, 0.1);
       border: 1px solid var(--accent-cyan);
       border-radius: 8px;
-      padding: 6px 16px;
+      padding: 6px 14px;
       text-align: right;
     }
     .rpm-val {
       font-family: 'Orbitron', sans-serif;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 800;
       color: #ffffff;
     }
-    .rpm-lbl { font-size: 0.7rem; color: var(--text-sub); letter-spacing: 1px; }
+    .rpm-lbl { font-size: 0.68rem; color: var(--text-sub); letter-spacing: 1px; }
 
-    /* メイン2カラムレイアウト */
+    /* メイン2カラムレイアウト (最大幅1300px) */
     .main-grid {
       display: grid;
-      grid-template-columns: 752px 1fr;
-      gap: 20px;
+      grid-template-columns: 720px 1fr;
+      gap: 18px;
       width: 100%;
-      max-width: 1440px;
+      max-width: 1300px;
     }
 
     .card {
@@ -342,12 +342,13 @@
        ============================================================ */
     .cluster-panel {
       width: 100%;
-      max-width: 1440px;
+      max-width: 1300px;
       margin-bottom: 20px;
       padding: 16px 20px;
       background: linear-gradient(180deg, rgba(14, 18, 38, 0.92) 0%, rgba(8, 10, 22, 0.95) 100%);
       border: 1px solid rgba(0, 229, 255, 0.25);
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
     }
     .cluster-header {
       display: flex;
@@ -390,6 +391,9 @@
       grid-template-columns: 205px 205px 205px 1.15fr 1.3fr;
       gap: 14px;
       align-items: stretch;
+    }
+    .phone-meters-row {
+      display: contents;
     }
     .gauge-box {
       background: radial-gradient(circle at 50% 50%, rgba(20, 26, 54, 0.8) 0%, rgba(10, 12, 26, 0.95) 100%);
@@ -854,7 +858,142 @@
       background: linear-gradient(90deg, #76ff03, #ff6d00, #ff3d00);
       border-radius: 5px;
       box-shadow: 0 0 10px rgba(255, 109, 0, 0.8);
-      transition: width 0.05s linear;
+    /* ============================================================
+       📱 縦長スマホモード (1段目メーター＆前面展望特化 / 1300px)
+       ============================================================ */
+    .btn-smartphone-mode {
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(118, 255, 3, 0.15));
+      border: 1px solid var(--accent-cyan);
+      color: #ffffff;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.25);
+    }
+    .btn-smartphone-mode:hover {
+      background: var(--accent-cyan);
+      color: #000000;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.7);
+    }
+    .btn-smartphone-mode.active {
+      background: linear-gradient(135deg, #00e5ff, #76ff03);
+      color: #000000;
+      border-color: #76ff03;
+      box-shadow: 0 0 20px rgba(118, 255, 3, 0.6);
+    }
+
+    /* スマホモード時のレイアウト切り替え */
+    body.smartphone-mode {
+      padding: 10px;
+    }
+    body.smartphone-mode header {
+      max-width: 1300px;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+    }
+    body.smartphone-mode header h1 {
+      font-size: 1.25rem;
+    }
+    body.smartphone-mode header .subtitle {
+      font-size: 0.72rem;
+    }
+    body.smartphone-mode .main-grid,
+    body.smartphone-mode .ctrl-bar,
+    body.smartphone-mode .keyboard-hints {
+      display: none !important;
+    }
+    body.smartphone-mode .cluster-panel {
+      max-width: 1300px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+    body.smartphone-mode .cluster-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    body.smartphone-mode .perspective-box {
+      order: 1; /* 最上段: 3D前面展望 */
+      width: 100%;
+      min-height: 380px;
+      padding: 8px;
+    }
+    body.smartphone-mode .perspective-view-box.in-sub .perspective-canvas-wrap {
+      height: 360px;
+    }
+    body.smartphone-mode .phone-meters-row {
+      order: 2; /* 中段: 3連メーター */
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+    }
+    body.smartphone-mode .gauge-box {
+      width: 100%;
+      padding: 8px 4px;
+    }
+    body.smartphone-mode .gauge-canvas {
+      width: 100%;
+      max-width: 380px;
+      height: auto;
+      aspect-ratio: 520 / 440;
+    }
+    body.smartphone-mode .transmission-hud {
+      order: 3; /* 下段: トランスミッション ＆ タッチUI */
+      width: 100%;
+      padding: 12px;
+    }
+    body.smartphone-mode .ctrl-hud-row {
+      gap: 12px;
+      margin: 10px 0;
+    }
+    body.smartphone-mode .gear-shift-btns {
+      width: 120px;
+      gap: 8px;
+    }
+    body.smartphone-mode .shift-btn {
+      height: 48px;
+      font-size: 0.82rem;
+      border-radius: 8px;
+    }
+    body.smartphone-mode .accel-pedal-btn,
+    body.smartphone-mode .brake-pedal-btn {
+      height: 104px;
+      font-size: 1.15rem;
+      border-radius: 12px;
+    }
+
+    /* 傾きセンサー (DeviceOrientation) ボタン & HUD */
+    .btn-gyro-steer {
+      background: rgba(118, 255, 3, 0.12);
+      border: 1px solid #76ff03;
+      color: #76ff03;
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
+      font-size: 0.70rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+    .btn-gyro-steer:hover {
+      background: rgba(118, 255, 3, 0.25);
+      box-shadow: 0 0 12px rgba(118, 255, 3, 0.5);
+    }
+    .btn-gyro-steer.active {
+      background: #76ff03;
+      color: #000000;
+      box-shadow: 0 0 16px rgba(118, 255, 3, 0.8);
     }
   </style>
 </head>
@@ -865,7 +1004,8 @@
       <h1>TWO-STROKE ENGINE SIMULATOR</h1>
       <div class="subtitle">クランクケースプレ圧送・リードバルブ方式 2サイクルエンジン ＆ Yamaha 6速トランスミッション</div>
     </div>
-    <div style="display:flex; gap:16px; align-items:center;">
+    <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap; justify-content:flex-end;">
+      <button class="btn-smartphone-mode" id="btnToggleSmartphoneMode" onclick="toggleSmartphoneMode()" title="1段目のメーター＆展望画面のみの縦長スマホレイアウトに切替">📱 縦長スマホモード</button>
       <div class="rpm-badge" id="oilTempBadge" style="border-color:#ff9800; box-shadow:0 0 16px rgba(255,152,0,0.25);">
         <div class="rpm-val" id="oilTempDisplay" style="color:#ffb74d;">65.0<span style="font-size:16px; margin-left:2px;">℃</span></div>
         <div class="rpm-lbl" id="oilTempLabel" style="color:#ffe082;">OIL TEMP (適正)</div>
@@ -888,29 +1028,35 @@
     </div>
     
     <div class="cluster-grid">
-      <!-- 1. スピードメーター -->
-      <div class="gauge-box">
-        <div class="gauge-title">SPEEDOMETER</div>
-        <canvas id="speedCanvas" class="gauge-canvas" width="520" height="440"></canvas>
-      </div>
+      <!-- 3連メーターグループ (通常時はdisplay:contents、スマホモード時は中段横並び) -->
+      <div class="phone-meters-row">
+        <!-- 1. スピードメーター -->
+        <div class="gauge-box">
+          <div class="gauge-title">SPEEDOMETER</div>
+          <canvas id="speedCanvas" class="gauge-canvas" width="520" height="440"></canvas>
+        </div>
 
-      <!-- 2. タコメーター ＆ ギアインジケーター -->
-      <div class="gauge-box">
-        <div class="gauge-title">TACHOMETER & GEAR</div>
-        <canvas id="tachoCanvas" class="gauge-canvas" width="520" height="440"></canvas>
-      </div>
+        <!-- 2. タコメーター ＆ ギアインジケーター -->
+        <div class="gauge-box">
+          <div class="gauge-title">TACHOMETER & GEAR</div>
+          <canvas id="tachoCanvas" class="gauge-canvas" width="520" height="440"></canvas>
+        </div>
 
-      <!-- 3. トルク計 ＆ 出力 -->
-      <div class="gauge-box">
-        <div class="gauge-title">TORQUE & POWER METER</div>
-        <canvas id="torqueCanvas" class="gauge-canvas" width="520" height="440"></canvas>
+        <!-- 3. トルク計 ＆ 出力 -->
+        <div class="gauge-box">
+          <div class="gauge-title">TORQUE & POWER METER</div>
+          <canvas id="torqueCanvas" class="gauge-canvas" width="520" height="440"></canvas>
+        </div>
       </div>
 
       <!-- 4. トランスミッションHUD -->
       <div class="transmission-hud">
-        <div class="hud-section-title" style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="hud-section-title" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
           <span>⚙️ YAMAHA 6-SPEED TRANSMISSION</span>
-          <button id="btnToggleAT" onclick="toggleATMode()" style="background:rgba(0,229,255,0.15); border:1px solid #00e5ff; color:#00e5ff; border-radius:6px; padding:2px 10px; font-family:'Orbitron',sans-serif; font-size:11px; font-weight:bold; cursor:pointer; letter-spacing:1px;">MODE: MT</button>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <button class="btn-gyro-steer" id="btnGyroSteer" onclick="toggleGyroSteer()" title="スマホを傾けてハンドル操作 (加速度/ジャイロセンサー連動)">📱 傾き連動: OFF</button>
+            <button id="btnToggleAT" onclick="toggleATMode()" style="background:rgba(105,240,174,0.18); border:1px solid #69f0ae; color:#69f0ae; border-radius:6px; padding:2px 10px; font-family:'Orbitron',sans-serif; font-size:11px; font-weight:bold; cursor:pointer; letter-spacing:1px;">MODE: AT (自動)</button>
+          </div>
         </div>
         
         <div class="gear-ratios-list">
@@ -1001,6 +1147,7 @@
             </div>
             <div class="perspective-ctrls">
               <button class="steer-btn" id="btnSteerLeft" onpointerdown="isSteerLeft=true" onpointerup="isSteerLeft=false" onpointerleave="isSteerLeft=false">◀ 左</button>
+              <button class="btn-gyro-steer" id="btnGyroSteer3D" onclick="toggleGyroSteer()" title="スマホ傾きハンドル操作">📱 傾き操作</button>
               <button class="btn-auto-steer active" id="btnAutoSteer" onclick="toggleAutoSteer()" title="オートハンドル（自動ライントレース）切替">🤖 AUTO [ON]</button>
               <button class="steer-btn" id="btnSteerRight" onpointerdown="isSteerRight=true" onpointerup="isSteerRight=false" onpointerleave="isSteerRight=false">右 ▶</button>
             </div>
@@ -1102,7 +1249,7 @@
     <div class="ctrl-bar">
       <button class="btn" id="btnPlay" onclick="togglePlay()">⏸ 一時停止</button>
       <button class="btn" style="border-color:#78909c; color:#cfd8dc;" onclick="resetEngine()">🔄 リセット</button>
-      <button class="btn" id="btnToggleATBar" onclick="toggleATMode()" style="border-color:#00e5ff; color:#00e5ff;">⚙️ MODE: MT (手動)</button>
+      <button class="btn" id="btnToggleATBar" onclick="toggleATMode()" style="border-color:#69f0ae; color:#69f0ae; background:rgba(105,240,174,0.18);">⚙️ MODE: AT (自動)</button>
       <button class="btn" id="btnSound" onclick="toggleSound()" style="border-color:#ffa726; color:#ffa726; min-width:130px; opacity:0.65;">🔇 OFF (スロー)</button>
       <button class="btn" id="btnAutoSteerBar" onclick="toggleAutoSteer()" style="border-color:#76ff03; color:#76ff03;">🤖 オートハンドル: ON</button>
       <button class="btn" onclick="swapMainSubLayout()" style="border-color:#00e5ff; color:#00e5ff; min-width:140px;">⇄ 大小画面入替</button>
@@ -3314,7 +3461,7 @@ const torqueCtx    = torqueCanvas.getContext('2d');
 // ============================================================
 // シフト操作 ＆ オートマチック(AT) / マニュアル(MT) 制御
 // ============================================================
-let isAutoTransmission = false; // false: MT (マニュアル), true: AT (オートマチック)
+let isAutoTransmission = true;  // true: AT (オートマチック / デフォルト), false: MT (マニュアル)
 let autoShiftCooldown = 0;      // 変速頻度制限用タイマー (秒)
 
 window.toggleATMode = function() {
@@ -3354,6 +3501,7 @@ function updateATButtons() {
     btn3.style.background = bg;
   }
 }
+updateATButtons(); // 初期状態反映
 
 // 車速 (m/s) における指定ギアでの予想エンジン回転数を算出
 function getExpectedRPMForGear(targetGear, currentSpeedMS) {
@@ -3753,53 +3901,49 @@ function updateTransmissionPhysics(dt) {
   const counterRPS = wheelRPS * FINAL_RATIO;
   counterShaftAngle += counterRPS * 2 * Math.PI * dt;
 
-  // 4. インナーシャフト＆アウターシャフトの回転角速度
-  // 4. シャフトの実回転速度 (回転慣性とミッションオイル粘性によるスピンダウン減衰物理)
+  // 4. シャフトの実回転速度 (DCT独立クラッチ物理: クラッチ係合側のみ回転、切断側は静止)
   // (A) インナーシャフト (1-3-5速 / 奇数軸)
   if (clutchOddLevel > 0.02) {
-    // 奇数クラッチ接続中: エンジン実回転数 (クランク実回転数 / 1次減速比) へ急速同期スピンアップ
-    const targetInnerRPS = primaryRPS * clutchOddLevel;
+    const targetInnerRPS = (currentGear === 1 || currentGear === 3 || currentGear === 5)
+      ? Math.max(primaryRPS * clutchOddLevel, counterRPS * GEAR_RATIOS[currentGear])
+      : primaryRPS * clutchOddLevel;
     currentInnerRPS += (targetInnerRPS - currentInnerRPS) * Math.min(1.0, dt * 18.0);
   } else {
-    // クラッチ切断中: 回転慣性モーメントにより滑らかに惰性減速 (スピンダウン) して停止
-    currentInnerRPS += (0 - currentInnerRPS) * Math.min(1.0, dt * 2.8);
+    // 奇数クラッチ切断時: スピンダウンして完全静止
+    currentInnerRPS += (0 - currentInnerRPS) * Math.min(1.0, dt * 3.5);
     if (Math.abs(currentInnerRPS) < 0.05) currentInnerRPS = 0;
   }
 
   // (B) アウターシャフト (2-4-6速 / 偶数軸)
   if (clutchEvenLevel > 0.02) {
-    // 偶数クラッチ接続中: エンジン実回転数 (クランク実回転数 / 1次減速比) へ急速同期スピンアップ
-    const targetOuterRPS = primaryRPS * clutchEvenLevel;
+    const targetOuterRPS = (currentGear === 2 || currentGear === 4 || currentGear === 6)
+      ? Math.max(primaryRPS * clutchEvenLevel, counterRPS * GEAR_RATIOS[currentGear])
+      : primaryRPS * clutchEvenLevel;
     currentOuterRPS += (targetOuterRPS - currentOuterRPS) * Math.min(1.0, dt * 18.0);
   } else {
-    // クラッチ切断中: 回転慣性モーメントにより滑らかに惰性減速 (スピンダウン) して停止
-    currentOuterRPS += (0 - currentOuterRPS) * Math.min(1.0, dt * 2.8);
+    // 偶数クラッチ切断時: スピンダウンして完全静止
+    currentOuterRPS += (0 - currentOuterRPS) * Math.min(1.0, dt * 3.5);
     if (Math.abs(currentOuterRPS) < 0.05) currentOuterRPS = 0;
   }
 
   innerShaftAngle += currentInnerRPS * 2 * Math.PI * dt;
   outerShaftAngle += currentOuterRPS * 2 * Math.PI * dt;
 
-  // 5. 各ギアの回転 (各シャフトの実回転角・慣性に連動して歯車比通りに回転)
-  // (A) 奇数段ギア (1速・5速・3速)
-  gearRotAngles.m1 = innerShaftAngle;
-  gearRotAngles.c1 = -gearRotAngles.m1 / GEAR_RATIOS[1];
+  // 5. 各ギアの回転
+  // (1) メインシャフト側: インナー(奇数)・アウター(偶数)のクラッチ接続状態に応じて独立回転・静止
+  for (let g = 1; g <= 6; g++) {
+    const mRPS = (g % 2 === 1) ? currentInnerRPS : currentOuterRPS;
+    gearRotAngles[`m${g}`] += mRPS * 2 * Math.PI * dt;
+  }
 
-  gearRotAngles.m5 = innerShaftAngle;
-  gearRotAngles.c5 = -gearRotAngles.m5 / GEAR_RATIOS[5];
-
-  gearRotAngles.m3 = innerShaftAngle;
-  gearRotAngles.c3 = -gearRotAngles.m3 / GEAR_RATIOS[3];
-
-  // (B) 偶数段ギア (4速・6速・2速)
-  gearRotAngles.m4 = outerShaftAngle;
-  gearRotAngles.c4 = -gearRotAngles.m4 / GEAR_RATIOS[4];
-
-  gearRotAngles.m6 = outerShaftAngle;
-  gearRotAngles.c6 = -gearRotAngles.m6 / GEAR_RATIOS[6];
-
-  gearRotAngles.m2 = outerShaftAngle;
-  gearRotAngles.c2 = -gearRotAngles.m2 / GEAR_RATIOS[2];
+  // (2) カウンターシャフト側: ギア噛合走行時はカウンター側全ギアが回転 (N時は停止)
+  if (currentGear > 0) {
+    const activeMainRPS = (currentGear % 2 === 1) ? currentInnerRPS : currentOuterRPS;
+    const refRPS = activeMainRPS > 0.01 ? activeMainRPS : (counterRPS * GEAR_RATIOS[currentGear]);
+    for (let g = 1; g <= 6; g++) {
+      gearRotAngles[`c${g}`] -= (refRPS / GEAR_RATIOS[g]) * 2 * Math.PI * dt;
+    }
+  }
 
   // 6. シフターフォーク位置のスムーズ移動
   let targetFork1_5 = 0;
@@ -5184,30 +5328,66 @@ function animate(timestamp) {
     }
 
     // ----------------------------------------------------
-    // オートマチック (AT) モード自動変速ロジック
+    // トランスミッション変速制御 (AT自動変速 ＆ MTブレーキシフトダウンアシスト)
     // ----------------------------------------------------
-    if (isAutoTransmission) {
-      autoShiftCooldown = Math.max(0, autoShiftCooldown - dt);
-      if (autoShiftCooldown <= 0) {
+    autoShiftCooldown = Math.max(0, autoShiftCooldown - dt);
+    const curSpeedKmH = vehicleSpeedMS * 3.6;
+    const optimalGear = getOptimalGearForSpeed(curSpeedKmH);
+
+    if (autoShiftCooldown <= 0) {
+      if (isAutoTransmission) {
+        // ==========================================
+        // 【ATモード】 フルオートマチック変速
+        // ==========================================
         if (currentGear === 0 && (throttle > 5 || isSpacePressed || isPedalPressed)) {
           // Nからの発進: 1速へ自動接続
           setGear(1);
-          autoShiftCooldown = 0.5;
+          autoShiftCooldown = 0.45;
         } else if (currentGear > 0) {
-          // シフトアップ判定: パワーバンド高回転域 (8,800 RPM以上)
-          if (currentRPM >= 8800 && currentGear < 6 && (throttle > 25 || isSpacePressed || isPedalPressed)) {
+          // 1. 【ブレーキ減速時のアクティブ・シフトダウン】
+          if (isBraking && currentGear > optimalGear && currentGear > 1) {
+            const downGear = currentGear - 1;
+            const expRPM = getExpectedRPMForGear(downGear, vehicleSpeedMS);
+            if (expRPM <= MAX_ALLOWABLE_DOWNSHIFT_RPM) {
+              setGear(downGear);
+              autoShiftCooldown = 0.28;
+            }
+          }
+          // 2. 【通常減速時のシフトダウン (アクセルOFF・回転低下時)】
+          else if (currentGear > 1 && (currentRPM < 4200 || currentGear > optimalGear) && (!isSpacePressed && !isPedalPressed && throttle < 15)) {
+            const downGear = currentGear - 1;
+            const expRPM = getExpectedRPMForGear(downGear, vehicleSpeedMS);
+            if (expRPM <= 9800) {
+              setGear(downGear);
+              autoShiftCooldown = 0.38;
+            }
+          }
+          // 3. 【キックダウン判定 (急加速時)】
+          else if (throttle > 75 && currentRPM < 6200 && currentGear > 1) {
+            const downGear = currentGear - 1;
+            const expRPM = getExpectedRPMForGear(downGear, vehicleSpeedMS);
+            if (expRPM <= 10000) {
+              setGear(downGear);
+              autoShiftCooldown = 0.65;
+            }
+          }
+          // 4. 【シフトアップ判定 (高回転パワーバンド 8,800 RPM以上)】
+          else if (currentRPM >= 8800 && currentGear < 6 && (throttle > 20 || isSpacePressed || isPedalPressed)) {
             setGear(currentGear + 1);
-            autoShiftCooldown = 0.65;
+            autoShiftCooldown = 0.55;
           }
-          // シフトダウン判定: 低回転域 (3,600 RPM以下) または車速低下
-          else if (currentRPM < 3600 && currentGear > 1) {
-            setGear(currentGear - 1);
-            autoShiftCooldown = 0.45;
-          }
-          // キックダウン判定: フルアクセル加速時
-          else if (throttle > 85 && currentRPM < 5200 && currentGear > 2) {
-            setGear(currentGear - 1);
-            autoShiftCooldown = 0.75;
+        }
+      } else {
+        // ==========================================
+        // 【MTモード】 ブレーキシフトダウン支援 (オートブリッパー / レースアシスト)
+        // ==========================================
+        // マニュアル時でもブレーキ操作時に車速が落ちた場合、適切なギアへ自動シフトダウン！
+        if (isBraking && currentGear > optimalGear && currentGear > 1) {
+          const downGear = currentGear - 1;
+          const expRPM = getExpectedRPMForGear(downGear, vehicleSpeedMS);
+          if (expRPM <= MAX_ALLOWABLE_DOWNSHIFT_RPM) {
+            setGear(downGear);
+            autoShiftCooldown = 0.30; // ブレーキ減速に同期してリズミカルにシフトダウン
           }
         }
       }
@@ -5397,6 +5577,10 @@ function resetEngine() {
   innerShaftAngle = 0;
   outerShaftAngle = 0;
   counterShaftAngle = 0;
+  for (let g = 1; g <= 6; g++) {
+    gearRotAngles[`m${g}`] = 0;
+    gearRotAngles[`c${g}`] = 0;
+  }
   drawTimingDiagram(0, 0);
   updateTimingPanel(0);
   drawTransmission(transCtx, 1440, 1360);
@@ -5850,325 +6034,384 @@ requestAnimationFrame(animate);
 
     // 8. バイクのコックピット & セパレートハンドル (路面視界を広く確保した低重心レイアウト)
     ctx3.save();
-    ctx3.translate(W3 / 2, H3 + 18);
+    ctx3.translate(W3 / 2, H3 + 12);
     ctx3.rotate(bikeRoll);
-    ctx3.scale(0.68, 0.68); // コックピットを適正サイズにスケールダウンして路面視界をクリアに確保
+    ctx3.scale(0.78, 0.78); // コックピットを適正サイズにスケールして路面・コース視界を広くクリアに確保！
 
     const isBrakingNow = isBrakePressed || isBrakePedalPressed;
     const gearNow = typeof currentGear !== 'undefined' ? currentGear : 0;
     const rpmNow = typeof currentRPM !== 'undefined' ? currentRPM : 1000;
 
-    // --- A. フロントホワイトアッパーカウル & 高透明ウィンドスクリーン ---
-    // 白いアッパーカウル内側 (低めのプロファイル)
-    ctx3.fillStyle = 'rgba(230, 230, 230, 0.85)';
+    // ==========================================
+    // A. ヤマハレーシングブルー フューエルタンク (手前下部)
+    // ==========================================
+    const cowlGradTank = ctx3.createLinearGradient(0, -60, 0, 0);
+    cowlGradTank.addColorStop(0, '#0d47a1');
+    cowlGradTank.addColorStop(0.3, '#1976d2');
+    cowlGradTank.addColorStop(0.7, '#1565c0');
+    cowlGradTank.addColorStop(1, '#0a2a66');
+    ctx3.fillStyle = cowlGradTank;
     ctx3.beginPath();
-    ctx3.moveTo(-W3 * 0.65, 0);
-    ctx3.bezierCurveTo(-W3 * 0.6, -140, -W3 * 0.4, -180, -W3 * 0.22, -190);
-    ctx3.lineTo(W3 * 0.22, -190);
-    ctx3.bezierCurveTo(W3 * 0.4, -180, W3 * 0.6, -140, W3 * 0.65, 0);
-    ctx3.lineTo(-W3 * 0.65, 0);
+    ctx3.moveTo(-180, 0);
+    ctx3.bezierCurveTo(-160, -45, -100, -60, 0, -62);
+    ctx3.bezierCurveTo(100, -60, 160, -45, 180, 0);
     ctx3.closePath();
     ctx3.fill();
 
-    // カウル内側のシャドウ・奥行き
-    const cowlGrad = ctx3.createLinearGradient(0, -190, 0, -50);
-    cowlGrad.addColorStop(0, 'rgba(180,180,180,0.3)');
-    cowlGrad.addColorStop(0.5, 'rgba(100,100,100,0.45)');
-    cowlGrad.addColorStop(1, 'rgba(30,30,30,0.8)');
-    ctx3.fillStyle = cowlGrad;
-    ctx3.fill();
-
-    // 高透明ウィンドスクリーン (路面がクリアに見通せる超透明シールド)
-    ctx3.save();
-    ctx3.fillStyle = 'rgba(235, 245, 255, 0.04)';
-    ctx3.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+    // タンクのハイライトライン
+    ctx3.strokeStyle = 'rgba(255, 255, 255, 0.25)';
     ctx3.lineWidth = 2.5;
     ctx3.beginPath();
-    ctx3.moveTo(-W3 * 0.52, 0);
-    ctx3.bezierCurveTo(-W3 * 0.48, -160, -W3 * 0.32, -215, 0, -225);
-    ctx3.bezierCurveTo(W3 * 0.32, -215, W3 * 0.48, -160, W3 * 0.52, 0);
+    ctx3.arc(0, -12, 60, Math.PI * 1.15, Math.PI * 1.85);
+    ctx3.stroke();
+
+    // アルミ調エアプレーン給油口キャップ
+    ctx3.fillStyle = '#b0bec5';
+    ctx3.strokeStyle = '#37474f';
+    ctx3.lineWidth = 2;
+    ctx3.beginPath(); ctx3.arc(0, -26, 20, 0, Math.PI * 2); ctx3.fill(); ctx3.stroke();
+    ctx3.fillStyle = '#cfd8dc';
+    ctx3.beginPath(); ctx3.arc(0, -26, 15, 0, Math.PI * 2); ctx3.fill();
+    ctx3.fillStyle = '#263238';
+    ctx3.fillRect(-2, -30, 4, 8); // 鍵穴
+
+    // ==========================================
+    // B. 超高透明ウィンドスクリーン ＆ 左右アッパーカウル ＆ バックミラー
+    // ==========================================
+    // 超高透明ウィンドスクリーン (路面が100%クリアに見通せるシールド)
+    ctx3.save();
+    ctx3.fillStyle = 'rgba(235, 245, 255, 0.02)';
+    ctx3.strokeStyle = 'rgba(255, 255, 255, 0.32)';
+    ctx3.lineWidth = 2.2;
+    ctx3.beginPath();
+    ctx3.moveTo(-280, -40);
+    ctx3.bezierCurveTo(-260, -180, -170, -265, 0, -275);
+    ctx3.bezierCurveTo(170, -265, 260, -180, 280, -40);
     ctx3.stroke();
     ctx3.fill();
 
     // スクリーンの繊細な光沢ハイライトライン
-    ctx3.strokeStyle = 'rgba(255, 255, 255, 0.18)';
-    ctx3.lineWidth = 3;
+    ctx3.strokeStyle = 'rgba(255, 255, 255, 0.16)';
+    ctx3.lineWidth = 2.5;
     ctx3.beginPath();
-    ctx3.moveTo(-W3 * 0.40, -30);
-    ctx3.bezierCurveTo(-W3 * 0.32, -150, -W3 * 0.18, -200, 0, -215);
+    ctx3.moveTo(-220, -20);
+    ctx3.bezierCurveTo(-170, -160, -90, -230, 0, -255);
     ctx3.stroke();
-
-    // スクリーン固定リベット/スクリュー (左右)
-    [[-190,-60],[-175,-120],[-140,-170],[140,-170],[175,-120],[190,-60]].forEach(([rx, ry]) => {
-      ctx3.fillStyle = '#212121'; ctx3.beginPath(); ctx3.arc(rx, ry, 3.5, 0, Math.PI*2); ctx3.fill();
-      ctx3.fillStyle = '#cfd8dc'; ctx3.beginPath(); ctx3.arc(rx, ry, 2, 0, Math.PI*2); ctx3.fill();
-    });
     ctx3.restore();
 
-    // メーターステー (黒いスチールパイプ)
-    ctx3.strokeStyle = '#263238'; ctx3.lineWidth = 4; ctx3.lineCap = 'round';
+    // 左右アッパーカウル (左右端のみに収めて路面中央を広く開放)
+    ctx3.fillStyle = '#0d47a1';
+    // 左カウル
     ctx3.beginPath();
-    ctx3.moveTo(-110, -80); ctx3.lineTo(-55, -160);
-    ctx3.moveTo(110, -80);  ctx3.lineTo(55, -160);
-    ctx3.stroke();
-
-    // --- B. 2連レーシングメータークラスター (黒ウレタンスポンジマウント) ---
-    // スポンジパネルベース (左右非対称のレーサー形状)
-    ctx3.fillStyle = '#1c1c1c';
-    ctx3.strokeStyle = '#111111';
-    ctx3.lineWidth = 3;
+    ctx3.moveTo(-360, 0);
+    ctx3.lineTo(-360, -120);
+    ctx3.bezierCurveTo(-330, -160, -270, -190, -220, -200);
+    ctx3.lineTo(-190, -180);
+    ctx3.bezierCurveTo(-230, -130, -255, -60, -240, 0);
+    ctx3.closePath();
+    ctx3.fill();
+    // 右カウル
     ctx3.beginPath();
-    ctx3.roundRect(-125, -200, 250, 105, 36);
-    ctx3.fill(); ctx3.stroke();
-
-    // スポンジの質感シャドウ
-    const spongeGrad = ctx3.createLinearGradient(0, -200, 0, -95);
-    spongeGrad.addColorStop(0, '#2d2d2d');
-    spongeGrad.addColorStop(1, '#181818');
-    ctx3.fillStyle = spongeGrad;
-    ctx3.beginPath();
-    ctx3.roundRect(-122, -197, 244, 99, 32);
+    ctx3.moveTo(360, 0);
+    ctx3.lineTo(360, -120);
+    ctx3.bezierCurveTo(330, -160, 270, -190, 220, -200);
+    ctx3.lineTo(190, -180);
+    ctx3.bezierCurveTo(230, -130, 255, -60, 240, 0);
+    ctx3.closePath();
     ctx3.fill();
 
-    // 1. 左側: スピードメーター (km/h)
-    const spdCX = -54, spdCY = -148, spdR = 36;
-    ctx3.fillStyle = '#0a0a0a';
-    ctx3.beginPath(); ctx3.arc(spdCX, spdCY, spdR, 0, Math.PI*2); ctx3.fill();
-    ctx3.strokeStyle = '#37474f'; ctx3.lineWidth = 2.5; ctx3.stroke();
-
-    // スピードメーター目盛り (0〜180km/h)
-    ctx3.strokeStyle = '#ffffff';
-    ctx3.fillStyle = '#ffffff';
-    ctx3.font = '7px "Orbitron", sans-serif';
-    ctx3.textAlign = 'center'; ctx3.textBaseline = 'middle';
-    for (let v = 0; v <= 180; v += 20) {
-      const ang = (0.75 + (v / 180) * 1.5) * Math.PI;
-      const x1 = spdCX + (spdR - 7) * Math.cos(ang);
-      const y1 = spdCY + (spdR - 7) * Math.sin(ang);
-      const x2 = spdCX + (spdR - 2) * Math.cos(ang);
-      const y2 = spdCY + (spdR - 2) * Math.sin(ang);
-      ctx3.lineWidth = (v % 40 === 0) ? 1.5 : 0.8;
-      ctx3.beginPath(); ctx3.moveTo(x1, y1); ctx3.lineTo(x2, y2); ctx3.stroke();
-      if (v % 40 === 0 && v > 0 && v < 180) {
-        const tx = spdCX + (spdR - 13) * Math.cos(ang);
-        const ty = spdCY + (spdR - 13) * Math.sin(ang);
-        ctx3.fillText(v.toString(), tx, ty);
-      }
+    // 左右バックミラー
+    function drawMirror(side) {
+      const mx = side * 310;
+      const my = -215;
+      // ステーパイプ (黒)
+      ctx3.strokeStyle = '#1a1a1a';
+      ctx3.lineWidth = 8;
+      ctx3.lineCap = 'round';
+      ctx3.beginPath();
+      ctx3.moveTo(side * 230, -180);
+      ctx3.lineTo(mx, my);
+      ctx3.stroke();
+      // ミラーハウジング
+      ctx3.save();
+      ctx3.translate(mx, my);
+      ctx3.rotate(side * -0.2);
+      ctx3.fillStyle = '#111315';
+      ctx3.strokeStyle = '#263238';
+      ctx3.lineWidth = 2;
+      ctx3.beginPath();
+      ctx3.ellipse(0, 0, 34, 24, side * -0.15, 0, Math.PI * 2);
+      ctx3.fill(); ctx3.stroke();
+      // 鏡面 (後方グラデーション反射)
+      const mirrorGrad = ctx3.createLinearGradient(-22, -18, 22, 18);
+      mirrorGrad.addColorStop(0, '#78909c');
+      mirrorGrad.addColorStop(0.5, '#cfd8dc');
+      mirrorGrad.addColorStop(1, '#546e7a');
+      ctx3.fillStyle = mirrorGrad;
+      ctx3.beginPath();
+      ctx3.ellipse(0, 0, 28, 18, side * -0.15, 0, Math.PI * 2);
+      ctx3.fill();
+      ctx3.restore();
     }
-    // オドメーター窓 (積算距離)
-    ctx3.fillStyle = '#000'; ctx3.fillRect(spdCX - 14, spdCY + 12, 28, 8);
-    ctx3.fillStyle = '#fff'; ctx3.font = '6px monospace';
-    const odoStr = String(Math.floor(odometerKm * 10)).padStart(5, '0');
-    ctx3.fillText(odoStr, spdCX, spdCY + 16);
-    ctx3.fillStyle = '#90a4ae'; ctx3.font = '5px "Orbitron", sans-serif';
-    ctx3.fillText('km/h', spdCX, spdCY - 8);
+    drawMirror(-1); // 左ミラー
+    drawMirror(1);  // 右ミラー
 
-    // スピードメーター指針 (白/オレンジ)
-    const spdAng = (0.75 + Math.min(180, speedKmH) / 180 * 1.5) * Math.PI;
-    ctx3.strokeStyle = '#ff7043'; ctx3.lineWidth = 2;
+    // メーターステー (黒スチールパイプ)
+    ctx3.strokeStyle = '#263238'; ctx3.lineWidth = 4; ctx3.lineCap = 'round';
     ctx3.beginPath();
-    ctx3.moveTo(spdCX - 4 * Math.cos(spdAng), spdCY - 4 * Math.sin(spdAng));
-    ctx3.lineTo(spdCX + (spdR - 6) * Math.cos(spdAng), spdCY + (spdR - 6) * Math.sin(spdAng));
-    ctx3.stroke();
-    ctx3.fillStyle = '#263238'; ctx3.beginPath(); ctx3.arc(spdCX, spdCY, 4, 0, Math.PI*2); ctx3.fill();
-
-    // 2. 右側: 大径タコメーター (x1000r/min — 13,000rpmフルスケール)
-    const tacCX = 48, tacCY = -148, tacR = 44;
-    ctx3.fillStyle = '#0a0a0a';
-    ctx3.beginPath(); ctx3.arc(tacCX, tacCY, tacR, 0, Math.PI*2); ctx3.fill();
-    ctx3.strokeStyle = '#455a64'; ctx3.lineWidth = 3; ctx3.stroke();
-
-    // レッドゾーン帯 (10,000〜13,000 RPM)
-    ctx3.strokeStyle = '#ff1744'; ctx3.lineWidth = 3.5;
-    ctx3.beginPath();
-    ctx3.arc(tacCX, tacCY, tacR - 4, (0.75 + (10 / 13) * 1.5) * Math.PI, (0.75 + 1.5) * Math.PI);
+    ctx3.moveTo(-120, -70); ctx3.lineTo(-50, -150);
+    ctx3.moveTo(120, -70);  ctx3.lineTo(50, -150);
     ctx3.stroke();
 
-    // タコメーター目盛り (0〜13 x1000 RPM)
+    // ==========================================
+    // C. ヤマハ一体型レーシングメーターユニット
+    // ==========================================
+    // メーター成形ハウジング (マットブラック)
+    ctx3.fillStyle = '#17191c';
+    ctx3.strokeStyle = '#0a0b0d';
+    ctx3.lineWidth = 3;
+    ctx3.beginPath();
+    ctx3.roundRect(-165, -235, 305, 115, 26);
+    ctx3.fill(); ctx3.stroke();
+
+    // --- 1. 左側: マルチファンクション長方形デジタルLCD (スピード & ギア & ODO) ---
+    const lcdX = -150, lcdY = -222, lcdW = 100, lcdH = 84;
+    // LCDベゼル
+    ctx3.fillStyle = '#0d0f12';
+    ctx3.strokeStyle = '#263238';
+    ctx3.lineWidth = 1.8;
+    ctx3.beginPath();
+    ctx3.roundRect(lcdX, lcdY, lcdW, lcdH, 7);
+    ctx3.fill(); ctx3.stroke();
+
+    // LCD液晶画面 (反転クオーツ風ディープブルーグレー)
+    ctx3.fillStyle = '#101721';
+    ctx3.fillRect(lcdX + 6, lcdY + 6, lcdW - 12, lcdH - 22);
+
+    // デジタルスピード表示 (大型太字)
+    ctx3.fillStyle = '#00e5ff';
+    ctx3.font = '800 23px "Orbitron", sans-serif';
+    ctx3.textAlign = 'right'; ctx3.textBaseline = 'alphabetic';
+    ctx3.fillText(Math.floor(speedKmH).toString(), lcdX + lcdW - 30, lcdY + 35);
+
+    ctx3.fillStyle = '#80deea';
+    ctx3.font = '700 7.5px "Orbitron", sans-serif';
+    ctx3.fillText('km/h', lcdX + lcdW - 10, lcdY + 33);
+
+    // ギアポジション表示 (大きく強調表示)
+    ctx3.textAlign = 'left';
+    ctx3.fillStyle = '#78909c';
+    ctx3.font = '600 7px "Orbitron", sans-serif';
+    ctx3.fillText('GEAR', lcdX + 10, lcdY + 17);
+
+    const gearDisp = (gearNow === 0) ? 'N' : `${gearNow}`;
+    ctx3.fillStyle = (gearNow === 0) ? '#00e676' : '#ffd740';
+    ctx3.font = '800 16px "Orbitron", monospace';
+    ctx3.fillText(gearDisp, lcdX + 10, lcdY + 35);
+
+    // 下部情報行 (ODO & AT/MT)
+    ctx3.fillStyle = '#b0bec5';
+    ctx3.font = '6.5px "Orbitron", monospace';
+    const odoDisp = `ODO ${String(Math.floor(odometerKm * 10)).padStart(5, '0')}km`;
+    ctx3.fillText(odoDisp, lcdX + 10, lcdY + 52);
+
+    const modeTag = isAutoTransmission ? 'AT' : 'MT';
+    ctx3.fillStyle = isAutoTransmission ? '#ff9100' : '#00e5ff';
+    ctx3.fillText(`[${modeTag}]`, lcdX + lcdW - 28, lcdY + 52);
+
+    // SELECT / RESET ラバーボタン (LCD下部)
+    ctx3.fillStyle = '#212529';
+    ctx3.fillRect(lcdX + 14, lcdY + lcdH - 13, 26, 7);
+    ctx3.fillRect(lcdX + 58, lcdY + lcdH - 13, 26, 7);
+    ctx3.fillStyle = '#90a4ae';
+    ctx3.font = '5px "Orbitron", sans-serif';
+    ctx3.textAlign = 'center';
+    ctx3.fillText('SELECT', lcdX + 27, lcdY + lcdH - 7);
+    ctx3.fillText('RESET', lcdX + 71, lcdY + lcdH - 7);
+
+    // --- 2. 右側: 大径アナログタコメーター (16,000rpmフルスケール) ---
+    const tacCX = 40, tacCY = -178, tacR = 50;
+    ctx3.fillStyle = '#080a0c';
+    ctx3.beginPath(); ctx3.arc(tacCX, tacCY, tacR, 0, Math.PI * 2); ctx3.fill();
+    ctx3.strokeStyle = '#37474f'; ctx3.lineWidth = 3; ctx3.stroke();
+
+    // レッドゾーン (13,000〜16,000 RPM)
+    ctx3.strokeStyle = '#ff1744'; ctx3.lineWidth = 4.2;
+    ctx3.beginPath();
+    ctx3.arc(tacCX, tacCY, tacR - 4, (0.75 + (13 / 16) * 1.5) * Math.PI, (0.75 + 1.5) * Math.PI);
+    ctx3.stroke();
+
+    // タコメーター目盛り & 数字 (0〜16)
     ctx3.fillStyle = '#ffffff';
     ctx3.font = 'bold 8px "Orbitron", sans-serif';
-    for (let r = 0; r <= 13; r++) {
-      const ang = (0.75 + (r / 13) * 1.5) * Math.PI;
-      const x1 = tacCX + (tacR - 8) * Math.cos(ang);
-      const y1 = tacCY + (tacR - 8) * Math.sin(ang);
-      const x2 = tacCX + (tacR - 2) * Math.cos(ang);
-      const y2 = tacCY + (tacR - 2) * Math.sin(ang);
-      ctx3.strokeStyle = (r >= 10) ? '#ff1744' : '#ffffff';
-      ctx3.lineWidth = (r % 2 === 0) ? 2 : 1;
+    ctx3.textAlign = 'center'; ctx3.textBaseline = 'middle';
+    for (let r = 0; r <= 16; r++) {
+      const ang = (0.75 + (r / 16) * 1.5) * Math.PI;
+      const x1 = tacCX + (tacR - 8.5) * Math.cos(ang);
+      const y1 = tacCY + (tacR - 8.5) * Math.sin(ang);
+      const x2 = tacCX + (tacR - 3) * Math.cos(ang);
+      const y2 = tacCY + (tacR - 3) * Math.sin(ang);
+      ctx3.strokeStyle = (r >= 13) ? '#ff1744' : '#ffffff';
+      ctx3.lineWidth = (r % 2 === 0) ? 2.0 : 0.9;
       ctx3.beginPath(); ctx3.moveTo(x1, y1); ctx3.lineTo(x2, y2); ctx3.stroke();
-      if (r % 2 === 0 || r === 13) {
-        const tx = tacCX + (tacR - 15) * Math.cos(ang);
-        const ty = tacCY + (tacR - 15) * Math.sin(ang);
+      if (r % 2 === 0 || r === 16) {
+        const tx = tacCX + (tacR - 16) * Math.cos(ang);
+        const ty = tacCY + (tacR - 16) * Math.sin(ang);
         ctx3.fillText(r.toString(), tx, ty);
       }
     }
-    ctx3.fillStyle = '#b0bec5'; ctx3.font = '6px "Orbitron", sans-serif';
-    ctx3.fillText('x1000r/min', tacCX, tacCY - 12);
+    ctx3.fillStyle = '#90a4ae'; ctx3.font = '5.5px "Orbitron", sans-serif';
+    ctx3.fillText('x1000r/min', tacCX, tacCY - 13);
 
-    // インジケーターランプ (盤面下部: TURN / OIL / NEUTRAL / TEMP)
-    // ニュートラルランプ (緑)
+    // タコメーター内 小型LCD (水温トリップ)
+    ctx3.fillStyle = '#101721';
+    ctx3.fillRect(tacCX - 20, tacCY + 13, 40, 13);
+    ctx3.fillStyle = '#80deea'; ctx3.font = '7px "Orbitron", monospace';
+    const waterTempStr = typeof oilTemperature !== 'undefined' ? `${Math.floor(oilTemperature)}℃` : '92℃';
+    ctx3.fillText(waterTempStr, tacCX, tacCY + 20);
+
+    // ニュートラルランプ (緑) & 警告ランプ
     const isN = (gearNow === 0);
-    ctx3.fillStyle = isN ? '#00e676' : 'rgba(0, 230, 118, 0.2)';
+    ctx3.fillStyle = isN ? '#00e676' : 'rgba(0, 230, 118, 0.15)';
     if (isN) { ctx3.shadowColor = '#00e676'; ctx3.shadowBlur = 8; }
-    ctx3.beginPath(); ctx3.arc(tacCX, tacCY + 16, 4, 0, Math.PI*2); ctx3.fill();
+    ctx3.beginPath(); ctx3.arc(tacCX - 15, tacCY + 32, 3.2, 0, Math.PI * 2); ctx3.fill();
     ctx3.shadowBlur = 0;
-    ctx3.fillStyle = isN ? '#ffffff' : '#78909c';
-    ctx3.font = 'bold 5px "Noto Sans JP", sans-serif';
-    ctx3.fillText('NEUTRAL', tacCX, tacCY + 26);
 
-    // タコメーター指針 (鮮やかな蛍光オレンジレッド)
-    const tacAng = (0.75 + Math.min(13000, rpmNow) / 13000 * 1.5) * Math.PI;
-    ctx3.strokeStyle = '#ff3d00'; ctx3.lineWidth = 2.5;
+    // タコメーター指針 (実車同様のクリーンなホワイト指針)
+    const tacAng = (0.75 + Math.min(16000, rpmNow) / 16000 * 1.5) * Math.PI;
+    ctx3.strokeStyle = '#ffffff'; ctx3.lineWidth = 2.6; ctx3.lineCap = 'round';
     ctx3.beginPath();
     ctx3.moveTo(tacCX - 5 * Math.cos(tacAng), tacCY - 5 * Math.sin(tacAng));
     ctx3.lineTo(tacCX + (tacR - 7) * Math.cos(tacAng), tacCY + (tacR - 7) * Math.sin(tacAng));
     ctx3.stroke();
-    ctx3.fillStyle = '#212121'; ctx3.beginPath(); ctx3.arc(tacCX, tacCY, 5, 0, Math.PI*2); ctx3.fill();
-    ctx3.strokeStyle = '#ff3d00'; ctx3.lineWidth = 1; ctx3.stroke();
+    // 針の中心キャップ
+    ctx3.fillStyle = '#1a1d20'; ctx3.beginPath(); ctx3.arc(tacCX, tacCY, 5, 0, Math.PI * 2); ctx3.fill();
+    ctx3.strokeStyle = '#78909c'; ctx3.lineWidth = 1; ctx3.stroke();
 
-    // 水温/油温インジケーター丸ランプ (中央上部: 過熱時に赤色点滅警告！)
-    const isOverheat = (typeof oilTemperature !== 'undefined' && oilTemperature > 112);
-    const tempBlink = isOverheat ? (Math.floor(Date.now() / 250) % 2 === 0) : false;
-    ctx3.fillStyle = isOverheat ? (tempBlink ? '#ff1744' : '#b71c1c') : '#ff9100';
-    if (isOverheat && tempBlink) { ctx3.shadowColor = '#ff1744'; ctx3.shadowBlur = 12; }
-    ctx3.beginPath(); ctx3.arc(-4, -188, 5, 0, Math.PI*2); ctx3.fill();
-    ctx3.shadowBlur = 0;
-    ctx3.strokeStyle = '#263238'; ctx3.lineWidth = 1.5; ctx3.stroke();
-
-    // メーター配線ケーブル
-    ctx3.strokeStyle = '#111'; ctx3.lineWidth = 3;
+    // --- 3. 別体型ブレーキフルードリザーバータンク (実車完全再現) ---
+    const bTankX = 114, bTankY = -200;
+    // ステーパイプ (黒スチール)
+    ctx3.strokeStyle = '#263238'; ctx3.lineWidth = 3;
+    ctx3.beginPath(); ctx3.moveTo(bTankX - 6, bTankY + 22); ctx3.lineTo(130, -135); ctx3.stroke();
+    // 半透明円筒ボトル (琥珀色ブレーキ液)
+    ctx3.fillStyle = 'rgba(255, 236, 179, 0.65)';
+    ctx3.strokeStyle = '#37474f';
+    ctx3.lineWidth = 1.6;
     ctx3.beginPath();
-    ctx3.moveTo(-54, -112); ctx3.quadraticCurveTo(-20, -90, -8, -60);
-    ctx3.moveTo(48, -112);  ctx3.quadraticCurveTo(20, -90, 8, -60);
-    ctx3.stroke();
+    ctx3.roundRect(bTankX - 15, bTankY - 9, 30, 36, 4);
+    ctx3.fill(); ctx3.stroke();
+    // 液面ライン (LOWER - UPPER)
+    ctx3.fillStyle = '#ffb300';
+    ctx3.fillRect(bTankX - 13, bTankY + 4, 26, 20);
+    // 黒いスクリューキャップ (ギザギザローレット)
+    ctx3.fillStyle = '#1b1d20';
+    ctx3.beginPath(); ctx3.roundRect(bTankX - 17, bTankY - 17, 34, 11, 3); ctx3.fill();
+    ctx3.strokeStyle = '#546e7a'; ctx3.lineWidth = 1; ctx3.stroke();
 
-    // --- C. トップブリッジ ＆ キーシリンダー ---
-    // ガンメタトップブリッジ (YAMAHA/HONDA レーサー剛性クランプ)
-    ctx3.fillStyle = '#2b3038';
-    ctx3.strokeStyle = '#1a1d22';
-    ctx3.lineWidth = 2;
+    // ==========================================
+    // D. ガルウィング形状アルミトップブリッジ ＆ ステムナット ＆ 音叉エンブレム
+    // ==========================================
+    // トップブリッジ本体 (アルマイトブラック/ガンメタ)
+    ctx3.fillStyle = '#21252b';
+    ctx3.strokeStyle = '#121417';
+    ctx3.lineWidth = 2.2;
     ctx3.beginPath();
-    ctx3.moveTo(-110, -55);
-    ctx3.lineTo(-40, -68);
-    ctx3.lineTo(40, -68);
-    ctx3.lineTo(110, -55);
-    ctx3.lineTo(125, -20);
-    ctx3.lineTo(45, -15);
-    ctx3.lineTo(0, -5);
-    ctx3.lineTo(-45, -15);
-    ctx3.lineTo(-125, -20);
+    ctx3.moveTo(-160, -75);
+    ctx3.lineTo(-70, -90);
+    ctx3.lineTo(0, -85);
+    ctx3.lineTo(70, -90);
+    ctx3.lineTo(160, -75);
+    ctx3.lineTo(170, -46);
+    ctx3.lineTo(90, -48);
+    ctx3.lineTo(0, -35);
+    ctx3.lineTo(-90, -48);
+    ctx3.lineTo(-170, -46);
     ctx3.closePath();
     ctx3.fill(); ctx3.stroke();
 
-    // 中央ステアリングステムナット (大型六角)
-    ctx3.fillStyle = '#78909c';
-    ctx3.beginPath(); ctx3.arc(0, -28, 11, 0, Math.PI*2); ctx3.fill();
-    ctx3.fillStyle = '#37474f';
-    ctx3.beginPath(); ctx3.arc(0, -28, 7, 0, Math.PI*2); ctx3.fill();
+    // 中央大型中空ステムナット (シルバー六角)
+    ctx3.fillStyle = '#90a4ae';
+    ctx3.beginPath(); ctx3.arc(0, -60, 14, 0, Math.PI * 2); ctx3.fill();
+    ctx3.fillStyle = '#cfd8dc';
+    ctx3.beginPath(); ctx3.arc(0, -60, 10, 0, Math.PI * 2); ctx3.fill();
+    ctx3.fillStyle = '#1c2024'; // 中空ホール
+    ctx3.beginPath(); ctx3.arc(0, -60, 5, 0, Math.PI * 2); ctx3.fill();
 
-    // イグニッションキーシリンダー (中央上部)
-    ctx3.fillStyle = '#1e242b'; ctx3.strokeStyle = '#90a4ae'; ctx3.lineWidth = 1.5;
-    ctx3.beginPath(); ctx3.arc(0, -52, 12, 0, Math.PI*2); ctx3.fill(); ctx3.stroke();
-    ctx3.fillStyle = '#b0bec5'; ctx3.font = 'bold 5px "Orbitron", sans-serif'; ctx3.fillText('IGNITION', 0, -52);
-    ctx3.fillStyle = '#000'; ctx3.fillRect(-1.5, -48, 3, 7); // 鍵穴
+    // ヤマハ音叉エンブレム (丸型シルバーバッジ)
+    ctx3.fillStyle = '#eceff1'; ctx3.strokeStyle = '#263238'; ctx3.lineWidth = 1;
+    ctx3.beginPath(); ctx3.arc(38, -72, 7, 0, Math.PI * 2); ctx3.fill(); ctx3.stroke();
+    ctx3.fillStyle = '#1a237e';
+    ctx3.font = 'bold 7.5px sans-serif'; ctx3.textAlign = 'center';
+    ctx3.fillText('Ⓨ', 38, -69);
 
-    // 左右フロントフォークトップキャップボルト
-    [-92, 92].forEach(fx => {
-      ctx3.fillStyle = '#37474f'; ctx3.beginPath(); ctx3.arc(fx, -42, 12, 0, Math.PI*2); ctx3.fill();
-      ctx3.fillStyle = '#78909c'; ctx3.beginPath(); ctx3.arc(fx, -42, 8, 0, Math.PI*2); ctx3.fill();
-      ctx3.fillStyle = '#263238'; ctx3.beginPath(); ctx3.arc(fx, -42, 4, 0, Math.PI*2); ctx3.fill();
+    // イグニッションキーシリンダー (トップブリッジ中央奥)
+    ctx3.fillStyle = '#1a1d20'; ctx3.strokeStyle = '#78909c'; ctx3.lineWidth = 1.3;
+    ctx3.beginPath(); ctx3.arc(-24, -102, 13, 0, Math.PI * 2); ctx3.fill(); ctx3.stroke();
+    ctx3.fillStyle = '#ffffff'; ctx3.font = 'bold 5px "Orbitron", sans-serif';
+    ctx3.fillText('IGNITION', -24, -107);
+    ctx3.fillStyle = '#000'; ctx3.fillRect(-26, -102, 4, 7); // 鍵穴
+
+    // 左右フロントフォークトップ (鮮やかなアルマイトブルーの減衰力調整ダイヤル！)
+    [-128, 128].forEach(fx => {
+      // フォークトップ外枠 (シルバー)
+      ctx3.fillStyle = '#cfd8dc'; ctx3.strokeStyle = '#37474f'; ctx3.lineWidth = 1.8;
+      ctx3.beginPath(); ctx3.arc(fx, -68, 18, 0, Math.PI * 2); ctx3.fill(); ctx3.stroke();
+      // 内側リング
+      ctx3.fillStyle = '#90a4ae';
+      ctx3.beginPath(); ctx3.arc(fx, -68, 13, 0, Math.PI * 2); ctx3.fill();
+      // ★ アルマイトブルー調整ダイヤル
+      ctx3.fillStyle = '#0288d1'; ctx3.strokeStyle = '#01579b'; ctx3.lineWidth = 1.3;
+      ctx3.beginPath(); ctx3.arc(fx, -68, 9, 0, Math.PI * 2); ctx3.fill(); ctx3.stroke();
+      // クリックスクリュー
+      ctx3.fillStyle = '#e1f5fe'; ctx3.beginPath(); ctx3.arc(fx, -68, 2.8, 0, Math.PI * 2); ctx3.fill();
     });
 
-    // --- D. 左右セパレートハンドル (クリップオン) & スイッチ & マスターシリンダー ---
-    // 左セパハンバー & クランプ
-    ctx3.strokeStyle = '#212121'; ctx3.lineWidth = 16; ctx3.lineCap = 'round';
-    ctx3.beginPath(); ctx3.moveTo(-92, -42); ctx3.lineTo(-175, -28); ctx3.stroke();
-    // 左ラバースイッチボックス (Hi/Lo, Turn, Horn)
-    ctx3.fillStyle = '#1c2024'; ctx3.fillRect(-142, -42, 28, 26);
-    ctx3.fillStyle = '#1976d2'; ctx3.fillRect(-138, -38, 8, 8); // 青スイッチ
-    ctx3.fillStyle = '#e0e0e0'; ctx3.fillRect(-138, -26, 6, 6); // 白スイッチ
-    // 左ラバーグリップ (握り部)
-    ctx3.strokeStyle = '#151515'; ctx3.lineWidth = 19;
-    ctx3.beginPath(); ctx3.moveTo(-146, -26); ctx3.lineTo(-195, -18); ctx3.stroke();
+    // ==========================================
+    // E. 左右セパレートハンドル ＆ スイッチ ＆ レバー
+    // ==========================================
+    // 左セパレートハンドルバー
+    ctx3.strokeStyle = '#1b1d22'; ctx3.lineWidth = 18; ctx3.lineCap = 'round';
+    ctx3.beginPath(); ctx3.moveTo(-128, -68); ctx3.lineTo(-260, -42); ctx3.stroke();
+
+    // 左スイッチボックス (Hi/Lo, Turn, Horn)
+    ctx3.fillStyle = '#181b1f'; ctx3.fillRect(-210, -65, 34, 30);
+    ctx3.fillStyle = '#1976d2'; ctx3.fillRect(-205, -60, 9, 9);  // 青スイッチ
+    ctx3.fillStyle = '#e0e0e0'; ctx3.fillRect(-205, -46, 7, 7);  // 白スイッチ
+    // 左ラバーグリップ
+    ctx3.strokeStyle = '#121315'; ctx3.lineWidth = 22;
+    ctx3.beginPath(); ctx3.moveTo(-210, -42); ctx3.lineTo(-280, -32); ctx3.stroke();
     // 左クラッチレバー
-    ctx3.strokeStyle = '#90a4ae'; ctx3.lineWidth = 4;
-    ctx3.beginPath(); ctx3.moveTo(-138, -24); ctx3.quadraticCurveTo(-165, -42, -195, -34); ctx3.stroke();
+    ctx3.strokeStyle = '#b0bec5'; ctx3.lineWidth = 4.5;
+    ctx3.beginPath(); ctx3.moveTo(-200, -42); ctx3.quadraticCurveTo(-240, -64, -280, -52); ctx3.stroke();
 
-    // 右セパハンバー & クランプ
-    ctx3.strokeStyle = '#212121'; ctx3.lineWidth = 16; ctx3.lineCap = 'round';
-    ctx3.beginPath(); ctx3.moveTo(92, -42); ctx3.lineTo(175, -28); ctx3.stroke();
+    // 右セパレートハンドルバー
+    ctx3.strokeStyle = '#1b1d22'; ctx3.lineWidth = 18; ctx3.lineCap = 'round';
+    ctx3.beginPath(); ctx3.moveTo(128, -68); ctx3.lineTo(260, -42); ctx3.stroke();
 
-    // 右角型ブレーキマスターシリンダー (実写忠実: リザーバータンク＆丸型点検窓)
-    ctx3.fillStyle = '#1a1f24'; ctx3.strokeStyle = '#111'; ctx3.lineWidth = 2;
-    ctx3.beginPath(); ctx3.roundRect(114, -58, 38, 30, 4); ctx3.fill(); ctx3.stroke();
-    // マスターシリンダーキャップビス
-    ctx3.fillStyle = '#cfd8dc';
-    ctx3.beginPath(); ctx3.arc(120, -52, 2, 0, Math.PI*2); ctx3.fill();
-    ctx3.beginPath(); ctx3.arc(146, -52, 2, 0, Math.PI*2); ctx3.fill();
-    // オイルレベル点検窓 (丸型サイトグラス)
-    ctx3.fillStyle = '#ffb300'; ctx3.beginPath(); ctx3.arc(133, -40, 6, 0, Math.PI*2); ctx3.fill();
-    ctx3.strokeStyle = '#37474f'; ctx3.lineWidth = 1.5; ctx3.stroke();
-    ctx3.fillStyle = '#ffe082'; ctx3.beginPath(); ctx3.arc(131, -42, 2, 0, Math.PI*2); ctx3.fill(); // 気泡
+    // 右スイッチボックス (★ 実車同様の赤いキルスイッチ！)
+    ctx3.fillStyle = '#181b1f'; ctx3.fillRect(176, -65, 34, 30);
+    ctx3.fillStyle = '#d32f2f'; // 赤いロッカースイッチ
+    ctx3.fillRect(190, -61, 13, 15);
+    ctx3.fillStyle = '#e0e0e0';
+    ctx3.fillRect(180, -45, 7, 7); // セルスイッチ
 
-    // 右ラバーグリップ (スロットル部)
-    ctx3.strokeStyle = '#151515'; ctx3.lineWidth = 19;
-    ctx3.beginPath(); ctx3.moveTo(146, -26); ctx3.lineTo(195, -18); ctx3.stroke();
+    // 右スロットルグリップ
+    ctx3.strokeStyle = '#121315'; ctx3.lineWidth = 22;
+    ctx3.beginPath(); ctx3.moveTo(210, -42); ctx3.lineTo(280, -32); ctx3.stroke();
 
-    // 右ブレーキレバー (ブレーキ操作時にギュッと引かれるアニメーション！)
-    const leverPull = isBrakingNow ? 8 : 0;
-    ctx3.strokeStyle = isBrakingNow ? '#ff5252' : '#b0bec5'; ctx3.lineWidth = 4.5;
+    // 右ブレーキレバー (ブレーキング時に引き込まれるアニメーション)
+    const leverPull = isBrakingNow ? 9 : 0;
+    ctx3.strokeStyle = isBrakingNow ? '#ff5252' : '#b0bec5'; ctx3.lineWidth = 5;
     ctx3.beginPath();
-    ctx3.moveTo(136, -32 + leverPull * 0.3);
-    ctx3.quadraticCurveTo(165, -50 + leverPull, 198, -40 + leverPull);
+    ctx3.moveTo(200, -48 + leverPull * 0.3);
+    ctx3.quadraticCurveTo(240, -70 + leverPull, 282, -58 + leverPull);
     ctx3.stroke();
 
-    // ブレーキホース＆スロットルワイヤー (黒い曲線)
-    ctx3.strokeStyle = '#111'; ctx3.lineWidth = 3.5;
+    // 黒いメッシュブレーキホース
+    ctx3.strokeStyle = '#111'; ctx3.lineWidth = 4;
     ctx3.beginPath();
-    ctx3.moveTo(118, -38); ctx3.quadraticCurveTo(80, -10, 40, 10);
+    ctx3.moveTo(170, -50); ctx3.quadraticCurveTo(120, -18, 55, 5);
     ctx3.stroke();
-
-    // --- E. デジタルギアHUD (メーター中央下・トップブリッジ上: 視認性最良ゾーン) ---
-    const isShiftReject = (typeof shiftRejectWarningTime !== 'undefined' && shiftRejectWarningTime > 0);
-    // HUDプレート: 幅106px × 高さ24px、中央 (x=0, y=-116〜-92)
-    const shiftHudX = -53, shiftHudY = -108, shiftHudW = 106, shiftHudH = 22;
-    ctx3.fillStyle = 'rgba(6, 14, 28, 0.92)';
-    ctx3.strokeStyle = isShiftReject ? '#ff1744' : (isBrakingNow ? '#ff5252' : '#00e5ff');
-    ctx3.lineWidth = 1.8;
-    if (isShiftReject || isBrakingNow) {
-      ctx3.shadowColor = isShiftReject ? '#ff1744' : '#ff5252';
-      ctx3.shadowBlur = 10;
-    }
-    ctx3.beginPath();
-    ctx3.roundRect(shiftHudX, shiftHudY, shiftHudW, shiftHudH, 5);
-    ctx3.fill(); ctx3.stroke();
-    ctx3.shadowBlur = 0;
-
-    const modeTag = isAutoTransmission ? 'AT' : 'MT';
-    ctx3.textAlign = 'center'; ctx3.textBaseline = 'middle';
-    const shiftMidY = shiftHudY + shiftHudH / 2;
-    if (isShiftReject) {
-      ctx3.fillStyle = '#ff1744';
-      ctx3.font = 'bold 10px "Orbitron", monospace';
-      ctx3.fillText(`⚡ OVER-REV LOCK`, 0, shiftMidY);
-    } else if (isBrakingNow) {
-      ctx3.fillStyle = '#ff5252';
-      ctx3.font = 'bold 11px "Orbitron", monospace';
-      ctx3.fillText(`🛑 BRAKE`, 0, shiftMidY);
-    } else {
-      const gearLabel = gearNow === 0 ? 'N' : `${gearNow}`;
-      // ギア番号 (大文字・緑orオレンジ)
-      ctx3.fillStyle = gearNow === 0 ? '#ffa726' : '#69f0ae';
-      ctx3.font = `bold 13px "Orbitron", monospace`;
-      ctx3.fillText(gearLabel, -28, shiftMidY);
-      // 区切り線
-      ctx3.strokeStyle = 'rgba(0,229,255,0.3)'; ctx3.lineWidth = 1;
-      ctx3.beginPath(); ctx3.moveTo(-10, shiftHudY + 4); ctx3.lineTo(-10, shiftHudY + shiftHudH - 4); ctx3.stroke();
-      // AT/MTラベル
-      ctx3.fillStyle = '#00e5ff';
-      ctx3.font = 'bold 9px "Orbitron", monospace';
-      ctx3.fillText(`[${modeTag}]`, 22, shiftMidY);
-    }
 
     ctx3.restore();
 
@@ -6201,6 +6444,21 @@ requestAnimationFrame(animate);
     ctx3.fillStyle = 'rgba(0, 229, 255, 0.95)';
     ctx3.font = 'bold 8.5px "Orbitron", sans-serif'; ctx3.textAlign = 'left';
     ctx3.fillText('← →:STEER | SPACE:ACCEL | B:BRAKE', 20, 29);
+
+    // ★ 10-B. スマホ傾きセンサー作動中インジケーター (中央上部)
+    if (window.isGyroActive) {
+      const gDeg = window.gyroGamma || 0;
+      const gDir = gDeg > 1 ? '▶' : (gDeg < -1 ? '◀' : '●');
+      ctx3.fillStyle = 'rgba(0, 0, 0, 0.82)';
+      ctx3.fillRect(W3/2 - 68, 14, 136, 24);
+      ctx3.strokeStyle = '#76ff03';
+      ctx3.lineWidth = 1.2;
+      ctx3.strokeRect(W3/2 - 68, 14, 136, 24);
+      ctx3.fillStyle = '#76ff03';
+      ctx3.font = 'bold 8.5px "Orbitron", sans-serif';
+      ctx3.textAlign = 'center';
+      ctx3.fillText(`📱 傾き ${gDir} ${Math.abs(gDeg).toFixed(1)}°`, W3/2, 29);
+    }
 
     // ★ 11. 3D画面内 距離計HUD (右上: 見切れ防止・画面端から余裕をもたせる)
     ctx3.save();
@@ -6257,18 +6515,25 @@ requestAnimationFrame(animate);
     const currentCurve = getTrackCurve(playerDistance);
     const centrifugal = currentCurve * Math.min(0.8, speedKmH / 140) * 0.25;
 
-    // 🏁 オートハンドル（レーンキープ）＆ ステアリング入力処理
-    const steerSpeed = Math.max(0.60, Math.min(0.85, 0.55 + (speedKmH / 200)));
+    // 🏁 ステアリング入力処理 (手動ボタン / スマホ傾きセンサー / オートハンドル)
+    const steerSpeed = Math.max(0.65, Math.min(0.92, 0.60 + (speedKmH / 180)));
     const isManualSteering = (typeof isSteerLeft !== 'undefined' && isSteerLeft) ||
                              (typeof isSteerRight !== 'undefined' && isSteerRight);
 
     if (isManualSteering) {
-      // マニュアル操作時
+      // 1. ボタン/キー手動操作
       if (isSteerLeft) playerXVel = -steerSpeed;
       else if (isSteerRight) playerXVel = steerSpeed;
       playerX -= centrifugal * dt;
+    } else if (window.isGyroActive && Math.abs(window.gyroGamma || 0) > 1.0) {
+      // 2. スマホ傾きセンサー（加速度・ジャイロ）連動
+      // 傾き角度 (-35度 〜 +35度) をステアリング速度に変換
+      const tiltNorm = Math.max(-1.0, Math.min(1.0, (window.gyroGamma || 0) / 26.0));
+      const targetGyroVel = tiltNorm * steerSpeed * 1.35;
+      playerXVel += (targetGyroVel - playerXVel) * Math.min(1.0, dt * 10.0);
+      playerX -= centrifugal * dt;
     } else if (window.isAutoSteer && speedKmH > 0.5) {
-      // オートハンドル: カーブ先読みによる遠心力相殺 + 滑らかな車線中央（playerX = 0）維持
+      // 3. オートハンドル: カーブ先読みによる遠心力相殺 + 滑らかな車線中央（playerX = 0）維持
       const lookAheadDist = playerDistance + Math.max(14, speedKmH * 0.35);
       const futureCurve = getTrackCurve(lookAheadDist);
       const centerError = 0.0 - playerX; // 車線中央との偏差
@@ -6281,7 +6546,7 @@ requestAnimationFrame(animate);
       playerXVel += (targetAutoVel - playerXVel) * Math.min(1.0, dt * 4.5);
       playerX -= centrifugal * dt;
     } else {
-      // 手動ニュートラル・手放し時
+      // 4. 手動ニュートラル・手放し時
       playerXVel *= Math.pow(0.005, dt);
       playerX -= centrifugal * dt;
     }
@@ -6306,12 +6571,107 @@ requestAnimationFrame(animate);
 })();
 
 // ============================================================
+// ★ 📱 縦長スマホモード (1段目メーター＆前面展望特化 / 1300px)
+// ============================================================
+window.isSmartphoneMode = false;
+
+window.toggleSmartphoneMode = function() {
+  window.isSmartphoneMode = !window.isSmartphoneMode;
+  document.body.classList.toggle('smartphone-mode', window.isSmartphoneMode);
+  const btn = document.getElementById('btnToggleSmartphoneMode');
+  if (btn) {
+    btn.classList.toggle('active', window.isSmartphoneMode);
+    btn.textContent = window.isSmartphoneMode ? '📱 縦長スマホモード: ON' : '📱 縦長スマホモード';
+  }
+};
+
+// ============================================================
+// ★ 📱 スマホ傾きセンサー (加速度/ジャイロ DeviceOrientation) 連動
+// ============================================================
+window.isGyroActive = false;
+window.gyroGamma = 0; // 左右傾き角度 (-45〜+45度)
+
+window.toggleGyroSteer = async function() {
+  if (!window.isGyroActive) {
+    // センサー開始要求 (iOS Safari の requestPermission 対応)
+    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+      try {
+        const permission = await DeviceOrientationEvent.requestPermission();
+        if (permission === 'granted') {
+          startGyro();
+        } else {
+          alert('モーションセンサーのアクセスが拒否されました。ブラウザ設定から許可してください。');
+        }
+      } catch (err) {
+        console.warn('DeviceOrientation permission error:', err);
+        startGyro();
+      }
+    } else {
+      startGyro();
+    }
+  } else {
+    stopGyro();
+  }
+};
+
+function startGyro() {
+  window.isGyroActive = true;
+  window.isAutoSteer = false; // 傾き操作時はオートハンドルOFF
+  updateAutoSteerUI();
+  window.addEventListener('deviceorientation', handleDeviceOrientation, true);
+  updateGyroUI();
+}
+
+function stopGyro() {
+  window.isGyroActive = false;
+  window.gyroGamma = 0;
+  window.removeEventListener('deviceorientation', handleDeviceOrientation, true);
+  updateGyroUI();
+}
+
+function handleDeviceOrientation(event) {
+  if (!window.isGyroActive) return;
+  // 画面の向き (0: 縦, 90: 横左, -90: 横右)
+  const orientation = window.orientation || (screen.orientation ? screen.orientation.angle : 0) || 0;
+  let gamma = event.gamma || 0; // 左右傾き (-90 〜 +90)
+  let beta  = event.beta  || 0; // 前後傾き (-180 〜 +180)
+
+  let targetTilt = 0;
+  if (Math.abs(orientation) === 90) {
+    // 横画面時: 前後の傾き(beta)が左右ハンドルに相当
+    targetTilt = orientation === 90 ? beta : -beta;
+  } else {
+    // 縦長スマホ時: 左右の傾き(gamma)が左右ハンドルに相当
+    targetTilt = gamma;
+  }
+  window.gyroGamma = Math.max(-45, Math.min(45, targetTilt));
+}
+
+function updateGyroUI() {
+  const b1 = document.getElementById('btnGyroSteer');
+  const b2 = document.getElementById('btnGyroSteer3D');
+  const txt1 = window.isGyroActive ? '📱 傾き連動: ON' : '📱 傾き連動: OFF';
+  const txt2 = window.isGyroActive ? '📱 傾き: ON' : '📱 傾き操作';
+  if (b1) {
+    b1.textContent = txt1;
+    b1.classList.toggle('active', window.isGyroActive);
+  }
+  if (b2) {
+    b2.textContent = txt2;
+    b2.classList.toggle('active', window.isGyroActive);
+  }
+}
+
+// ============================================================
 // ★ オートハンドル (Auto Steering) 切替制御
 // ============================================================
 window.isAutoSteer = true; // 初期状態: ON (アクセル/ブレーキ/シフト操作のみで自動走行可能)
 
 window.toggleAutoSteer = function() {
   window.isAutoSteer = !window.isAutoSteer;
+  if (window.isAutoSteer && window.isGyroActive) {
+    stopGyro(); // オートハンドルON時はジャイロOFF
+  }
   updateAutoSteerUI();
 };
 
